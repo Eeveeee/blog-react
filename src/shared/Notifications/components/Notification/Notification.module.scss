@@ -1,0 +1,12 @@
+@import "../../../../styles/mixins.scss";
+@import "../../../../styles/variables.scss";
+.notification {
+  @include wh(400px, auto);
+  background: black;
+  color: white;
+  width: 100%;
+  transition: 5s;
+  position: absolute;
+  right: 0;
+  top: 15px;
+}

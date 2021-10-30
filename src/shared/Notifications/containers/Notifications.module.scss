@@ -1,0 +1,14 @@
+@import "../../../styles/mixins.scss";
+@import "../../../styles/variables.scss";
+.notifications {
+  position: fixed;
+  right: 15px;
+  top: 80px;
+  background: black;
+  border: 1px solid black;
+  border-radius: 5px;
+  @include wh(400px, auto);
+  height: 600px;
+  z-index: 9999;
+  @include flex(column, flex-start, flex-start);
+}

@@ -1,0 +1,6 @@
+@import "../styles/mixins.scss";
+@import "../styles/variables.scss";
+.global__container {
+  @include flex(column, space-between, flex-start, nowrap);
+  min-height: 100vh;
+}

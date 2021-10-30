@@ -1,0 +1,57 @@
+@import "../../../../styles/mixins.scss";
+@import "../../../../styles/variables.scss";
+.loginForm {
+  @include flex();
+  padding: 50px 0;
+}
+.loginGoogle {
+  cursor: pointer;
+  @include flex($justify: flex-start);
+  width: 100%;
+  &Icon {
+    width: 30px;
+  }
+}
+.input,
+.textarea {
+  border-radius: 3px;
+  border: 1px solid black;
+  height: 50px;
+  padding: 3px;
+  margin-bottom: 10px;
+  font-size: 18px;
+}
+.form {
+  margin-bottom: 30px;
+  padding: 50px;
+  border: 2px solid $clr-gray-3;
+  border-radius: 10px;
+  width: 700px;
+  @include flex(column, flex-start, stretch);
+}
+.submit {
+  @include flex();
+  background: $clr-gray-main;
+  border: none;
+  padding: 15px 0;
+  font-size: 20px;
+  color: white;
+  cursor: pointer;
+  transition: 0.2s;
+  border-radius: 5px;
+  @media (min-width: $size-laptop) {
+    &:hover {
+      background: lighten($clr-gray-main, 10%);
+    }
+  }
+}
+.textarea {
+  resize: vertical;
+  min-height: 50px;
+}
+.input {
+  &Title {
+    margin-bottom: 5px;
+    font-size: 25px;
+  }
+}

@@ -1,0 +1,77 @@
+@import "../../../../styles/mixins.scss";
+@import "../../../../styles/variables.scss";
+.addPostForm {
+  @include flex();
+  padding: 50px 0;
+}
+.errors {
+  font-size: 18px;
+  @include flex(column, flex-start, flex-start);
+  &Title {
+    margin-bottom: 5px;
+    font-size: 20px;
+    font-weight: 600;
+  }
+}
+.requiredMarker {
+  color: red;
+  font-size: 30px;
+}
+.error {
+  color: red;
+  font-weight: 600;
+  &:nth-last-of-type(n + 2) {
+    margin-bottom: 3px;
+  }
+}
+.input,
+.textarea {
+  border-radius: 3px;
+  border: 1px solid black;
+  height: 50px;
+  padding: 3px;
+  margin-bottom: 10px;
+  font-size: 18px;
+}
+.form {
+  padding: 50px;
+  border: 2px solid $clr-gray-3;
+  border-radius: 10px;
+  width: 700px;
+  @include flex(column, flex-start, stretch);
+}
+.submit {
+  @include flex();
+  background: $clr-gray-main;
+  border: none;
+  font-size: 20px;
+  color: white;
+  cursor: pointer;
+  transition: 0.2s;
+  border-radius: 5px;
+  height: 50px;
+  @media (min-width: $size-laptop) {
+    &:hover {
+      background: lighten($clr-gray-main, 10%);
+    }
+  }
+}
+.textarea {
+  resize: vertical;
+  min-height: 50px;
+}
+.input {
+  &Title {
+    margin-bottom: 5px;
+    font-size: 25px;
+  }
+  &File {
+    text-align: center;
+    @include flex();
+    margin: 10px 0 20px 0;
+    width: fit-content;
+    border: none;
+    border: red;
+    cursor: pointer;
+  }
+}
