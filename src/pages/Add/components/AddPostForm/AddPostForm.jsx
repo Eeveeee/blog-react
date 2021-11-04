@@ -68,8 +68,8 @@ export function AddPostForm({
         <input
           onChange={fileInputHandler}
           accept=".webp,.jpg,.png,.jpeg"
-          multiple
           className={s.inputFile}
+          multiple
           name="images"
           type="file"
         />

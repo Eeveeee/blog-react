@@ -9,16 +9,17 @@ export async function getAllPosts() {
 
 export async function getPost(postID) {
   const dbRef = ref(getDatabase());
-  get(child(dbRef, `posts/${postID}`))
+  return get(child(dbRef, `posts/${postID}`))
     .then((snapshot) => {
       if (snapshot.exists()) {
-        console.log(snapshot.val());
+        return snapshot.val();
       } else {
-        console.log('No data available');
+        return false;
       }
     })
     .catch((error) => {
       console.error(error);
+      return false;
     });
 }
 export async function writePost(
@@ -26,20 +27,21 @@ export async function writePost(
   subtitle,
   subtitlePreview,
   content,
-  images
+  images,
+  postPrefix = ''
 ) {
-  const ms = Date.now();
-  const postId = uuidv4();
+  const createdAt = Date.now();
+  const postId = postPrefix + '_' + uuidv4();
   const db = getDatabase();
   set(ref(db, 'posts/' + postId), {
     postId,
     userId: false,
-    ms,
+    createdAt,
     title,
     subtitle,
     subtitlePreview,
     content,
-    images: images,
+    images: images.length ? images : false,
   });
 }
 
@@ -48,4 +50,28 @@ export function writePostsFromJSON() {
   postsJSON.forEach((post) => {
     set(ref(db, 'posts/'), postsJSON);
   });
+}
+export function writeUserInfo(uid, username, imageURL) {
+  const db = getDatabase();
+  const createdAt = Date.now();
+  set(ref(db, 'users/' + uid), {
+    uid,
+    createdAt,
+    username,
+    imageURL,
+  });
+}
+export function getUserInfo(uid) {
+  const dbRef = ref(getDatabase());
+  return get(child(dbRef, `users/${uid}`))
+    .then((snapshot) => {
+      if (snapshot.exists()) {
+        return snapshot.val();
+      } else {
+        return false;
+      }
+    })
+    .catch((error) => {
+      throw new Error(error);
+    });
 }

@@ -1,0 +1,35 @@
+@import "../../styles/mixins.scss";
+@import "../../styles/variables.scss";
+.imageWrapper {
+  @include wh(50px, 50px);
+  margin-right: 20px;
+  border: 2px solid black;
+  border-radius: 50%;
+}
+.profile {
+  &Content {
+    height: fit-content;
+    background: transparent;
+    @include flex($justify: space-between);
+    @include wh(100px, auto);
+  }
+}
+.username {
+  font-size: 20px;
+}
+.logout,
+.signIn {
+  height: 30px;
+  width: 30px;
+  border: none;
+  cursor: pointer;
+  @include flex();
+  background: transparent;
+  padding: 0;
+  svg {
+    path {
+      stroke: black;
+    }
+    @include wh(100%, 100%);
+  }
+}

@@ -2,11 +2,23 @@
 @import "../../styles/variables.scss";
 .header {
   @include wh(100%, auto);
-  @include flex();
-  padding: 10px;
-  background: rgba(black, 0.4);
+  @include flex($justify: space-between);
+  padding: 5px;
+  border-bottom: 1px solid $clr-gray-main;
 }
 .title {
-  font-size: 30px;
+  font-family: $font-cave;
+  font-weight: 600;
+  font-size: 40px;
   color: black;
+  text-decoration: none;
+  padding-bottom: 5px;
+  border-bottom: 2px solid transparent;
+  @media (min-width: $size-laptop) {
+    transition: 0.2s;
+    &:hover {
+      color: lighten($clr-gray-main, 20%);
+      border-color: lighten($clr-gray-main, 20%);
+    }
+  }
 }

@@ -3,13 +3,15 @@ import s from './Post.module.scss';
 import { dateFromMs, timeFromMs } from '../../../../utils/time';
 import imagePlaceholder from '../../../../assets/images/imagePlaceholder.webp';
 
-export function Post({ data }) {
-  const { postId, userId, ms, title, subtitlePreview, images } = {
-    ...data,
-  };
-  const postCreated = `${dateFromMs(ms)} ${timeFromMs(ms)}`;
+export function Post({ data, onPostClick }) {
+  const { postId, userId, createdAt, title, subtitlePreview, images } = data;
+  const postCreated = `${dateFromMs(createdAt)} ${timeFromMs(createdAt)}`;
+
+  function clickHandler(e) {
+    onPostClick(postId);
+  }
   return (
-    <div className={s.post}>
+    <div onClick={clickHandler} className={s.post}>
       <div className={s.info}>
         <div className={s.id}>ID поста: {postId}</div>
         <div className={s.userId}>ID пользователя: {userId}</div>

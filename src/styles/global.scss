@@ -1,5 +1,6 @@
 @import "../styles/mixins.scss";
 @import "../styles/variables.scss";
+@import url("https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600;700&display=swap");
 .global__container {
   @include flex(column, space-between, flex-start, nowrap);
   min-height: 100vh;

@@ -31,7 +31,7 @@ export function LoginForm({ onLogin }) {
           Войти
         </button>
         <div className={s.loginGoogle}>
-          Или войдите через Google
+          Или войдите через <span>Google</span>
           <div className={s.loginGoogleIcon}>
             <GlobalSvgSelector id={'google'} />
           </div>

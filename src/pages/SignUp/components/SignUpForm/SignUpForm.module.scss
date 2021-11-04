@@ -1,10 +1,13 @@
 @import "../../../../styles/mixins.scss";
 @import "../../../../styles/variables.scss";
-.loginForm {
+.signUpForm {
   @include flex();
   padding: 50px 0;
 }
-.loginGoogle {
+.previewWrapper {
+  margin: 20px 0;
+}
+.signUpGoogle {
   padding: 10px;
   border: 1px solid $clr-gray-main;
   border-radius: 5px;
@@ -27,6 +30,12 @@
       background: lighten($clr-gray-main, 10%);
       color: white;
     }
+  }
+}
+.imagePreview {
+  &Wrapper {
+    @include flex();
+    margin-bottom: 15px;
   }
 }
 .input,
@@ -67,6 +76,18 @@
   min-height: 50px;
 }
 .input {
+  &Info {
+    margin: 10px 0 5px 0;
+    font-size: 14px;
+  }
+  &File {
+    border-radius: 3px;
+    border: 1px solid black;
+    width: fit-content;
+    padding: 5px;
+    cursor: pointer;
+    margin: 0 0 15px 0;
+  }
   &Title {
     margin-bottom: 5px;
     font-size: 25px;

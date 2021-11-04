@@ -1,14 +1,22 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import s from './Login.module.scss';
 import { Loader } from '../../../shared/Loader/Loader';
-// import { addPost } from '../../../services/services';
 import { LoginForm } from '../components/LoginForm/LoginForm';
 import { signIn, signUp } from '../../../services/AuthService';
-import { getAuth } from 'firebase/auth';
 
 export function Login() {
-  function login(email, password) {
-    signIn(email, password);
+  const [loading, setLoading] = useState(false);
+  console.log('in login');
+  async function login(email, password) {
+    setLoading(true);
+    signIn(email, password)
+      .then(() => {
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error(err, 'at login');
+        setLoading(false);
+      });
   }
 
   return (

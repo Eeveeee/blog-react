@@ -11,12 +11,25 @@
   &:nth-of-type(3n) {
     margin-right: 0;
   }
+  @media (min-width: $size-laptop) {
+    cursor: pointer;
+    transition: 0.2s;
+    &:hover {
+      .title {
+        color: red;
+      }
+      -webkit-box-shadow: 4px 4px 18px 0px black;
+      -moz-box-shadow: 4px 4px 18px 0px black;
+      box-shadow: 4px 4px 18px 0px black;
+    }
+  }
 }
 .subtitle {
   font-size: 15px;
   font-weight: 500;
 }
 .title {
+  transition: 0.2s;
   font-weight: 600;
   font-size: 30px;
   margin-bottom: 10px;

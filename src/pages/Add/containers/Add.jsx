@@ -6,16 +6,16 @@ import { AddPostForm } from '../components/AddPostForm/AddPostForm';
 import { validateFile } from '../../../utils/validateFile';
 import { writePost } from '../../../services/DbService';
 import { NotificationsContext } from '../../../context/context';
+import { transliterationToEng } from '../../../utils/transliteration';
+
 export function Add() {
-  console.log();
-  const maxFileSize = 10;
   const [loading, setLoading] = useState(false);
-  const { notifications, setNotifications } = useContext(NotificationsContext);
+  const maxFileSize = 10;
   function checkFileInput(input, files) {
+    const types = ['image'];
+    const extensions = input.accept.split('.').join('').split(',');
     Array.from(files).forEach((file) => {
-      const types = ['image'];
-      const extensions = input.accept.split('.').join('').split(',');
-      validateFile(input, file, notifications, setNotifications, {
+      validateFile(input, file, {
         types,
         extensions,
         maxFileSize,
@@ -38,12 +38,14 @@ export function Add() {
           return;
         });
     }
+    const postPrefix = transliterationToEng(form.title.value);
     writePost(
       form.title.value,
       form.subtitle.value,
       form.subtitlePreview.value || form.subtitle.value,
       form.content.value,
-      imageLinks
+      imageLinks,
+      postPrefix
     )
       .then(() => {
         setLoading(false);
@@ -54,7 +56,6 @@ export function Add() {
         return;
       });
   }
-  const time = 5000;
   return (
     <div className={s.add}>
       <div className={s.container}>

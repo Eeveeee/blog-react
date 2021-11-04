@@ -1,10 +1,10 @@
 @import "../../styles/mixins.scss";
 @import "../../styles/variables.scss";
-.footer {
+.header {
   @include wh(100%, auto);
   @include flex();
   padding: 10px;
-  border-top: 1px solid $clr-gray-main;
+  background: rgba(black, 0.4);
 }
 .title {
   font-size: 30px;

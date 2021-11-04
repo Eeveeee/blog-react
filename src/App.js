@@ -1,18 +1,33 @@
 import './styles/global.scss';
 import React, { useEffect, useState } from 'react';
-import { Route, Switch, Redirect } from 'react-router-dom';
+import ReactDOM from 'react-dom';
+
+import {
+  Route,
+  Switch,
+  Redirect,
+  useHistory,
+  useLocation,
+} from 'react-router-dom';
+
 import { Home } from './pages/Home/containers/Home';
 import { Add } from './pages/Add/containers/Add';
 import { Login } from './pages/Login/containers/Login';
+import { SignUp } from './pages/SignUp/containers/SignUp';
+import { Post } from './pages/Post/Post';
 import { Header } from './shared/Header/Header';
 import { Footer } from './shared/Footer/Footer';
 import { onAuthStateChanged } from 'firebase/auth';
 import { initializeApp } from 'firebase/app';
 import { getDatabase } from 'firebase/database';
 import { GoogleAuthProvider, getAuth } from 'firebase/auth';
-import { Notifications } from './shared/Notifications/containers/Notifications';
-import { BrowserRouter as Router } from 'react-router-dom';
-import { NotificationsContext } from './context/context';
+import { Loader } from './shared/Loader/Loader';
+import { getUserInfo } from './services/DbService';
+import {
+  AuthContext,
+  NotificationsContext,
+  UserContext,
+} from './context/context';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyC3NG1hpGDzAdvOcZer1hhCK63DG08XVLI',
@@ -26,48 +41,68 @@ const firebaseConfig = {
   measurementId: 'G-FKGJ39DJZR',
 };
 const app = initializeApp(firebaseConfig);
-const auth = getAuth();
-auth.languageCode = 'ru';
-const db = getDatabase(app);
 
-function App(history) {
-  const [isAuth, setAuth] = React.useState(false);
-  const [user, setUser] = React.useState(null);
+function App() {
+  const history = useHistory();
+  const [loading, setLoading] = React.useState(true);
+  const [isAuth, setIsAuth] = React.useState(false);
   const [notifications, setNotifications] = React.useState([]);
-  // onAuthStateChanged(auth, (user) => {
-  //   if (user) {
-  //     const uid = user.uid;
-  //     setAuth(true);
-  //     console.log(user);
-  //     console.log('signed in');
-  //   } else {
-  //     console.log('signed out');
-  //   }
-  // });
-  return (
-    <NotificationsContext.Provider
-      value={{
-        notifications,
-        setNotifications,
-      }}
-    >
-      <Router>
-        <div className="App">
-          <div className="global__container">
-            {/* <Notifications /> */}
-            <Header />
+  const [currentUser, setCurrentUser] = React.useState(false);
+  const auth = getAuth();
+
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setIsAuth(true);
+        setCurrentUser(user);
+      }
+      setLoading(false);
+    });
+  }, []);
+  if (!isAuth) {
+    return (
+      <div className="App">
+        <div className="global__container">
+          <Header currentUser={currentUser} />
+          {!loading && (
             <Switch>
               <Route exact history={history} path="/home" component={Home} />
-              <Route exact history={history} path="/add" component={Add} />
-              <Route exact history={history} path="/home" component={Home} />
               <Route exact history={history} path="/login" component={Login} />
+              <Route
+                exact
+                history={history}
+                path="/signup"
+                component={SignUp}
+              />
+              <Route
+                exact
+                history={history}
+                path="/posts/:id"
+                component={Post}
+              />
               <Redirect from="/" to="home" />
             </Switch>
-            <Footer />
-          </div>
+          )}
+          <Footer />
         </div>
-      </Router>
-    </NotificationsContext.Provider>
+      </div>
+    );
+  }
+  return (
+    <div className="App">
+      <div className="global__container">
+        <Header currentUser={currentUser} />
+        {!loading && (
+          <Switch>
+            <Route exact history={history} path="/add" component={Add} />
+            <Route exact history={history} path="/home" component={Home} />
+            <Route exact history={history} path="/posts/:id" component={Post} />
+            <Redirect from="/" to="home" />
+          </Switch>
+        )}
+        <Footer />
+      </div>
+    </div>
   );
 }
 

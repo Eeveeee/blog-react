@@ -1,12 +1,6 @@
 import { convertSize } from './sizeConverter';
 
-export function validateFile(
-  input,
-  file,
-  notifications,
-  setNotifications,
-  options
-) {
+export function validateFile(input, file, options) {
   const { types, extensions, maxFileSize } = options;
   const fileType = file.type.split('/')[0];
   const fileExt = file.type.split('/')[1];
@@ -17,10 +11,6 @@ export function validateFile(
     !types.includes(fileType)
   ) {
     input.value = null;
-    setNotifications([
-      ...notifications,
-      { text: `Невалидный файл,${Date.now()}` },
-    ]);
     return false;
   }
   return true;

@@ -1,12 +1,18 @@
 export function dateFromMs(ms) {
-  const date = new Date(ms);
-  date.setMonth(date.getMonth() + 1);
-  const month = String(date.getMonth());
-  return `${date.getDate()}.${
-    month.length !== 2 ? '0' + month : month
-  }.${date.getFullYear()}`;
+  const dateExamp = new Date(ms);
+  dateExamp.setMonth(dateExamp.getMonth() + 1);
+  let date = formatToXX(dateExamp.getDate());
+  let month = formatToXX(dateExamp.getMonth());
+  return `${date}.${month}.${dateExamp.getFullYear()}`;
 }
 export function timeFromMs(ms) {
-  const date = new Date(ms);
-  return `${date.getHours()}:${date.getMinutes()}`;
+  const dateExamp = new Date(ms);
+  let hours = formatToXX(dateExamp.getHours());
+  const minutes = formatToXX(dateExamp.getMinutes());
+  return `${hours}:${minutes}`;
+}
+
+function formatToXX(time) {
+  time = String(time);
+  return (time = time.length !== 2 ? '0' + time : time);
 }
