@@ -1,5 +1,5 @@
-@import "../../styles/mixins.scss";
-@import "../../styles/variables.scss";
+@import "../../../styles/mixins.scss";
+@import "../../../styles/variables.scss";
 .header {
   @include wh(100%, auto);
   @include flex($justify: space-between);
@@ -20,5 +20,20 @@
       color: lighten($clr-gray-main, 20%);
       border-color: lighten($clr-gray-main, 20%);
     }
+  }
+}
+.signIn {
+  height: 30px;
+  width: 30px;
+  border: none;
+  cursor: pointer;
+  @include flex();
+  background: transparent;
+  padding: 0;
+  svg {
+    path {
+      stroke: black;
+    }
+    @include wh(100%, 100%);
   }
 }

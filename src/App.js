@@ -1,33 +1,18 @@
-import './styles/global.scss';
-import React, { useEffect, useState } from 'react';
-import ReactDOM from 'react-dom';
-
-import {
-  Route,
-  Switch,
-  Redirect,
-  useHistory,
-  useLocation,
-} from 'react-router-dom';
-
-import { Home } from './pages/Home/containers/Home';
-import { Add } from './pages/Add/containers/Add';
-import { Login } from './pages/Login/containers/Login';
-import { SignUp } from './pages/SignUp/containers/SignUp';
-import { Post } from './pages/Post/Post';
-import { Header } from './shared/Header/Header';
-import { Footer } from './shared/Footer/Footer';
-import { onAuthStateChanged } from 'firebase/auth';
 import { initializeApp } from 'firebase/app';
-import { getDatabase } from 'firebase/database';
-import { GoogleAuthProvider, getAuth } from 'firebase/auth';
-import { Loader } from './shared/Loader/Loader';
-import { getUserInfo } from './services/DbService';
-import {
-  AuthContext,
-  NotificationsContext,
-  UserContext,
-} from './context/context';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import { getStorage } from 'firebase/storage';
+import React, { useEffect } from 'react';
+import { Redirect, Route, Switch, useHistory } from 'react-router-dom';
+import { Add } from './pages/Add/containers/Add';
+import { Home } from './pages/Home/containers/Home';
+import { Post } from './pages/Post/Post';
+import { Profile } from './pages/Profile/containers/Profile';
+import { SignIn } from './pages/SignIn/containers/SignIn';
+import { SignUp } from './pages/SignUp/containers/SignUp';
+import { Footer } from './shared/Footer/Footer';
+import { Header } from './shared/Header/containers/Header';
+import { Notifications } from './shared/Notifications/containers/Notifications';
+import './styles/global.scss';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyC3NG1hpGDzAdvOcZer1hhCK63DG08XVLI',
@@ -45,20 +30,24 @@ const app = initializeApp(firebaseConfig);
 function App() {
   const history = useHistory();
   const [loading, setLoading] = React.useState(true);
-  const [isAuth, setIsAuth] = React.useState(false);
   const [notifications, setNotifications] = React.useState([]);
-  const [currentUser, setCurrentUser] = React.useState(false);
+  const [isAuth, setIsAuth] = React.useState(false);
+  const [currentUser, setCurrentUser] = React.useState(null);
   const auth = getAuth();
-
+  const storage = getStorage();
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
         setIsAuth(true);
         setCurrentUser(user);
+      } else {
+        setIsAuth(false);
+        setCurrentUser(null);
       }
       setLoading(false);
     });
   }, []);
+
   if (!isAuth) {
     return (
       <div className="App">
@@ -67,12 +56,20 @@ function App() {
           {!loading && (
             <Switch>
               <Route exact history={history} path="/home" component={Home} />
-              <Route exact history={history} path="/login" component={Login} />
               <Route
                 exact
                 history={history}
-                path="/signup"
-                component={SignUp}
+                path="/signIn"
+                component={SignIn}
+              />
+              <Route exact history={history} path="/signup">
+                <SignUp setCurrentUser={setCurrentUser} />
+              </Route>
+              <Route
+                exact
+                history={history}
+                path="/profile/:id"
+                component={Profile}
               />
               <Route
                 exact
@@ -80,7 +77,7 @@ function App() {
                 path="/posts/:id"
                 component={Post}
               />
-              <Redirect from="/" to="home" />
+              <Redirect from="/" to="/home" />
             </Switch>
           )}
           <Footer />
@@ -95,9 +92,15 @@ function App() {
         {!loading && (
           <Switch>
             <Route exact history={history} path="/add" component={Add} />
-            <Route exact history={history} path="/home" component={Home} />
+            <Route
+              exact
+              history={history}
+              path="/profile/:id"
+              component={Profile}
+            />
             <Route exact history={history} path="/posts/:id" component={Post} />
-            <Redirect from="/" to="home" />
+            <Route exact history={history} path="/home" component={Home} />
+            <Redirect from="/" to="/home" />
           </Switch>
         )}
         <Footer />

@@ -24,16 +24,13 @@ export function Home() {
       });
   }, []);
 
-  async function postClick(postId) {
-    history.push(`/posts/${postId}`);
-  }
   return (
     <div className={s.home}>
       <div className={s.container}>
         {loading ? (
           <Loader />
         ) : posts.length ? (
-          <Feed onPostClick={postClick} posts={posts} />
+          <Feed posts={posts} />
         ) : (
           'Посты ещё не созданы'
         )}

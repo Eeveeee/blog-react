@@ -16,14 +16,11 @@ export async function signUp(email, password) {
   const auth = getAuth();
   return createUserWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
-      const auth = getAuth();
       const user = userCredential.user;
-      return auth.currentUser;
+      return user;
     })
     .catch((err) => {
-      const errCode = err.code;
-      const errMessage = err.message;
-      throw new Error(errMessage, errCode);
+      console.log(err);
     });
 }
 export function signUpGoogle() {}
@@ -41,18 +38,14 @@ export async function signIn(email, password) {
     .then((userCredential) => {
       const user = userCredential.user;
     })
-    .catch((error) => {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      console.log(errorCode);
+    .catch((err) => {
+      console.log(err);
     });
 }
 
-export async function signOutCurrentUser(auth) {
+export function signOutCurrentUser(auth) {
   signOut(auth)
-    .then(() => {
-      console.log('signed out');
-    })
+    .then(() => {})
     .catch((err) => {
       throw new Error(err);
     });

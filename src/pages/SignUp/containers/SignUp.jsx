@@ -1,31 +1,47 @@
 import React, { useEffect, useState, useContext } from 'react';
 import s from './SignUp.module.scss';
+import { getStorage, uploadBytes, ref, getDownloadURL } from 'firebase/storage';
+import { onAuthStateChanged } from 'firebase/auth';
 import { Loader } from '../../../shared/Loader/Loader';
 import { signUp } from '../../../services/AuthService';
 import { uploadToStorage } from '../../../services/StorageService';
-import { writeUserInfo } from '../../../services/DbService';
+import { writeUserPublic } from '../../../services/DbService';
 import { SignUpForm } from '../components/SignUpForm/SignUpForm';
 import { getAuth, updateProfile } from '@firebase/auth';
-import { AuthContext } from '../../../context/context';
-import { validateFile } from '../../../utils/validateFile';
+import { validateFile } from '../../../utils/fileValidation';
+import { readFile } from '../../../utils/fileReader';
 
-export function SignUp() {
+export function SignUp({ setCurrentUser }) {
   const [loading, setLoading] = useState(false);
   const [imagePreview, setImagePreview] = useState(false);
+
   async function submit(form, password, email, username, image) {
+    const storage = getStorage();
     try {
+      const auth = getAuth();
       const user = await signUp(email, password);
-      const imageUrl = await uploadToStorage(image, 'users');
-      updateProfile(user, {
+      const photoURL = image
+        ? await uploadToStorage(image, 'users', user.uid)
+        : false;
+      await updateProfile(user, {
         displayName: username,
-        photoURL: imageUrl,
+        photoURL,
       });
-      writeUserInfo(user.uid, username, imageUrl);
+      await writeUserPublic(user.uid, username, photoURL);
+
+      onAuthStateChanged(auth, (user) => {
+        if (user) {
+          const refObj = ref(storage, `users/` + user.uid);
+          getDownloadURL(refObj).then((photoURL) =>
+            setCurrentUser({ ...user, photoURL })
+          );
+        }
+      });
     } catch (error) {
       console.error(error);
     }
   }
-  async function fileInput(input, file, setImagePreview) {
+  async function fileInput(input, file) {
     const maxFileSize = 10;
     const types = ['image'];
     const extensions = input.accept.split('.').join('').split(',');
@@ -36,12 +52,9 @@ export function SignUp() {
         maxFileSize,
       })
     ) {
-      console.log('file valid');
-      let reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => {
-        setImagePreview(reader.result);
-      };
+      readFile(file).then((res) => {
+        setImagePreview(res);
+      });
     }
   }
   return (

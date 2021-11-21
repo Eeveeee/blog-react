@@ -2,35 +2,90 @@
 @import "../../styles/variables.scss";
 .post {
   width: 100%;
-  padding: 20px;
+  textarea {
+    max-width: 100%;
+    resize: vertical;
+    width: 100%;
+  }
+}
+.outer {
+  padding: 10px 0;
+}
+.creator {
+  padding-bottom: 2px;
+  border-bottom: 2px solid black;
+}
+.removeImage {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  @include wh(80px, 80px);
+  border-radius: 50%;
+  background: white;
+  border: 3px solid black;
+  padding: 0;
+  cursor: pointer;
+}
+.edit {
+  align-self: flex-end;
+  cursor: pointer;
+  margin-bottom: 5px;
+  font-size: 18px;
+  padding: 4px 15px;
+  border: 1px solid $clr-gray-main;
+  background: transparent;
+  @include flex();
+  border-radius: 3px;
+  @media (min-width: $size-laptop) {
+    transition: 0.2s;
+    &:hover {
+      box-shadow: 2px 2px 5px;
+    }
+  }
+}
+.main {
+  @include flex($direction: column, $align: flex-start);
+  width: 100%;
+  margin-bottom: 15px;
 }
 .info {
   @include flex($justify: space-between);
   width: 100%;
   margin-bottom: 30px;
 }
+.imagesContainer {
+  @include flex(column, flex-start, center, nowrap);
+  overflow: hidden;
+  overflow-x: auto;
+}
 .imageWrapper {
-  max-width: 100%;
-  margin-top: 35px;
   border: 3px solid black;
   border-radius: 10px;
+  overflow: hidden;
   @include flex();
+  position: relative;
+  &:nth-of-type(n + 2) {
+    margin-top: 10px;
+  }
   .image {
     max-width: 100%;
     height: auto;
   }
 }
 .title {
+  width: 100%;
   align-self: center;
   font-size: 40px;
   margin-bottom: 30px;
+  resize: none;
+  text-align: center;
 }
 .content {
   font-size: 18px;
   line-height: 120%;
+  width: fit-content;
 }
 .subtitle {
-  margin-bottom: 20px;
   font-size: 25px;
 }
 .creator {

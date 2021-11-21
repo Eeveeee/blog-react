@@ -1,21 +1,20 @@
 import React, { useEffect } from 'react';
-import s from './LoginForm.module.scss';
+import s from './SignInForm.module.scss';
 import { addPost } from '../../../../services/services';
 import GlobalSvgSelector from '../../../../assets/icons/global/GlobalSvgSelector';
 
-export function LoginForm({ onLogin }) {
+export function SignInForm({ onLogin }) {
   function submitHandler(e) {
     e.preventDefault();
     const form = e.target;
     const login = form.elements.login.value;
     const password = form.elements.password.value;
     if (login.trim() && password.trim()) {
-      console.log(login, password);
       onLogin(login, password);
     }
   }
   return (
-    <div className={s.loginForm}>
+    <div className={s.signInForm}>
       <form className={s.form} onSubmit={submitHandler}>
         <div className={s.inputTitle}>Почта:</div>
         <input required name="login" className={s.input} type="email" />

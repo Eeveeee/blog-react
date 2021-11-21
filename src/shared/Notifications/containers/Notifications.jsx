@@ -7,7 +7,7 @@ export function Notifications() {
   const { notifications, setNotifications } = useContext(NotificationsContext);
   return (
     <div className={s.notifications}>
-      {notifications.length
+      {/* {notifications.length
         ? notifications.map((notification, idx) => (
             <Notification
               notifications={notifications}
@@ -17,7 +17,7 @@ export function Notifications() {
               key={idx}
             />
           ))
-        : null}
+        : null} */}
     </div>
   );
 }

@@ -1,0 +1,43 @@
+@import "../../../styles/mixins.scss";
+@import "../../../styles/variables.scss";
+.profile {
+  width: 100%;
+  padding: 20px;
+}
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.info {
+  @include flex(column, flex-start, flex-start);
+  width: 300px;
+  border-radius: 10px;
+  border: 2px solid $clr-gray-main;
+  padding: 10px;
+}
+.imageWrapper {
+  align-self: center;
+  @include wh(200px, 200px);
+  margin-bottom: 20px;
+}
+.outer {
+  display: flex;
+  align-items: flex-start;
+}
+.username {
+  font-weight: 600;
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+.infoField {
+  &:nth-last-of-type(n + 2) {
+    margin-bottom: 10px;
+  }
+  &Title {
+    font-weight: 600;
+  }
+}
+.createdAt {
+}
+.posts {
+}

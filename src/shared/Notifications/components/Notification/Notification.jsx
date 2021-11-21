@@ -7,7 +7,6 @@ export function Notification({
   notifications,
   idx,
 }) {
-  console.log('COMPONENT ENABLED');
   const newNotifications = [...notifications];
   newNotifications.splice(idx, 1);
   setTimeout(() => {

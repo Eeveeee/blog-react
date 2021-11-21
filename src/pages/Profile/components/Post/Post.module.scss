@@ -2,13 +2,13 @@
 @import "../../../../styles/variables.scss";
 
 .post {
-  @include wh(calc(calc(100% / 3) - 10px), auto);
+  @include wh(200px, auto);
   margin-right: 15px;
   background: black;
   color: white;
   margin-bottom: 20px;
   position: relative;
-  &:nth-of-type(3n) {
+  &:nth-of-type(4n) {
     margin-right: 0;
   }
   @media (min-width: $size-laptop) {

@@ -1,62 +1,74 @@
 import React, { useEffect, useState } from 'react';
 import s from './Post.module.scss';
 import { Loader } from '../../shared/Loader/Loader';
-import { getAllPosts, getPost } from '../../services/DbService';
-import testImage1 from '../../assets/test/test1.jpg';
-import testImage2 from '../../assets/test/test2.jpg';
+import { getAllPosts, getPost, getUserPublic } from '../../services/DbService';
 import { dateFromMs, timeFromMs } from '../../utils/time';
+import { Link } from 'react-router-dom';
 import { Redirect, useHistory, useParams, useRouteMatch } from 'react-router';
+import { removeFromStorage } from '../../services/StorageService';
 
 export function Post() {
   const history = useHistory();
   const [loading, setLoading] = React.useState(true);
   const [postData, setPostData] = React.useState({});
+  const [author, setAuthor] = React.useState({});
+  const [edit, setEdit] = React.useState(false);
   let { id } = useParams();
-  useEffect(() => {
-    getPost(id).then((post) => {
-      if (post) {
-        setPostData(post);
-        setLoading(false);
-        console.log(post);
-      } else {
-        history.push('/posts');
-        setPostData(false);
-      }
-    });
-  }, []);
 
-  const { title, subtitle, content, images, creator, createdAt } = postData;
-  console.log(images);
+  useEffect(async () => {
+    const post = await getPost(id);
+    if (post) {
+      setPostData(post);
+      setAuthor(await getUserPublic(post.author));
+      setLoading(false);
+      console.log(postData);
+    } else {
+      history.push('/posts');
+      setPostData(false);
+    }
+  }, []);
+  const { title, subtitle, content, images, uid, createdAt } = postData;
   const date = dateFromMs(createdAt);
   const time = timeFromMs(createdAt);
+
   return (
     <div className={s.post}>
+      <div className={s.mainBackground}></div>
       <div className={s.container}>
         {loading ? (
           <Loader />
         ) : (
           <div className={s.outer}>
-            <div className={s.info}>
-              <div className={s.creator}>{creator}</div>
-              <div className={s.createdAt}>
-                {date} в {time}
+            <button className={s.edit}>
+              {edit ? 'Сохранить изменения' : 'Изменить'}
+            </button>
+            <div className={s.main}>
+              <div className={s.info}>
+                <Link to={`/profile/${author.uid}`} className={s.creator}>
+                  {author.username}
+                </Link>
+                <div className={s.createdAt}>
+                  {date} в {time}
+                </div>
               </div>
+              <h1 className={s.title}>{title}</h1>
+              <h2 className={s.subtitle}>{subtitle}</h2>
             </div>
-            <h1 className={s.title}>{title}</h1>
-            <h2 className={s.subtitle}>{subtitle}</h2>
+
             <div className={s.content}>{content}</div>
-            {images
-              ? images.map((image, idx) => (
-                  <a
-                    target="_blank"
-                    href={image}
+            <div className={s.imagesContainer}>
+              {images &&
+                images.map((image, idx) => (
+                  <Link
                     key={idx}
+                    target="_blank"
+                    to={image}
                     className={s.imageWrapper}
                   >
                     <img className={s.image} src={image} />
-                  </a>
-                ))
-              : null}
+                  </Link>
+                ))}
+            </div>
           </div>
         )}
       </div>

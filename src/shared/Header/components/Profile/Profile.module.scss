@@ -1,10 +1,18 @@
-@import "../../styles/mixins.scss";
-@import "../../styles/variables.scss";
+@import "../../../../styles/mixins.scss";
+@import "../../../../styles/variables.scss";
 .imageWrapper {
   @include wh(50px, 50px);
   margin-right: 20px;
   border: 2px solid black;
   border-radius: 50%;
+  cursor: pointer;
+  @media (min-width: $size-laptop) {
+    transition: 0.2s;
+    &:hover {
+      border-color: $clr-orange;
+      border-radius: 30%;
+    }
+  }
 }
 .profile {
   &Content {
@@ -17,8 +25,7 @@
 .username {
   font-size: 20px;
 }
-.logout,
-.signIn {
+.logout {
   height: 30px;
   width: 30px;
   border: none;

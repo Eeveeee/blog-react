@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import s from './Login.module.scss';
+import s from './SignIn.module.scss';
 import { Loader } from '../../../shared/Loader/Loader';
-import { LoginForm } from '../components/LoginForm/LoginForm';
+import { SignInForm } from '../components/LoginForm/SignInForm';
 import { signIn, signUp } from '../../../services/AuthService';
 
-export function Login() {
+export function SignIn() {
   const [loading, setLoading] = useState(false);
-  console.log('in login');
-  async function login(email, password) {
+  async function loginUser(email, password) {
     setLoading(true);
     signIn(email, password)
       .then(() => {
@@ -20,9 +19,9 @@ export function Login() {
   }
 
   return (
-    <div className={s.login}>
+    <div className={s.signIn}>
       <div className={s.container}>
-        <LoginForm onLogin={login} />
+        <SignInForm onLogin={loginUser} />
       </div>
     </div>
   );

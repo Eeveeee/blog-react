@@ -1,0 +1,5 @@
+@import "../../../../styles/mixins.scss";
+@import "../../../../styles/variables.scss";
+.posts {
+  @include flex($justify: flex-start, $align: stretch, $wrap: wrap);
+}

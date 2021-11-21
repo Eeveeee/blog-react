@@ -1,4 +1,10 @@
-import { getStorage, uploadBytes, ref, getDownloadURL } from 'firebase/storage';
+import {
+  getStorage,
+  uploadBytes,
+  ref,
+  getDownloadURL,
+  deleteObject,
+} from 'firebase/storage';
 import { v4 as uuidv4 } from 'uuid';
 
 export async function uploadToStorage(
@@ -8,17 +14,11 @@ export async function uploadToStorage(
 ) {
   const storage = getStorage();
   const storageRef = ref(storage, `${folder}/${name}`);
-  return uploadBytes(storageRef, file)
-    .then((snapshot) => {
-      return getDownloadURL(storageRef)
-        .then((url) => {
-          return url;
-        })
-        .catch((err) => {
-          throw new Error(err);
-        });
-    })
-    .catch((err) => {
-      throw new Error(err);
-    });
+  await uploadBytes(storageRef, file);
+  return await getDownloadURL(storageRef);
+}
+export async function removeFromStorage(folder, name) {
+  const storage = getStorage();
+  const fileRef = ref(storage, `${folder}/${name}`);
+  return await deleteObject(fileRef);
 }

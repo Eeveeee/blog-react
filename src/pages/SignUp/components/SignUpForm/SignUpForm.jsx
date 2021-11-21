@@ -3,21 +3,16 @@ import s from './SignUpForm.module.scss';
 import GlobalSvgSelector from '../../../../assets/icons/global/GlobalSvgSelector';
 import testImage from '../../../../assets/test/test1.jpg';
 import { RoundedImage } from '../../../../shared/RoundedImage/RoundedImage';
-import { validateFile } from '../../../../utils/validateFile';
+import { validateFile } from '../../../../utils/fileValidation';
 
-export function SignUpForm({
-  submit,
-  fileInput,
-  setImagePreview,
-  imagePreview,
-}) {
+export function SignUpForm({ submit, fileInput, imagePreview }) {
   function submitHandler(e) {
     e.preventDefault();
     const form = e.target;
-    const password = form.elements.password.value;
-    const email = form.elements.email.value;
-    const username = form.elements.username.value;
-    const image = form.elements.image.files[0];
+    const password = form.elements.password.value.normalize();
+    const email = form.elements.email.value.normalize();
+    const username = form.elements.username.value.normalize();
+    const image = form.elements.image.files[0] || false;
     if (email.trim() && password.trim() && username.trim()) {
       submit(form, password, email, username, image);
     }
@@ -25,7 +20,7 @@ export function SignUpForm({
   function fileInputHandler(e) {
     const input = e.target;
     const file = input.files[0];
-    fileInput(input, file, setImagePreview);
+    fileInput(input, file);
   }
   return (
     <div className={s.signUpForm}>
