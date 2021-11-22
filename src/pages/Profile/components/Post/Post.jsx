@@ -9,7 +9,6 @@ export function Post({ post }) {
     post;
   const postCreated = `${dateFromMs(createdAt)} ${timeFromMs(createdAt)}`;
   const postUpdated = `${dateFromMs(updatedAt)} ${timeFromMs(updatedAt)}`;
-  console.log(postId);
   return (
     <div className={s.post}>
       <Link to={`/posts/${postId}`}>

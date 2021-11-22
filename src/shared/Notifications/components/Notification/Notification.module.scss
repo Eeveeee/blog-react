@@ -1,8 +1,38 @@
 @import "../../../../styles/mixins.scss";
 @import "../../../../styles/variables.scss";
 .notification {
-  background: black;
-  color: white;
+  color: black;
   width: 100%;
-  transition: 5s;
+  border-radius: 5px;
+  min-height: 60px;
+  padding: 10px 5px 10px 30px;
+  border: 1px solid $clr-gray-main;
+  position: relative;
+  overflow: hidden;
+  font-size: 18px;
+  line-height: 120%;
+  background: white;
+  &:nth-last-of-type(n + 2) {
+    margin-bottom: 10px;
+  }
+  &Type {
+    width: 20px;
+    height: 100%;
+    position: absolute;
+    border-right: 1px solid black;
+    left: 0;
+    top: 0;
+    &.danger {
+      background: #ff6347;
+    }
+    &.error {
+      background: rgb(194, 0, 0);
+    }
+    &.success {
+      background: green;
+    }
+    &.info {
+      background: rgb(60, 60, 202);
+    }
+  }
 }

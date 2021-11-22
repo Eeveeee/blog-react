@@ -14,14 +14,12 @@ import { v4 as uuidv4 } from 'uuid';
 
 export async function signUp(email, password) {
   const auth = getAuth();
-  return createUserWithEmailAndPassword(auth, email, password)
-    .then((userCredential) => {
+  return createUserWithEmailAndPassword(auth, email, password).then(
+    (userCredential) => {
       const user = userCredential.user;
       return user;
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+    }
+  );
 }
 export function signUpGoogle() {}
 
@@ -34,19 +32,9 @@ export function setAccessToken(token) {
 
 export async function signIn(email, password) {
   const auth = getAuth();
-  signInWithEmailAndPassword(auth, email, password)
-    .then((userCredential) => {
-      const user = userCredential.user;
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+  return signInWithEmailAndPassword(auth, email, password);
 }
 
 export function signOutCurrentUser(auth) {
-  signOut(auth)
-    .then(() => {})
-    .catch((err) => {
-      throw new Error(err);
-    });
+  return signOut(auth);
 }

@@ -10,10 +10,12 @@ import { SignUpForm } from '../components/SignUpForm/SignUpForm';
 import { getAuth, updateProfile } from '@firebase/auth';
 import { validateFile } from '../../../utils/fileValidation';
 import { readFile } from '../../../utils/fileReader';
+import { NotificationsContext } from '../../../context/context';
 
 export function SignUp({ setCurrentUser }) {
   const [loading, setLoading] = useState(false);
   const [imagePreview, setImagePreview] = useState(false);
+  const { addNotification } = useContext(NotificationsContext);
 
   async function submit(form, password, email, username, image) {
     const storage = getStorage();
@@ -39,22 +41,32 @@ export function SignUp({ setCurrentUser }) {
       });
     } catch (error) {
       console.error(error);
+      addNotification({
+        type: 'error',
+        message: 'Произошла ошибка при регистрации',
+      });
     }
   }
   async function fileInput(input, file) {
     const maxFileSize = 10;
     const types = ['image'];
     const extensions = input.accept.split('.').join('').split(',');
-    if (
-      validateFile(input, file, {
-        types,
-        extensions,
-        maxFileSize,
-      })
-    ) {
+    const fileValidation = validateFile(file, {
+      types,
+      extensions,
+      maxFileSize,
+    });
+    if (fileValidation) {
       readFile(file).then((res) => {
         setImagePreview(res);
       });
+    } else {
+      addNotification({
+        type: 'danger',
+        message: 'Выбранное изображение не подходит, попробуйте другое',
+      });
+      input.value = '';
+      return;
     }
   }
   return (

@@ -11,7 +11,7 @@ export function Home() {
   const [posts, setPosts] = React.useState([]);
   const [loading, setLoading] = React.useState(true);
 
-  const addNotification = useContext(NotificationsContext);
+  const { addNotification } = useContext(NotificationsContext);
   useEffect(() => {
     getAllPosts()
       .then((snapshot) => {
@@ -21,10 +21,11 @@ export function Home() {
         setLoading(false);
       })
       .catch((error) => {
+        console.error(error);
         addNotification({
           type: 'error',
           message:
-            'Возникла ошибка при загрузке поста, повторите попытку позже',
+            'Возникла ошибка при загрузке постов, повторите попытку позже',
         });
         setLoading(false);
       });
@@ -32,12 +33,6 @@ export function Home() {
 
   return (
     <div className={s.home}>
-      <button
-        onClick={() => addNotification({ type: 'error', message: Date.now() })}
-        className={s.test}
-      >
-        CREATE NOTIFICATION
-      </button>
       <div className={s.container}>
         {loading ? (
           <Loader />

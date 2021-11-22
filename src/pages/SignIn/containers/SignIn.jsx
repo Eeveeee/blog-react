@@ -1,21 +1,22 @@
-import React, { useEffect, useState } from 'react';
-import s from './SignIn.module.scss';
-import { Loader } from '../../../shared/Loader/Loader';
+import React, { useContext, useState } from 'react';
+import { NotificationsContext } from '../../../context/context';
+import { signIn } from '../../../services/AuthService';
 import { SignInForm } from '../components/LoginForm/SignInForm';
-import { signIn, signUp } from '../../../services/AuthService';
+import s from './SignIn.module.scss';
 
 export function SignIn() {
   const [loading, setLoading] = useState(false);
+  const { addNotification } = useContext(NotificationsContext);
   async function loginUser(email, password) {
     setLoading(true);
-    signIn(email, password)
-      .then(() => {
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.error(err, 'at login');
-        setLoading(false);
+    signIn(email, password).catch((err) => {
+      console.error(err);
+      setLoading(false);
+      addNotification({
+        type: 'error',
+        message: 'Произошла ошибка при попытке входа',
       });
+    });
   }
 
   return (

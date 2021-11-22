@@ -36,34 +36,25 @@ export async function getUserPosts(uid) {
 
 export async function getPost(postID) {
   const dbRef = ref(getDatabase());
-  return get(child(dbRef, `posts/${postID}`))
-    .then((snapshot) => {
-      if (snapshot.exists()) {
-        return snapshot.val();
-      } else {
-        return false;
-      }
-    })
-    .catch((error) => {
-      console.error(error);
+  return get(child(dbRef, `posts/${postID}`)).then((snapshot) => {
+    if (snapshot.exists()) {
+      return snapshot.val();
+    } else {
       return false;
-    });
+    }
+  });
 }
 export async function updatePost(postID, changes) {
-  try {
-    const oldInfo = await getPost(postID);
-    const userPublic = {
-      ...oldInfo,
-      ...changes,
-      updatedAt: Date.now(),
-    };
-    const updates = {};
-    const db = getDatabase();
-    updates['/posts/' + postID] = userPublic;
-    await update(ref(db), updates);
-  } catch (err) {
-    console.log(err);
-  }
+  const oldInfo = await getPost(postID);
+  const userPublic = {
+    ...oldInfo,
+    ...changes,
+    updatedAt: Date.now(),
+  };
+  const updates = {};
+  const db = getDatabase();
+  updates['/posts/' + postID] = userPublic;
+  await update(ref(db), updates);
 }
 export async function writePost(props) {
   const {
@@ -92,13 +83,6 @@ export async function writePost(props) {
   });
 }
 
-// export function writePostsFromJSON(json) {
-//   const db = getDatabase();
-//   json.forEach((post) => {
-//     set(ref(db, 'posts/'), json);
-//   });
-// }
-
 export async function writeUserPublic(uid, username, photoURL) {
   const db = getDatabase();
   const createdAt = Date.now();
@@ -110,35 +94,25 @@ export async function writeUserPublic(uid, username, photoURL) {
     photoURL,
     posts: false,
     role: 'admin',
-  }).catch((err) => {
-    throw new Error(err);
   });
 }
 
 export async function updateUserPublic(uid, changes) {
-  try {
-    const oldInfo = await getUserPublic(uid);
-    const userPublic = {
-      ...oldInfo,
-      ...changes,
-      updatedAt: Date.now(),
-    };
-    const updates = {};
-    const db = getDatabase();
-    updates['/users/' + uid] = userPublic;
-    await update(ref(db), updates);
-  } catch (err) {
-    console.log(err);
-  }
+  const oldInfo = await getUserPublic(uid);
+  const userPublic = {
+    ...oldInfo,
+    ...changes,
+    updatedAt: Date.now(),
+  };
+  const updates = {};
+  const db = getDatabase();
+  updates['/users/' + uid] = userPublic;
+  await update(ref(db), updates);
 }
 
 export async function getUserPublic(uid) {
   const dbRef = ref(getDatabase());
-  return get(child(dbRef, `users/${uid}`)).then((snapshot) => {
-    if (snapshot.exists()) {
-      return snapshot.val();
-    } else {
-      return false;
-    }
-  });
+  const snapshot = await get(child(dbRef, `users/${uid}`));
+  const userPublic = snapshot.exists() ? snapshot.val() : false;
+  return userPublic;
 }
