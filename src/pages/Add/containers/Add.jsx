@@ -1,7 +1,8 @@
 import { getAuth } from '@firebase/auth';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
 import { v4 as uuidv4 } from 'uuid';
+import { NotificationsContext } from '../../../context/context';
 import {
   getPost,
   getUserPublic,
@@ -16,10 +17,10 @@ import s from './Add.module.scss';
 export function Add() {
   const [loading, setLoading] = useState(false);
   const history = useHistory();
-
+  const { addNotification } = useContext(NotificationsContext);
+  console.log(addNotification);
   function getPostData(formData) {
     const auth = getAuth();
-    console.log(formData);
     const postPrefix = transliterationToEng(formData.title);
     const postData = {
       postId: postPrefix + '_' + uuidv4(),
@@ -64,6 +65,10 @@ export function Add() {
       })
       .catch((err) => {
         console.error(err);
+        addNotification({
+          type: 'error',
+          message: 'Произошла ошибка при добавлении поста',
+        });
       });
   }
   return (

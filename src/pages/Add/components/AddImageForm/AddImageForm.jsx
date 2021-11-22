@@ -1,5 +1,4 @@
-import React, { useRef, useState } from 'react';
-import { readFile } from '../../../../utils/fileReader';
+import React, { useContext, useRef, useState } from 'react';
 import s from './AddImageForm.module.scss';
 
 export function AddImageForm({ handleNewFiles, multiple }) {

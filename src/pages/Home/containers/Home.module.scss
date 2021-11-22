@@ -7,3 +7,10 @@
   max-width: 1200px;
   margin: 0 auto;
 }
+.generateNotification {
+  position: absolute;
+  left: 50px;
+  top: 100px;
+  @include wh(200px, 100px);
+  @include flex();
+}

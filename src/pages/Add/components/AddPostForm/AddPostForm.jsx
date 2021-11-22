@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
+import { NotificationsContext } from '../../../../context/context';
 import { Loader } from '../../../../shared/Loader/Loader';
 import { validateFile, validateFiles } from '../../../../utils/fileValidation';
 import { AddImageForm } from '../AddImageForm/AddImageForm';
@@ -9,6 +10,7 @@ export function AddPostForm({ onFormSubmit, isLoading }) {
   const [images, setImages] = useState([]);
   const types = ['image'];
   const maxFileSize = 10;
+  const { addNotification } = useContext(NotificationsContext);
   function formSubmitHandler(e) {
     e.preventDefault();
     const form = e.target;
@@ -34,6 +36,10 @@ export function AddPostForm({ onFormSubmit, isLoading }) {
       maxFileSize,
     });
     if (!validation) {
+      addNotification({
+        type: 'danger',
+        message: 'Выбранное изображение не подходит, попробуйте другое',
+      });
       return;
     }
     setImages(filesArr);
@@ -45,8 +51,11 @@ export function AddPostForm({ onFormSubmit, isLoading }) {
       extensions,
       maxFileSize,
     });
-    console.log(validation);
     if (!validation) {
+      addNotification({
+        type: 'danger',
+        message: 'Выбранное изображение не подходит, попробуйте другое',
+      });
       return;
     }
     setHeaderImage(files[0]);

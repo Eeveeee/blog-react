@@ -1,3 +1,4 @@
+import 'react-perfect-scrollbar/dist/css/styles.css';
 import { initializeApp } from 'firebase/app';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { getStorage } from 'firebase/storage';
@@ -33,7 +34,7 @@ function App() {
   const [loading, setLoading] = React.useState(true);
   const [notifications, setNotifications] = React.useState([]);
 
-  function addNotification({ type, message }) {
+  function addNotification({ type, message }, time = 5000) {
     const notificationObject = { type, message, createdAt: Date.now() };
     setNotifications((notifications) => {
       return [...notifications, notificationObject];
@@ -44,7 +45,7 @@ function App() {
           (notification) => notification !== notificationObject
         )
       );
-    }, 10000);
+    }, time);
   }
   const [isAuth, setIsAuth] = React.useState(false);
   const [currentUser, setCurrentUser] = React.useState(null);
@@ -106,7 +107,7 @@ function App() {
   return (
     <div className="App">
       <div className="global__container">
-        <NotificationsContext.Provider value={addNotification}>
+        <NotificationsContext.Provider value={{ addNotification }}>
           <Notifications notifications={notifications} />
           <Header currentUser={currentUser} />
           {!loading && (

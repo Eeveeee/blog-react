@@ -21,7 +21,6 @@ export function Post() {
       setPostData(post);
       setAuthor(await getUserPublic(post.author));
       setLoading(false);
-      console.log(postData);
     } else {
       history.push('/posts');
       setPostData(false);
