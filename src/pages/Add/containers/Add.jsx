@@ -13,46 +13,8 @@ import { transliterationToEng } from '../../../utils/transliteration';
 import { AddPostForm } from '../components/AddPostForm/AddPostForm';
 import s from './Add.module.scss';
 
-function useFetchState(id) {
-  const [state, setState] = useState('init');
-  const [context, setContext] = useState('');
-  function fetchData() {
-    state === 'init' && setState('fetching');
-  }
-  function success() {
-    state === 'fetching' && setState('success');
-  }
-  function failure() {
-    state === 'fetching' && setState('failure');
-  }
-  function retry() {
-    state === 'failure' && setState('fetching');
-  }
-  function testFetch() {
-    const p = Promise.resolve({});
-    return p;
-  }
-
-  useEffect(() => {
-    switch (state) {
-      case 'fetching ':
-        getPost(id).then((res) => {
-          setContext(res);
-          success();
-        });
-        break;
-
-      default:
-        break;
-    }
-  }, [state]);
-  return [state, context, { fetchData, success, failure, retry }];
-}
-
 export function Add() {
   const [loading, setLoading] = useState(false);
-  const [state, context, { fetchData, success, failure, retry }] =
-    useFetchState('dghjghj_36944954-01d7-4ec7-9947-69ff3ff1a58c');
   const history = useHistory();
 
   function getPostData(formData) {

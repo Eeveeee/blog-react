@@ -13,7 +13,6 @@ import {
   equalTo,
   limitToLast,
 } from 'firebase/database';
-import postsJSON from '../db/posts.json';
 import { v4 as uuidv4 } from 'uuid';
 import { getAuth } from '@firebase/auth';
 
@@ -93,12 +92,12 @@ export async function writePost(props) {
   });
 }
 
-export function writePostsFromJSON() {
-  const db = getDatabase();
-  postsJSON.forEach((post) => {
-    set(ref(db, 'posts/'), postsJSON);
-  });
-}
+// export function writePostsFromJSON(json) {
+//   const db = getDatabase();
+//   json.forEach((post) => {
+//     set(ref(db, 'posts/'), json);
+//   });
+// }
 
 export async function writeUserPublic(uid, username, photoURL) {
   const db = getDatabase();

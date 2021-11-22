@@ -1,20 +1,10 @@
 import React from 'react';
 import s from './Notification.module.scss';
 
-export function Notification({
-  notification,
-  setNotifications,
-  notifications,
-  idx,
-}) {
-  const newNotifications = [...notifications];
-  newNotifications.splice(idx, 1);
-  setTimeout(() => {
-    setNotifications(newNotifications);
-  }, 10000);
+export function Notification({ notification }) {
   return (
     <div className={s.notification}>
-      <span className={s.notificationText}>{notification.text}</span>
+      <span className={s.notificationText}>{notification.message}</span>
     </div>
   );
 }
