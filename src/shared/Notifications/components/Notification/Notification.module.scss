@@ -2,7 +2,6 @@
 @import "../../../../styles/variables.scss";
 .notification {
   color: black;
-  width: 100%;
   border-radius: 5px;
   min-height: 60px;
   padding: 10px 5px 10px 30px;
@@ -10,6 +9,7 @@
   position: relative;
   overflow: hidden;
   font-size: 18px;
+  width: fit-content;
   line-height: 120%;
   background: white;
   &:nth-last-of-type(n + 2) {
