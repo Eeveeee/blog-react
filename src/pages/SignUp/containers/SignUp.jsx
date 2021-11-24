@@ -11,17 +11,23 @@ import { getAuth, updateProfile } from '@firebase/auth';
 import { validateFile } from '../../../utils/fileValidation';
 import { readFile } from '../../../utils/fileReader';
 import { NotificationsContext } from '../../../context/context';
+import { passwordValidation } from '../../../utils/passwordValidation';
 
 export function SignUp({ setCurrentUser }) {
   const [loading, setLoading] = useState(false);
   const [imagePreview, setImagePreview] = useState(false);
   const { addNotification } = useContext(NotificationsContext);
-
   async function submit(form, password, email, username, image) {
     const storage = getStorage();
     try {
-      const auth = getAuth();
       const user = await signUp(email, password);
+      addNotification(
+        {
+          type: 'success',
+          message: 'Вы успешно зашли в профиль',
+        },
+        3000
+      );
       const photoURL = image
         ? await uploadToStorage(image, 'users', user.uid)
         : false;
@@ -30,7 +36,7 @@ export function SignUp({ setCurrentUser }) {
         photoURL,
       });
       await writeUserPublic(user.uid, username, photoURL);
-
+      const auth = getAuth();
       onAuthStateChanged(auth, (user) => {
         if (user) {
           const refObj = ref(storage, `users/` + user.uid);
@@ -40,7 +46,6 @@ export function SignUp({ setCurrentUser }) {
         }
       });
     } catch (error) {
-      console.error(error);
       addNotification({
         type: 'error',
         message: 'Произошла ошибка при регистрации',

@@ -1,20 +1,28 @@
-import React, { useEffect } from 'react';
-import s from './SignUpForm.module.scss';
+import React, { useContext } from 'react';
 import GlobalSvgSelector from '../../../../assets/icons/global/GlobalSvgSelector';
-import testImage from '../../../../assets/test/test1.jpg';
+import { NotificationsContext } from '../../../../context/context';
 import { RoundedImage } from '../../../../shared/RoundedImage/RoundedImage';
-import { validateFile } from '../../../../utils/fileValidation';
+import { passwordValidation } from '../../../../utils/passwordValidation';
+import s from './SignUpForm.module.scss';
 
 export function SignUpForm({ submit, fileInput, imagePreview }) {
+  const { addNotification } = useContext(NotificationsContext);
+
   function submitHandler(e) {
     e.preventDefault();
     const form = e.target;
-    const password = form.elements.password.value.normalize();
-    const email = form.elements.email.value.normalize();
-    const username = form.elements.username.value.normalize();
+    const password = form.elements.password.value.normalize().trim();
+    const email = form.elements.email.value.normalize().trim();
+    const username = form.elements.username.value.normalize().trim();
     const image = form.elements.image.files[0] || false;
-    if (email.trim() && password.trim() && username.trim()) {
+    const isPasswordValid = passwordValidation(password);
+    if (isPasswordValid.status) {
       submit(form, password, email, username, image);
+    } else {
+      addNotification({
+        type: 'error',
+        message: isPasswordValid.errors.join(`;`),
+      });
     }
   }
   function fileInputHandler(e) {
@@ -29,11 +37,12 @@ export function SignUpForm({ submit, fileInput, imagePreview }) {
         <input required name="email" className={s.input} type="email" />
         <div className={s.inputTitle}>Пароль:</div>
         <input
-          autoComplete="current-password"
+          autoComplete="new-password"
           name="password"
           className={s.input}
           required
           type="password"
+          minLength="8"
         />
         <div className={s.inputTitle}>Имя пользователя:</div>
         <input name="username" className={s.input} required type="text" />

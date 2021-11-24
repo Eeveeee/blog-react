@@ -1,5 +1,5 @@
 import { getAuth, onAuthStateChanged } from '@firebase/auth';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { signOutCurrentUser } from '../../../services/AuthService';
 import { Profile } from '../components/Profile/Profile';
@@ -8,11 +8,19 @@ import { useHistory } from 'react-router-dom';
 import imagePlaceholder from '../../../assets/images/imagePlaceholder.webp';
 import GlobalSvgSelector from '../../../assets/icons/global/GlobalSvgSelector';
 import { Navigation } from '../../Navigation/Navigation';
+import { NotificationsContext } from '../../../context/context';
+
 export function Header({ currentUser }) {
+  const { addNotification } = useContext(NotificationsContext);
   const auth = getAuth();
   const history = useHistory();
   function signOutHandler() {
-    signOutCurrentUser(auth);
+    signOutCurrentUser(auth).then(() => {
+      addNotification({
+        type: 'success',
+        message: 'Вы успешно вышли из профиля',
+      });
+    });
   }
   function signInHandler() {
     history.push('/signin');

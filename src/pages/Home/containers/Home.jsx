@@ -1,16 +1,17 @@
 import React, { useContext, useEffect } from 'react';
 import s from './Home.module.scss';
 import { Loader } from '../../../shared/Loader/Loader';
-import { getAllPosts, getPost } from '../../../services/DbService';
+import {
+  getAllPosts,
+  getUserPosts,
+  updatePost,
+} from '../../../services/DbService';
 import { Feed } from '../components/Feed/Feed';
-import { useHistory } from 'react-router';
 import { NotificationsContext } from '../../../context/context';
 
 export function Home() {
-  const history = useHistory();
   const [posts, setPosts] = React.useState([]);
   const [loading, setLoading] = React.useState(true);
-
   const { addNotification } = useContext(NotificationsContext);
   useEffect(() => {
     getAllPosts()
@@ -29,7 +30,7 @@ export function Home() {
         });
         setLoading(false);
       });
-  }, []);
+  }, [addNotification]);
 
   return (
     <div className={s.home}>

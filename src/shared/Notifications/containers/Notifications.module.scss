@@ -9,8 +9,8 @@
   border-radius: 5px;
   @include wh(400px, 600px);
   z-index: 9999;
-  @include flex(column, flex-start, flex-start);
 }
 .notificationsWrapper {
+  @include flex(column, flex-start, flex-end);
   padding-right: 20px;
 }

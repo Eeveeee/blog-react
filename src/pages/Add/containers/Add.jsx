@@ -18,7 +18,6 @@ export function Add() {
   const [loading, setLoading] = useState(false);
   const history = useHistory();
   const { addNotification } = useContext(NotificationsContext);
-  console.log(addNotification);
   function getPostData(formData) {
     const auth = getAuth();
     const postPrefix = transliterationToEng(formData.title);
