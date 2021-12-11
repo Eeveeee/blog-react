@@ -1,12 +1,11 @@
-export function dateFromMs(ms) {
-  const dateExamp = new Date(ms);
-  dateExamp.setMonth(dateExamp.getMonth() + 1);
+export function timestampToDate(timestamp) {
+  const dateExamp = timestamp.toDate();
   let date = formatToXX(dateExamp.getDate());
-  let month = formatToXX(dateExamp.getMonth());
+  let month = formatToXX(dateExamp.getMonth() + 1);
   return `${date}.${month}.${dateExamp.getFullYear()}`;
 }
-export function timeFromMs(ms) {
-  const dateExamp = new Date(ms);
+export function timestampToTime(timestamp) {
+  const dateExamp = timestamp.toDate();
   let hours = formatToXX(dateExamp.getHours());
   const minutes = formatToXX(dateExamp.getMinutes());
   return `${hours}:${minutes}`;
@@ -15,4 +14,8 @@ export function timeFromMs(ms) {
 function formatToXX(time) {
   time = String(time);
   return (time = time.length !== 2 ? '0' + time : time);
+}
+export function getFullTime(timestamp) {
+  const time = `${timestampToDate(timestamp)} в ${timestampToTime(timestamp)}`;
+  return time;
 }

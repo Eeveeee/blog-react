@@ -51,7 +51,7 @@ export function SignUpForm({ submit, fileInput, imagePreview }) {
         <div className={s.inputInfo}>*Размер не должен превышать 10Мб </div>
         <input
           onChange={fileInputHandler}
-          accept=".webp,.jpg,.png,.jpeg"
+          accept="image/png, image/gif, image/jpeg, image/webp"
           name="image"
           multiple={false}
           className={s.inputFile}

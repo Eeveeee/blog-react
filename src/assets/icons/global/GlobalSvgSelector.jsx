@@ -26,7 +26,7 @@ function GlobalSvgSelector({ id }) {
           />
         </svg>
       );
-    case 'logout':
+    case 'signOut':
       return (
         <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path
@@ -98,6 +98,72 @@ function GlobalSvgSelector({ id }) {
           </g>
         </svg>
       );
+    case 'edit':
+      return (
+        <svg
+          fill="none"
+          stroke="#000"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth="2"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path d="M20 14.66V20a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h5.34" />
+          <polygon points="18 2 22 6 12 16 8 16 8 12 18 2" />
+        </svg>
+      );
+    case 'remove':
+      return (
+        <svg
+          baseProfile="tiny"
+          version="1.1"
+          viewBox="0 0 32 32"
+          xmlSpace="preserve"
+          xmlns="http://www.w3.org/2000/svg"
+          xmlnsXlink="http://www.w3.org/1999/xlink"
+        >
+          <g id="Guides__x26__Forms" />
+          <g id="Icons">
+            <g>
+              <g>
+                <g>
+                  <polygon points="21,10 21,25 11,25 11,10 9,10 9,27 23,27 23,10     " />
+                </g>
+                <path d="M18,7V5h-4v2H8v2h16V7H18z" />
+              </g>
+            </g>
+          </g>
+        </svg>
+      );
+    case 'save':
+      return (
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path
+            d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"
+            fill="none"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="2"
+          />
+          <polyline
+            fill="none"
+            points="17 21 17 13 7 13 7 21"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="2"
+          />
+          <polyline
+            fill="none"
+            points="7 3 7 8 15 8"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="2"
+          />
+        </svg>
+      );
+    default:
+      return null;
   }
 }
 export default GlobalSvgSelector;

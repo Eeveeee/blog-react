@@ -1,14 +1,18 @@
 import React from 'react';
-import s from './Post.module.scss';
-import { dateFromMs, timeFromMs } from '../../../../utils/time';
-import imagePlaceholder from '../../../../assets/images/imagePlaceholder.webp';
 import { Link } from 'react-router-dom';
+import { getMediaLink } from '../../../../utils/mediaHelper';
+import { timestampToDate, timestampToTime } from '../../../../utils/time';
+import s from './Post.module.scss';
 
 export function Post({ post }) {
   const { postId, createdAt, title, subtitlePreview, previewImage, updatedAt } =
     post;
-  const postCreated = `${dateFromMs(createdAt)} ${timeFromMs(createdAt)}`;
-  const postUpdated = `${dateFromMs(updatedAt)} ${timeFromMs(updatedAt)}`;
+  const postCreated = `${timestampToDate(createdAt)} ${timestampToTime(
+    createdAt
+  )}`;
+  const postUpdated = `${timestampToDate(updatedAt)} ${timestampToTime(
+    updatedAt
+  )}`;
   return (
     <div className={s.post}>
       <Link to={`/posts/${postId}`}>
@@ -20,12 +24,9 @@ export function Post({ post }) {
           <div className={s.imageWrapper}>
             <img
               className={s.imageWrapperBg}
-              src={previewImage ? previewImage : imagePlaceholder}
+              src={getMediaLink(previewImage)}
             />
-            <img
-              className={s.image}
-              src={previewImage ? previewImage : imagePlaceholder}
-            />
+            <img className={s.image} src={getMediaLink(previewImage)} />
           </div>
           <div className={s.textWrapper}>
             <p className={s.title}>{title}</p>

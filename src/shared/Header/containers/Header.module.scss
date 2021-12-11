@@ -22,7 +22,8 @@
     }
   }
 }
-.signIn {
+.signIn,
+.signOut {
   height: 30px;
   width: 30px;
   border: none;
@@ -36,4 +37,8 @@
     }
     @include wh(100%, 100%);
   }
+}
+.profileWrapper {
+  @include flex($justify: flex-end);
+  width: 100px;
 }

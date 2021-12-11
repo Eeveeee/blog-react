@@ -1,5 +1,4 @@
 function errors(error) {
-  console.error(error);
   switch (error) {
     case 'PERMISSION_DENIED':
       return 'У вас недостаточно прав';

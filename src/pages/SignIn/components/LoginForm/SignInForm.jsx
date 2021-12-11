@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import s from './SignInForm.module.scss';
-import { addPost } from '../../../../services/services';
 import GlobalSvgSelector from '../../../../assets/icons/global/GlobalSvgSelector';
 
 export function SignInForm({ onLogin }) {

@@ -5,20 +5,13 @@ export function validateFile(file, options) {
   const fileType = file.type.split('/')[0];
   const fileExt = file.type.split('/')[1];
   const fileSize = convertSize(file.size);
-  if (
-    fileSize > maxFileSize ||
-    !extensions.includes(fileExt) ||
-    !types.includes(fileType)
-  ) {
-    return false;
-  }
-  return true;
+  const isValid =
+    fileSize < maxFileSize ||
+    extensions.includes(fileExt) ||
+    types.includes(fileType);
+  return isValid;
 }
+
 export function validateFiles(files, options) {
-  return files.reduce((acc, file) => {
-    if (!acc) {
-      return;
-    }
-    return (acc = validateFile(file, options));
-  }, true);
+  return !files.find((file) => !validateFile(file, options));
 }

@@ -14,7 +14,7 @@ export function AddImageForm({ handleNewFiles, multiple }) {
     <input
       multiple={multiple}
       onChange={handleChange}
-      accept=".webp,.jpg,.png,.jpeg"
+      accept="image/png, image/gif, image/jpeg, image/webp"
       className={s.inputFile}
       type="file"
     />

@@ -5,13 +5,14 @@ import { onAuthStateChanged } from 'firebase/auth';
 import { Loader } from '../../../shared/Loader/Loader';
 import { signUp } from '../../../services/AuthService';
 import { uploadToStorage } from '../../../services/StorageService';
-import { writeUserPublic } from '../../../services/DbService';
 import { SignUpForm } from '../components/SignUpForm/SignUpForm';
 import { getAuth, updateProfile } from '@firebase/auth';
 import { validateFile } from '../../../utils/fileValidation';
 import { readFile } from '../../../utils/fileReader';
 import { NotificationsContext } from '../../../context/context';
 import { passwordValidation } from '../../../utils/passwordValidation';
+import { writeUserPublic } from '../../../services/UserService';
+import { extensionsByType } from '../../../utils/extensionsByType';
 
 export function SignUp({ setCurrentUser }) {
   const [loading, setLoading] = useState(false);
@@ -31,20 +32,7 @@ export function SignUp({ setCurrentUser }) {
       const photoURL = image
         ? await uploadToStorage(image, 'users', user.uid)
         : false;
-      await updateProfile(user, {
-        displayName: username,
-        photoURL,
-      });
-      await writeUserPublic(user.uid, username, photoURL);
-      const auth = getAuth();
-      onAuthStateChanged(auth, (user) => {
-        if (user) {
-          const refObj = ref(storage, `users/` + user.uid);
-          getDownloadURL(refObj).then((photoURL) =>
-            setCurrentUser({ ...user, photoURL })
-          );
-        }
-      });
+      await writeUserPublic(user.uid, { username, photoURL });
     } catch (error) {
       addNotification({
         type: 'error',
@@ -55,7 +43,7 @@ export function SignUp({ setCurrentUser }) {
   async function fileInput(input, file) {
     const maxFileSize = 10;
     const types = ['image'];
-    const extensions = input.accept.split('.').join('').split(',');
+    const extensions = extensionsByType('image');
     const fileValidation = validateFile(file, {
       types,
       extensions,

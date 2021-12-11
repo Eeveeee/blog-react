@@ -1,5 +1,5 @@
-@import "../../styles/mixins.scss";
-@import "../../styles/variables.scss";
+@import "../../../styles/mixins.scss";
+@import "../../../styles/variables.scss";
 .post {
   width: 100%;
   textarea {
@@ -8,8 +8,8 @@
     width: 100%;
   }
 }
-.outer {
-  padding: 10px 0;
+.postContent {
+  width: 100%;
 }
 .creator {
   padding-bottom: 2px;
@@ -39,7 +39,8 @@
   @media (min-width: $size-laptop) {
     transition: 0.2s;
     &:hover {
-      box-shadow: 2px 2px 5px;
+      background: $clr-gray-main;
+      color: white;
     }
   }
 }
@@ -64,12 +65,13 @@
   overflow: hidden;
   @include flex();
   position: relative;
+  width: auto;
   &:nth-of-type(n + 2) {
     margin-top: 10px;
   }
   .image {
-    max-width: 100%;
-    height: auto;
+    max-width: auto;
+    height: 500px;
   }
 }
 .title {
@@ -84,6 +86,7 @@
   font-size: 18px;
   line-height: 120%;
   width: fit-content;
+  white-space: break-spaces;
 }
 .subtitle {
   font-size: 25px;
@@ -96,6 +99,7 @@
 }
 .outer {
   @include flex(column, flex-start, flex-start);
+  padding: 10px 0;
 }
 .container {
   max-width: 1200px;

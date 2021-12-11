@@ -36,19 +36,12 @@ export function transliterationToEng(word) {
   };
 
   word = word.toLowerCase();
-  // let answer = '';
-  // Array.from(word).forEach((char, idx) => {
-  //   if (converter[word[idx]] === undefined) {
-  //     return (answer += word[idx]);
-  //   }
-  //   return (answer += converter[word[idx]]);
-  // });
   let answer = Array.from(word).reduce((acc, el, idx) => {
     if (converter[word[idx]] === undefined) {
       return (acc += word[idx]);
     }
     return (acc += converter[word[idx]]);
-  }, 'd');
+  }, '');
 
   answer = answer.replace(/[^-0-9a-z]/g, '-');
   answer = answer.replace(/[-]+/g, '-');

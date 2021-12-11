@@ -26,3 +26,19 @@
   scrollbar-width: none;
   overflow-y: auto;
 }
+
+@mixin buttonDefault() {
+  @include flex();
+  background: $clr-gray-main;
+  border: none;
+  font-size: 20px;
+  color: white;
+  cursor: pointer;
+  transition: 0.2s;
+  border-radius: 5px;
+  @media (min-width: $size-laptop) {
+    &:hover {
+      background: lighten($clr-gray-main, 10%);
+    }
+  }
+}
