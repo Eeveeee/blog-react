@@ -1,6 +1,9 @@
+import { getAuth } from 'firebase/auth';
 import React, { useContext, useState } from 'react';
 import { NotificationsContext } from '../../../../context/context';
+import Button from '../../../../shared/Button/Button';
 import { Loader } from '../../../../shared/Loader/Loader';
+import { extensionsByType } from '../../../../utils/extensionsByType';
 import { validateFile, validateFiles } from '../../../../utils/fileValidation';
 import { AddImageForm } from '../AddImageForm/AddImageForm';
 import { ImagePreview } from '../ImagePreview/ImagePreview';
@@ -14,13 +17,15 @@ export function AddPostForm({ onFormSubmit, isLoading }) {
   function formSubmitHandler(e) {
     e.preventDefault();
     const form = e.target;
+    const auth = getAuth();
     const formData = {
+      authorId: auth.currentUser.uid,
       title: form.title.value,
       subtitle: form.subtitle.value,
       subtitlePreview: form.subtitlePreview.value || form.subtitle.value,
       content: form.content.value,
-      images: images,
-      previewImage: headerImage || false,
+      images: images || [],
+      previewImage: headerImage || [],
     };
     onFormSubmit(formData);
   }
@@ -29,7 +34,7 @@ export function AddPostForm({ onFormSubmit, isLoading }) {
   }
   function handleNewFiles(files, input) {
     const filesArr = Array.from(files);
-    const extensions = input.accept.split('.').join('').split(',');
+    const extensions = extensionsByType('image');
     const validation = validateFiles(filesArr, {
       types,
       extensions,
@@ -45,7 +50,7 @@ export function AddPostForm({ onFormSubmit, isLoading }) {
     setImages(filesArr);
   }
   function handleNewHeaderImage(files, input) {
-    const extensions = input.accept.split('.').join('').split(',');
+    const extensions = extensionsByType('image');
     const validation = validateFile(files[0], {
       types,
       extensions,
@@ -142,9 +147,7 @@ export function AddPostForm({ onFormSubmit, isLoading }) {
             style={{ width: '50px', height: '50px', alignSelf: 'center' }}
           />
         ) : (
-          <button type="submit" className={s.submit}>
-            Создать пост
-          </button>
+          <Button id="submitForm_1" text="Создать пост" />
         )}
       </form>
     </div>

@@ -21,6 +21,7 @@ export function SignIn() {
         );
       })
       .catch((err) => {
+        console.error(err);
         setLoading(false);
         addNotification({
           type: 'error',

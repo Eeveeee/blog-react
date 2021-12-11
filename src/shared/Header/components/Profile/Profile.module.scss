@@ -1,41 +1,27 @@
 @import "../../../../styles/mixins.scss";
 @import "../../../../styles/variables.scss";
+.profile {
+  max-width: 50px;
+  max-height: 50px;
+  margin-right: auto;
+}
 .imageWrapper {
-  @include wh(50px, 50px);
-  margin-right: 20px;
   border: 2px solid black;
+  @include wh(50px, 50px);
+  @include flex();
   border-radius: 50%;
   cursor: pointer;
+  background: transparent;
   @media (min-width: $size-laptop) {
     transition: 0.2s;
     &:hover {
       border-color: $clr-orange;
     }
   }
-}
-.profile {
-  &Content {
-    height: fit-content;
-    background: transparent;
-    @include flex($justify: space-between);
-    @include wh(100px, auto);
+  img {
+    pointer-events: none;
   }
 }
 .username {
   font-size: 20px;
-}
-.logout {
-  height: 30px;
-  width: 30px;
-  border: none;
-  cursor: pointer;
-  @include flex();
-  background: transparent;
-  padding: 0;
-  svg {
-    path {
-      stroke: black;
-    }
-    @include wh(100%, 100%);
-  }
 }

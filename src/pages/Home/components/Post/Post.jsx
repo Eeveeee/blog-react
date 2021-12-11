@@ -1,38 +1,31 @@
 import React from 'react';
-import s from './Post.module.scss';
-import { dateFromMs, timeFromMs } from '../../../../utils/time';
-import imagePlaceholder from '../../../../assets/images/imagePlaceholder.webp';
 import { Link } from 'react-router-dom';
+import { getMediaLink } from '../../../../utils/mediaHelper';
+import { timestampToDate, timestampToTime } from '../../../../utils/time';
+import { transliterationToEng } from '../../../../utils/transliteration';
+import s from './Post.module.scss';
 
 export function Post({ data }) {
-  const {
-    postId,
-    author,
-    createdAt,
-    title,
-    subtitlePreview,
-    images,
-    previewImage,
-  } = data;
-  const postCreated = `${dateFromMs(createdAt)} ${timeFromMs(createdAt)}`;
+  const { id, authorId, createdAt, title, subtitlePreview, previewImage } =
+    data;
+  const postCreated = `${timestampToDate(createdAt)} ${timestampToTime(
+    createdAt
+  )}`;
   return (
     <div className={s.post}>
-      <Link to={`/posts/${postId}`}>
+      <Link to={`/posts/${id}`}>
         <div className={s.info}>
-          <div className={s.id}>ID поста: {postId}</div>
-          <div className={s.userId}>ID пользователя: {author}</div>
+          <div className={s.id}>ID поста: {id}</div>
+          <div className={s.userId}>ID пользователя: {authorId}</div>
           <div className={s.created}>Пост создан: {postCreated}</div>
         </div>
         <div className={s.content}>
           <div className={s.imageWrapper}>
             <img
               className={s.imageWrapperBg}
-              src={previewImage ? previewImage : imagePlaceholder}
+              src={getMediaLink(previewImage)}
             />
-            <img
-              className={s.image}
-              src={previewImage ? previewImage : imagePlaceholder}
-            />
+            <img className={s.image} src={getMediaLink(previewImage)} />
           </div>
           <div className={s.textWrapper}>
             <p className={s.title}>{title}</p>

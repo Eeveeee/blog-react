@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import s from './Posts.module.scss';
-import { dateFromMs, timeFromMs } from '../../../../utils/time';
+import React from 'react';
 import { Post } from '../Post/Post';
+import s from './Posts.module.scss';
 
 export function Posts({ posts }) {
   return (

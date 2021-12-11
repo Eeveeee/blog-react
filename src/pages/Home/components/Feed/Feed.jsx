@@ -6,7 +6,7 @@ export function Feed({ posts }) {
   return (
     <div className={s.feed}>
       {posts.map((post) => (
-        <Post data={post} key={post.postId} />
+        <Post data={post} key={post.id} />
       ))}
     </div>
   );

@@ -4,9 +4,11 @@ import s from './ImagePreview.module.scss';
 
 export function ImagePreview({ file }) {
   const [preview, setPreview] = useState(null);
-  useEffect(async () => {
-    setPreview(await readFile(file));
-  }, []);
+  useEffect(() => {
+    readFile(file).then((base64) => {
+      setPreview(base64);
+    });
+  }, [file]);
   if (!preview) {
     return null;
   }

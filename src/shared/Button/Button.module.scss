@@ -1,0 +1,19 @@
+@import "../../styles/mixins.scss";
+@import "../../styles/variables.scss";
+.submitForm_1,
+.default {
+  @include flex();
+  background: $clr-gray-main;
+  border: none;
+  font-size: 20px;
+  color: white;
+  cursor: pointer;
+  transition: 0.2s;
+  border-radius: 5px;
+  height: 50px;
+  @media (min-width: $size-laptop) {
+    &:hover {
+      background: lighten($clr-gray-main, 10%);
+    }
+  }
+}

@@ -1,23 +1,21 @@
 import React, { useContext, useEffect } from 'react';
 import s from './Home.module.scss';
 import { Loader } from '../../../shared/Loader/Loader';
-import {
-  getAllPosts,
-  getUserPosts,
-  updatePost,
-} from '../../../services/DbService';
+import { getUserPosts } from '../../../services/UserService';
 import { Feed } from '../components/Feed/Feed';
 import { NotificationsContext } from '../../../context/context';
+import { getPostsAmount } from '../../../services/PostsService';
 
 export function Home() {
   const [posts, setPosts] = React.useState([]);
   const [loading, setLoading] = React.useState(true);
+  const [postsAmount, setPostsAmount] = React.useState(15);
   const { addNotification } = useContext(NotificationsContext);
   useEffect(() => {
-    getAllPosts()
-      .then((snapshot) => {
-        if (snapshot.val()) {
-          setPosts(Object.values(snapshot.val()));
+    getPostsAmount(postsAmount)
+      .then((res) => {
+        if (res.length) {
+          setPosts(res);
         }
         setLoading(false);
       })
@@ -25,12 +23,11 @@ export function Home() {
         console.error(error);
         addNotification({
           type: 'error',
-          message:
-            'Возникла ошибка при загрузке постов, повторите попытку позже',
+          message: 'Возникла ошибка загрузки постов, повторите попытку позже',
         });
         setLoading(false);
       });
-  }, [addNotification]);
+  }, [addNotification, postsAmount]);
 
   return (
     <div className={s.home}>

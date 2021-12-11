@@ -2,9 +2,17 @@
 @import "../../styles/variables.scss";
 .footer {
   @include wh(100%, auto);
-  @include flex();
+  @include flex($justify: space-between);
   padding: 10px;
   border-top: 1px solid $clr-gray-main;
+}
+.developer {
+  cursor: pointer;
+  font-size: 20px;
+  span {
+    font-weight: 600;
+    border-bottom: 2px solid black;
+  }
 }
 .title {
   font-size: 30px;

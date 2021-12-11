@@ -1,0 +1,23 @@
+@import "../../../../styles/mixins.scss";
+@import "../../../../styles/variables.scss";
+.form {
+  width: 100%;
+}
+.content {
+  width: 100%;
+  height: fit-content;
+  max-width: 100%;
+  border: 1px solid black;
+  min-height: 100px;
+  font-size: 20px;
+  padding: 10px;
+  line-height: 130%;
+  word-wrap: break-word;
+  display: block;
+  margin-bottom: 10px;
+}
+.title {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 30px;
+}
