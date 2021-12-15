@@ -22,7 +22,6 @@ export function Comment({ comment, onDeleteComment, onCommentUpdate }) {
   const { addNotification } = useContext(NotificationsContext);
   const isMore = content.length > 300;
   const [reveal, setReveal] = useState(content.length <= 300);
-  console.log(isMore);
   const { photoURL, username } = author.value || {};
   const currentUid = getAuth().currentUser?.uid || null;
   useEffect(() => {

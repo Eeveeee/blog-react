@@ -16,6 +16,7 @@ import s from './Post.module.scss';
 import { v4 as uuidv4 } from 'uuid';
 import { getPost } from '../../../services/PostsService';
 import { getUserPublic } from '../../../services/UserService';
+import classNames from 'classnames';
 
 export function Post() {
   const auth = getAuth();
@@ -26,8 +27,15 @@ export function Post() {
   });
   const [author, setAuthor] = React.useState(null);
   const { addNotification } = useContext(NotificationsContext);
-  const { title, authorId, subtitle, content, images, createdAt } =
-    postData.value || {};
+  const {
+    previewImage,
+    title,
+    authorId,
+    subtitle,
+    content,
+    images,
+    createdAt,
+  } = postData.value || {};
   let { id } = useParams();
   useEffect(() => {
     async function fetchData() {
@@ -48,17 +56,27 @@ export function Post() {
       });
     });
   }, [addNotification, history, id]);
-
   return (
     <div className={s.post}>
-      <div className={s.mainBackground}></div>
-      <div className={s.container}>
-        {postData.state === 'fetching' && <Loader />}
-        {postData.state === 'success' && (
-          <div className={s.outer}>
-            <div className={s.postContent}>
-              <button className={s.edit}>Изменить</button>
-              <div className={s.main}>
+      {postData.state === 'fetching' && <Loader />}
+      {postData.state === 'success' && (
+        <div className={s.outer}>
+          <div className={s.postContent}>
+            <div className={classNames(s.main, { [previewImage]: s.default })}>
+              {authorId === auth.currentUser.uid && (
+                <button className={s.edit}>Изменить</button>
+              )}
+              {!!previewImage.length && (
+                <div
+                  style={{
+                    backgroundImage: `url(${previewImage})`,
+                  }}
+                  className={s.mainBackground}
+                >
+                  <div className={s.mainBackgroundFilter}></div>
+                </div>
+              )}
+              <div className={classNames(s.container, s.mainContainer)}>
                 <div className={s.info}>
                   <Link to={`/profile/${authorId}`} className={s.creator}>
                     {author.username}
@@ -70,7 +88,9 @@ export function Post() {
                 <h1 className={s.title}>{title}</h1>
                 <h2 className={s.subtitle}>{subtitle}</h2>
               </div>
+            </div>
 
+            <div className={s.container}>
               <div className={s.content}>{content}</div>
               <div className={s.imagesContainer}>
                 {images &&
@@ -85,11 +105,11 @@ export function Post() {
                     </Link>
                   ))}
               </div>
+              <Comments postData={postData.value} />
             </div>
-            <Comments postData={postData.value} />
           </div>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 }

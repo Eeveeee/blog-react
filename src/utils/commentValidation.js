@@ -12,14 +12,12 @@ export function commentValidation(comment) {
     normal: !comment.normalize(),
     size: comment.length > 5000,
   };
-  console.log(check);
   const isValid = Object.keys(errors).reduce((acc, error) => {
     if (check[error]) {
       acc.push(errors[error]);
     }
     return acc;
   }, []);
-  console.log(isValid);
   if (isValid.length) {
     return isValid;
   }

@@ -7,13 +7,14 @@
     resize: vertical;
     width: 100%;
   }
+  overflow: hidden;
 }
 .postContent {
   width: 100%;
 }
 .creator {
   padding-bottom: 2px;
-  border-bottom: 2px solid black;
+  border-bottom: 2px solid white;
 }
 .removeImage {
   position: absolute;
@@ -27,20 +28,26 @@
   cursor: pointer;
 }
 .edit {
-  align-self: flex-end;
   cursor: pointer;
   margin-bottom: 5px;
   font-size: 18px;
+  position: absolute;
+  right: 15px;
+  top: 15px;
+  z-index: 1;
   padding: 4px 15px;
   border: 1px solid $clr-gray-main;
   background: transparent;
   @include flex();
   border-radius: 3px;
+  background: white;
+  color: $clr-gray-main;
   @media (min-width: $size-laptop) {
     transition: 0.2s;
     &:hover {
       background: $clr-gray-main;
       color: white;
+      border-color: white;
     }
   }
 }
@@ -48,6 +55,9 @@
   @include flex($direction: column, $align: flex-start);
   width: 100%;
   margin-bottom: 15px;
+  height: 500px;
+  position: relative;
+  color: white;
 }
 .info {
   @include flex($justify: space-between);
@@ -70,8 +80,8 @@
     margin-top: 10px;
   }
   .image {
-    max-width: auto;
-    height: 500px;
+    max-width: 100%;
+    height: auto;
   }
 }
 .title {
@@ -86,7 +96,8 @@
   font-size: 18px;
   line-height: 120%;
   width: fit-content;
-  white-space: break-spaces;
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
 }
 .subtitle {
   font-size: 25px;
@@ -97,11 +108,28 @@
 .createdAt {
   font-size: 15px;
 }
-.outer {
-  @include flex(column, flex-start, flex-start);
-  padding: 10px 0;
-}
 .container {
   max-width: 1200px;
   margin: 0 auto;
+  z-index: 1;
+}
+.mainContainer {
+  width: 100%;
+}
+.mainBackground {
+  position: absolute;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  right: 0;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  &Filter {
+    position: absolute;
+    right: 0;
+    top: 0;
+    @include wh(100%, 100%);
+    background: rgba(black, 0.5);
+  }
 }

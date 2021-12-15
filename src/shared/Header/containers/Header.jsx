@@ -30,7 +30,7 @@ export function Header() {
     { name: 'Информация', path: '/info' },
   ];
   const authRoutes = [
-    { name: 'Создать пост', path: '/add' },
+    { name: 'Создать статью', path: '/add' },
     { name: 'Информация', path: '/info' },
   ];
   return (

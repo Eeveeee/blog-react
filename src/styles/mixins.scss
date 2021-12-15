@@ -17,6 +17,14 @@
   max-width: $width;
   max-height: $height;
 }
+@mixin allwh($width: 100px, $height: 100px) {
+  width: $width;
+  height: $height;
+  min-width: $width;
+  min-height: $height;
+  max-width: $width;
+  max-height: $height;
+}
 @mixin invisibleScrollbar() {
   overflow: -moz-scrollbars-none;
   -ms-overflow-style: none;

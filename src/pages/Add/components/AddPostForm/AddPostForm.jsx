@@ -131,23 +131,25 @@ export function AddPostForm({ onFormSubmit, isLoading }) {
           Размер файла не должен превышать {maxFileSize}Мб
         </div>
         <AddImageForm handleNewFiles={handleNewFiles} multiple={true} />
-        {images.map((image, idx) => (
-          <div key={idx} className={s.ImagePreviewWrapper}>
-            <button
-              onClick={(e) => removeImage(image, e)}
-              className={s.removeBtn}
-            >
-              <span></span>
-            </button>
-            <ImagePreview file={image} />
-          </div>
-        ))}
+        <div className={s.imagePreviews}>
+          {images.map((image, idx) => (
+            <div key={idx} className={s.ImagePreviewWrapper}>
+              <button
+                onClick={(e) => removeImage(image, e)}
+                className={s.removeBtn}
+              >
+                <span></span>
+              </button>
+              <ImagePreview file={image} />
+            </div>
+          ))}
+        </div>
         {isLoading ? (
           <Loader
             style={{ width: '50px', height: '50px', alignSelf: 'center' }}
           />
         ) : (
-          <Button id="submitForm_1" text="Создать пост" />
+          <Button id="submitForm_1" text="Создать статью" />
         )}
       </form>
     </div>
