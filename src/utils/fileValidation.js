@@ -5,10 +5,7 @@ export function validateFile(file, options) {
   const fileType = file.type.split('/')[0];
   const fileExt = file.type.split('/')[1];
   const fileSize = convertSize(file.size);
-  const isValid =
-    fileSize < maxFileSize ||
-    extensions.includes(fileExt) ||
-    types.includes(fileType);
+  const isValid = fileSize < maxFileSize && types.includes(fileType);
   return isValid;
 }
 

@@ -11,6 +11,9 @@
   button {
     cursor: pointer;
   }
+  font-family: $font-mont;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 .loaderWrapper {
   @include wh(100vw, 100vh);

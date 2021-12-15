@@ -10,10 +10,13 @@ import {
 import { Comment } from '../Comment/Comment';
 import { CommentForm } from '../CommentForm/CommentForm';
 import s from './Comments.module.scss';
+import { settings } from '../../../../settings';
 
 export function Comments({ postData }) {
   const auth = useAuthState();
-  const [commentsAmount, setCommentsAmount] = React.useState(3);
+  const [commentsAmount, setCommentsAmount] = React.useState(
+    settings.commentsToLoad
+  );
   const [isShowMore, setIsShowMore] = React.useState(true);
   const [comments, setComments] = React.useState({
     state: 'fetching',
@@ -73,7 +76,9 @@ export function Comments({ postData }) {
       state: 'fetching',
       value: comments.value,
     }));
-    setCommentsAmount((commentsAmount) => commentsAmount + 3);
+    setCommentsAmount(
+      (commentsAmount) => commentsAmount + settings.commentsToLoad
+    );
   }
   async function onDeleteComment(id) {
     deleteComment(id)

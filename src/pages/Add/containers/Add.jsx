@@ -21,7 +21,7 @@ export function Add() {
     const imageLinks = [];
     const postPrefix = transliterationToEng(postModel.title);
     const postId = postPrefix + '_' + uuidv4();
-    if (postModel.previewImage?.length) {
+    if (postModel.previewImage) {
       postModel.previewImage = await uploadToStorage(
         postModel.previewImage,
         'posts'
