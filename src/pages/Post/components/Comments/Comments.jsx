@@ -67,7 +67,7 @@ export function Comments({ postData }) {
         console.error(err);
         addNotification({
           type: 'error',
-          message: 'Произошла ошибка при добавлении комментария',
+          message: 'Произошла ошибка добавления комментария',
         });
       });
   }

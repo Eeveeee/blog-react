@@ -1,0 +1,47 @@
+@import "../../styles/mixins.scss";
+@import "../../styles/variables.scss";
+.manage {
+  display: flex;
+  min-width: 55px;
+  &Btn {
+    transition: 0.1s;
+    @include wh(25px, 25px);
+    border: 1px solid $clr-gray-main;
+    border-radius: 3px;
+    padding: 2px;
+    background: white;
+    svg {
+      stroke: $clr-gray-main;
+      @include wh(100%, 100%);
+    }
+    &:first-of-type {
+      margin-right: 5px;
+    }
+    @media (min-width: $size-laptop) {
+      &:hover {
+        background: $clr-gray-main;
+        svg {
+          stroke: white;
+        }
+      }
+    }
+    &.save {
+      background: green;
+      svg {
+        stroke: white;
+      }
+    }
+  }
+}
+.wrapper {
+  width: 100%;
+}
+.input {
+  margin-right: 5px;
+  @include wh(100%, 25px);
+  &Block {
+    width: 100%;
+    display: flex;
+    margin-bottom: 3px;
+  }
+}

@@ -2,19 +2,32 @@
 @import "../../../../styles/variables.scss";
 .form {
   width: 100%;
+  padding: 10px 0;
 }
 .content {
   width: 100%;
-  height: fit-content;
   max-width: 100%;
-  border: 1px solid black;
+  height: fit-content;
   min-height: 100px;
+  padding: 10px 10px 25px 10px;
+  border: 1px solid black;
   font-size: 20px;
-  padding: 10px;
   line-height: 130%;
   word-wrap: break-word;
   display: block;
+  overflow: hidden;
+  resize: none;
+  border-radius: 3px;
+}
+.inputBlock {
+  position: relative;
   margin-bottom: 10px;
+}
+.counterWrapper {
+  position: absolute;
+  left: 5px;
+  bottom: 5px;
+  pointer-events: none;
 }
 .title {
   text-align: center;

@@ -15,6 +15,10 @@
   &:nth-last-of-type(n + 2) {
     margin-bottom: 10px;
   }
+  &Text {
+    white-space: pre-wrap;
+    overflow-wrap: break-word;
+  }
   &Type {
     width: 20px;
     height: 100%;

@@ -1,11 +1,10 @@
 import { getAuth } from '@firebase/auth';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { useHistory } from 'react-router';
 import { v4 as uuidv4 } from 'uuid';
 import { NotificationsContext } from '../../../context/context';
-import { getPost, writePost } from '../../../services/PostsService';
+import { writePost } from '../../../services/PostsService';
 import { uploadToStorage } from '../../../services/StorageService';
-import { getUserPublic, updateUserPublic } from '../../../services/UserService';
 import { transliterationToEng } from '../../../utils/transliteration';
 import { AddPostForm } from '../components/AddPostForm/AddPostForm';
 import s from './Add.module.scss';
@@ -44,6 +43,7 @@ export function Add() {
       .then(() => {
         setLoading(false);
         history.push('/home');
+        return;
       })
       .catch((err) => {
         console.error(err);

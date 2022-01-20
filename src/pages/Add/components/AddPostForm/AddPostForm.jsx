@@ -1,31 +1,82 @@
+import classNames from 'classnames';
 import { getAuth } from 'firebase/auth';
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { NotificationsContext } from '../../../../context/context';
 import Button from '../../../../shared/Button/Button';
 import { Loader } from '../../../../shared/Loader/Loader';
 import { extensionsByType } from '../../../../utils/extensionsByType';
 import { validateFile, validateFiles } from '../../../../utils/fileValidation';
-import { AddImageForm } from '../AddImageForm/AddImageForm';
-import { ImagePreview } from '../ImagePreview/ImagePreview';
+import { Counter } from '../../../../shared/Counter/Counter';
 import s from './AddPostForm.module.scss';
+import { ImagePreview } from '../../../../forms/ImagePreview/ImagePreview';
+import { AddFileForm } from '../../../../forms/AddFileForm/AddFileForm';
+import { autoResize } from '../../../../utils/autoResize';
+import { limits as globalLimits } from '../../../../global/limits';
 export function AddPostForm({ onFormSubmit, isLoading }) {
-  const [headerImage, setHeaderImage] = useState(null);
-  const [images, setImages] = useState([]);
   const types = ['image'];
   const maxFileSize = 10;
   const { addNotification } = useContext(NotificationsContext);
+  const required = ['title', 'subtitle', 'content'];
+  const limits = { ...globalLimits };
+  const [post, setPost] = useState({
+    title: null,
+    subtitle: null,
+    subtitlePreview: null,
+    content: null,
+    images: [],
+    previewImage: null,
+  });
+  function checkLimits(post) {
+    return !Object.keys(post).find((key) => {
+      if (post[key]?.length > limits[key]) {
+        return post[key];
+      }
+      return false;
+    });
+  }
+  function checkRequired(post) {
+    return !Object.keys(post).find((key) => {
+      if (required.includes(key)) {
+        return !post[key];
+      }
+      return false;
+    });
+  }
+  function getFormattedPost(post) {
+    const formatted = Object.keys(post).reduce((acc, current) => {
+      if (typeof post[current] === 'string') {
+        const newVal = post[current].trim().normalize();
+        !newVal ? (acc[current] = null) : (acc[current] = newVal);
+      }
+      return acc;
+    }, {});
+    return { ...post, ...formatted };
+  }
   function formSubmitHandler(e) {
     e.preventDefault();
     const form = e.target;
     const auth = getAuth();
+    const formattedPost = getFormattedPost(post);
+    const required = checkRequired(formattedPost);
+    const limits = checkLimits(formattedPost);
+    if (!limits) {
+      addNotification({
+        type: 'danger',
+        message: 'Превышено количество символов',
+      });
+    }
+    if (!required) {
+      addNotification({
+        type: 'danger',
+        message: 'Обязательные поля должны быть заполнены',
+      });
+    }
+    if (!required || !limits) {
+      return;
+    }
     const formData = {
       authorId: auth.currentUser.uid,
-      title: form.title.value,
-      subtitle: form.subtitle.value,
-      subtitlePreview: form.subtitlePreview.value || form.subtitle.value,
-      content: form.content.value,
-      images: images || [],
-      previewImage: headerImage || [],
+      ...formattedPost,
     };
     onFormSubmit(formData);
   }
@@ -33,7 +84,7 @@ export function AddPostForm({ onFormSubmit, isLoading }) {
     e.target.style.border = `1px solid black`;
   }
   function handleNewFiles(files, input) {
-    const filesArr = Array.from(files);
+    const filesArr = Array.from(files) || [];
     const extensions = extensionsByType('image');
     const validation = validateFiles(filesArr, {
       types,
@@ -47,11 +98,12 @@ export function AddPostForm({ onFormSubmit, isLoading }) {
       });
       return;
     }
-    setImages(filesArr);
+    setPost((post) => ({ ...post, images: filesArr }));
   }
-  function handleNewHeaderImage(files, input) {
+  function handleNewHeaderImage(files) {
+    const headerImage = files[0];
     const extensions = extensionsByType('image');
-    const validation = validateFile(files[0], {
+    const validation = validateFile(headerImage, {
       types,
       extensions,
       maxFileSize,
@@ -63,16 +115,28 @@ export function AddPostForm({ onFormSubmit, isLoading }) {
       });
       return;
     }
-    setHeaderImage(files[0]);
+    setPost((post) => ({ ...post, previewImage: headerImage }));
   }
 
   function removeImage(image, e) {
     e.preventDefault();
-    setImages((images) => images.filter((a) => a !== image));
+    setPost((post) => ({
+      ...post,
+      images: post.images.filter((a) => a !== image),
+    }));
   }
   function removeHeaderImage(e) {
     e.preventDefault();
-    setHeaderImage(null);
+    setPost((post) => ({ ...post, previewImage: null }));
+  }
+  function onInputChange(e) {
+    const input = e.currentTarget;
+    const type = input.name;
+    const inputVal = input.value;
+    if (type === 'content') {
+      autoResize(input);
+    }
+    setPost((post) => ({ ...post, [type]: inputVal }));
   }
   return (
     <div className={s.addPostForm}>
@@ -80,70 +144,109 @@ export function AddPostForm({ onFormSubmit, isLoading }) {
         <div className={s.inputTitle}>
           <span className={s.requiredMarker}>*</span>Заголовок:
         </div>
-        <input
-          required
-          name="title"
-          onClick={inputClickHandler}
-          className={s.input}
-          type="text"
-        />
+        <div className={s.inputWrapper}>
+          <div className={s.counterWrapper}>
+            <Counter current={post.title?.length} limit={limits.title} />
+          </div>
+          <input
+            autoComplete="off"
+            required
+            name="title"
+            onClick={inputClickHandler}
+            className={classNames(s.input, s.inputText)}
+            onInput={onInputChange}
+            type="text"
+            defaultValue={post.title || ''}
+          />
+        </div>
         <div className={s.inputTitle}>
           <span className={s.requiredMarker}>*</span>Подзаголовок:
         </div>
-        <input
-          required
-          name="subtitle"
-          onClick={inputClickHandler}
-          className={s.input}
-          type="text"
-        />
+        <div className={s.inputWrapper}>
+          <div className={s.counterWrapper}>
+            <Counter current={post.subtitle?.length} limit={limits.subtitle} />
+          </div>
+          <input
+            autoComplete="off"
+            required
+            name="subtitle"
+            onClick={inputClickHandler}
+            className={classNames(s.input, s.inputText)}
+            onInput={onInputChange}
+            type="text"
+            defaultValue={post.subtitle || ''}
+          />
+        </div>
         <div className={s.inputTitle}>Превью подзаголовка:</div>
-        <input
-          name="subtitlePreview"
-          onClick={inputClickHandler}
-          className={s.input}
-          type="text"
-        />
+        <div className={s.inputWrapper}>
+          <div className={s.counterWrapper}>
+            <Counter
+              current={post.subtitlePreview?.length}
+              limit={limits.subtitlePreview}
+            />
+          </div>
+          <input
+            autoComplete="off"
+            name="subtitlePreview"
+            onClick={inputClickHandler}
+            className={classNames(s.input, s.inputText)}
+            onInput={onInputChange}
+            type="text"
+            defaultValue={post.subtitlePreview || ''}
+          />
+        </div>
         <div className={s.inputTitle}>
           <span className={s.requiredMarker}>*</span>Содержание:
         </div>
-        <textarea
-          required
-          name="content"
-          onClick={inputClickHandler}
-          className={s.textarea}
-        />
+        <div className={s.inputWrapper}>
+          <div className={s.counterWrapper}>
+            <Counter current={post.content?.length} limit={limits.content} />
+          </div>
+          <textarea
+            autoComplete="off"
+            required
+            name="content"
+            defaultValue={post.content || ''}
+            onClick={inputClickHandler}
+            onInput={onInputChange}
+            className={classNames(s.input, s.inputText, s.textarea)}
+          />
+        </div>
         <div className={s.inputTitle}>Превью поста / шапка:</div>
         <div className={s.inputFileWarning}>
           Размер файла не должен превышать {maxFileSize}Мб
         </div>
-        <AddImageForm handleNewFiles={handleNewHeaderImage} multiple={false} />
-        {!!headerImage && (
+        <AddFileForm handleNewFiles={handleNewHeaderImage} multiple={false} />
+        {post.previewImage && (
           <div className={s.ImagePreviewWrapper}>
             <button onClick={removeHeaderImage} className={s.removeBtn}>
               <span></span>
             </button>
-            <ImagePreview file={headerImage} />
+            <ImagePreview file={post.previewImage} />
           </div>
         )}
         <div className={s.inputTitle}>Прикрепленные изображения:</div>
         <div className={s.inputFileWarning}>
           Размер файла не должен превышать {maxFileSize}Мб
         </div>
-        <AddImageForm handleNewFiles={handleNewFiles} multiple={true} />
-        <div className={s.imagePreviews}>
-          {images.map((image, idx) => (
-            <div key={idx} className={s.ImagePreviewWrapper}>
-              <button
-                onClick={(e) => removeImage(image, e)}
-                className={s.removeBtn}
-              >
-                <span></span>
-              </button>
-              <ImagePreview file={image} />
+        <AddFileForm handleNewFiles={handleNewFiles} multiple={true} />
+        {!!post.images?.length && (
+          <div className={s.previewsWrapper}>
+            <div className={s.imagePreviews}>
+              {post.images.map((image, idx) => (
+                <div key={idx} className={s.ImagePreviewWrapper}>
+                  <button
+                    onClick={(e) => removeImage(image, e)}
+                    className={s.removeBtn}
+                  >
+                    <span></span>
+                  </button>
+                  <ImagePreview file={image} />
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
+          </div>
+        )}
         {isLoading ? (
           <Loader
             style={{ width: '50px', height: '50px', alignSelf: 'center' }}

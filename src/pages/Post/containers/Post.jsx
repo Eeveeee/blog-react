@@ -1,22 +1,15 @@
 import { getAuth } from '@firebase/auth';
+import classNames from 'classnames';
 import React, { useContext, useEffect } from 'react';
 import { useHistory, useParams } from 'react-router';
 import { Link } from 'react-router-dom';
 import { NotificationsContext } from '../../../context/context';
-import errors from '../../../global/errors';
-import {
-  addPostComment,
-  getCommentsAmount,
-} from '../../../services/CommentsService';
-import { Loader } from '../../../shared/Loader/Loader';
-import { timestampToDate, timestampToTime } from '../../../utils/time';
-import { CommentForm } from '../components/CommentForm/CommentForm';
-import { Comments } from '../components/Comments/Comments';
-import s from './Post.module.scss';
-import { v4 as uuidv4 } from 'uuid';
 import { getPost } from '../../../services/PostsService';
 import { getUserPublic } from '../../../services/UserService';
-import classNames from 'classnames';
+import { Loader } from '../../../shared/Loader/Loader';
+import { timestampToDate, timestampToTime } from '../../../utils/time';
+import { Comments } from '../components/Comments/Comments';
+import s from './Post.module.scss';
 
 export function Post() {
   const auth = getAuth();
@@ -35,78 +28,102 @@ export function Post() {
     content,
     images,
     createdAt,
+    id,
   } = postData.value || {};
-  let { id } = useParams();
+  const queryId = useParams().id;
   useEffect(() => {
+    let isAlive = true;
     async function fetchData() {
-      const post = await getPost(id);
+      const post = await getPost(queryId);
+      if (!isAlive) {
+        return;
+      }
       if (post) {
         setAuthor(await getUserPublic(post.authorId));
-        setPostData({ state: 'success', value: { ...post } });
+        setPostData({
+          state: 'success',
+          value: { ...post },
+        });
       } else {
         history.push('/posts');
+        return;
       }
     }
-    fetchData().catch((err) => {
-      setPostData({ state: 'failure', value: null });
-      console.error(err);
-      addNotification({
-        type: 'error',
-        message: 'Произошла ошибка загрузки поста',
+    if (postData.state === 'fetching') {
+      fetchData().catch((err) => {
+        if (!isAlive) {
+          return;
+        }
+        setPostData({ state: 'failure', value: null });
+        console.error(err);
+        addNotification({
+          type: 'error',
+          message: 'Произошла ошибка загрузки поста',
+        });
       });
-    });
-  }, [addNotification, history, id]);
+    }
+    return () => {
+      isAlive = false;
+    };
+  }, [addNotification, history, queryId, postData]);
   return (
     <div className={s.post}>
       {postData.state === 'fetching' && <Loader />}
       {postData.state === 'success' && (
-        <div className={s.outer}>
-          <div className={s.postContent}>
-            <div className={classNames(s.main, { [previewImage]: s.default })}>
-              {authorId === auth.currentUser.uid && (
-                <button className={s.edit}>Изменить</button>
-              )}
-              {!!previewImage.length && (
-                <div
-                  style={{
-                    backgroundImage: `url(${previewImage})`,
-                  }}
-                  className={s.mainBackground}
-                >
-                  <div className={s.mainBackgroundFilter}></div>
-                </div>
-              )}
-              <div className={classNames(s.container, s.mainContainer)}>
-                <div className={s.info}>
+        <div className={s.wrapper}>
+          <div className={classNames(s.main, { [s.default]: !previewImage })}>
+            {authorId === auth.currentUser?.uid && (
+              <Link to={`/post/edit/${id}`} className={s.edit}>
+                Изменить
+              </Link>
+            )}
+            {previewImage && (
+              <div
+                style={{
+                  backgroundImage: `url(${previewImage})`,
+                }}
+                className={s.mainBackground}
+              >
+                <div className={s.mainBackgroundFilter}></div>
+              </div>
+            )}
+            <div className={classNames(s.container, s.mainContainer)}>
+              <div className={s.info}>
+                {author ? (
                   <Link to={`/profile/${authorId}`} className={s.creator}>
                     {author.username}
                   </Link>
-                  <div className={s.createdAt}>
-                    {timestampToDate(createdAt)} в {timestampToTime(createdAt)}
-                  </div>
+                ) : (
+                  <span to={`/profile/${authorId}`} className={s.creator}>
+                    Пользователь удалён
+                  </span>
+                )}
+                <div className={s.createdAt}>
+                  {timestampToDate(createdAt)} в {timestampToTime(createdAt)}
                 </div>
-                <h1 className={s.title}>{title}</h1>
-                <h2 className={s.subtitle}>{subtitle}</h2>
               </div>
+              <h1 className={s.title}>{title}</h1>
+              <h2 className={s.subtitle}>{subtitle}</h2>
             </div>
+          </div>
 
-            <div className={s.container}>
-              <div className={s.content}>{content}</div>
-              <div className={s.imagesContainer}>
-                {images &&
-                  images.map((image, idx) => (
-                    <Link
-                      key={idx}
-                      target="_blank"
-                      to={image}
-                      className={s.imageWrapper}
-                    >
-                      <img alt="" className={s.image} src={image} />
-                    </Link>
-                  ))}
-              </div>
-              <Comments postData={postData.value} />
+          <div className={s.container}>
+            <div className={s.content}>{content}</div>
+            <div className={s.imagesContainer}>
+              {images &&
+                images.map((image, idx) => (
+                  <a
+                    key={idx}
+                    rel="noreferrer nofollow"
+                    target="_blank"
+                    href={image}
+                    className={s.imageWrapper}
+                  >
+                    <img alt="" className={s.image} src={image} />
+                  </a>
+                ))}
             </div>
+            <Comments postData={postData.value} />
           </div>
         </div>
       )}

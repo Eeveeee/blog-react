@@ -25,14 +25,16 @@
   }
 }
 .subtitle {
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 500;
+  overflow-wrap: break-word;
 }
 .title {
   transition: 0.2s;
   font-weight: 600;
-  font-size: 30px;
+  font-size: 16px;
   margin-bottom: 10px;
+  overflow-wrap: break-word;
 }
 .textWrapper {
   margin: 10px;

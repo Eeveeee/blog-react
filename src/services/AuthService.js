@@ -1,15 +1,11 @@
-import PBKDF2 from 'crypto-js/pbkdf2';
-import MD5 from 'crypto-js/md5';
-import WordArray from 'crypto-js/lib-typedarrays';
 import {
-  getAuth,
-  signOut,
-  signInWithPopup,
-  GoogleAuthProvider,
   createUserWithEmailAndPassword,
+  EmailAuthProvider,
+  getAuth,
+  reauthenticateWithCredential,
   signInWithEmailAndPassword,
+  signOut,
 } from 'firebase/auth';
-import { v4 as uuidv4 } from 'uuid';
 
 export async function signUp(email, password) {
   const auth = getAuth();
@@ -37,3 +33,15 @@ export async function signIn(email, password) {
 export function signOutCurrentUser(auth) {
   return signOut(auth);
 }
+export async function reauthenticateUser(password) {
+  const auth = getAuth();
+  const user = auth.currentUser;
+  const cred = EmailAuthProvider.credential(user.email, password);
+  return reauthenticateWithCredential(user, cred);
+}
+// export async function reauthenticateUser(password) {
+//   const auth = getAuth();
+//   const user = auth.currentUser;
+//   await signIn(user.email, password);
+//   // await reauthenticateWithCredential(user, credentials);
+// }

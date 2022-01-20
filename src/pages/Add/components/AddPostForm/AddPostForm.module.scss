@@ -33,8 +33,6 @@
   border-radius: 3px;
   border: 1px solid black;
   height: 50px;
-  padding: 3px;
-  margin-bottom: 10px;
   font-size: 18px;
 }
 .form {
@@ -45,25 +43,36 @@
   @include flex(column, flex-start, stretch);
 }
 
+.counterWrapper {
+  position: absolute;
+  left: 5px;
+  bottom: 5px;
+  pointer-events: none;
+}
+
 .textarea {
-  resize: vertical;
-  min-height: 50px;
+  resize: none;
+  min-height: 100px;
+  height: fit-content;
+  width: 100%;
 }
 .input {
+  &Wrapper {
+    position: relative;
+    margin-bottom: 10px;
+  }
   &Title {
     margin-bottom: 5px;
     font-size: 25px;
+    width: 100%;
   }
-  &File {
-    text-align: center;
-    @include flex();
-    margin: 10px 0 20px 0;
-    width: fit-content;
-    border: none;
-    border: red;
-    cursor: pointer;
+  &Text {
+    overflow: hidden;
+    padding: 5px 5px 20px;
+    width: 100%;
   }
 }
+
 .removeBtn {
   position: absolute;
   right: 0;
@@ -109,4 +118,6 @@
   margin: 10px 0;
   display: flex;
   flex-wrap: wrap;
+}
+.addFileWrapper {
 }

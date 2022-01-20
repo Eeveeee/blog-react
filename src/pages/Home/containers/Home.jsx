@@ -12,14 +12,21 @@ export function Home() {
   const [postsAmount, setPostsAmount] = React.useState(15);
   const { addNotification } = useContext(NotificationsContext);
   useEffect(() => {
+    let isAlive = true;
     getPostsAmount(postsAmount)
       .then((res) => {
+        if (!isAlive) {
+          return;
+        }
         if (res.length) {
           setPosts(res);
         }
         setLoading(false);
       })
       .catch((error) => {
+        if (!isAlive) {
+          return;
+        }
         console.error(error);
         addNotification({
           type: 'error',
@@ -27,6 +34,9 @@ export function Home() {
         });
         setLoading(false);
       });
+    return () => {
+      isAlive = false;
+    };
   }, [addNotification, postsAmount]);
 
   return (

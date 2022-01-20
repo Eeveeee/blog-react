@@ -1,6 +1,7 @@
 import { convertSize } from './sizeConverter';
 
 export function validateFile(file, options) {
+  console.log(file);
   const { types, extensions, maxFileSize } = options;
   const fileType = file.type.split('/')[0];
   const fileExt = file.type.split('/')[1];

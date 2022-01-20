@@ -1,3 +1,4 @@
+import { getAuth } from 'firebase/auth';
 import {
   collection,
   doc,
@@ -14,7 +15,7 @@ import {
 export async function getUserPosts(uid) {
   const db = getFirestore();
   const ref = collection(db, 'posts');
-  const queryRef = query(ref, where('author', '==', uid));
+  const queryRef = query(ref, where('authorId', '==', uid));
   const querySnapshot = await getDocs(queryRef);
   const posts = querySnapshot.docs.map((snapshot) => ({
     ...snapshot.data(),
@@ -36,7 +37,7 @@ export async function getUserPublic(uid) {
   const docRef = doc(getFirestore(), 'users', uid);
   const snapshot = await getDoc(docRef);
   if (snapshot.exists()) {
-    return snapshot.data();
+    return { ...snapshot.data(), id: snapshot.id };
   }
   return false;
 }

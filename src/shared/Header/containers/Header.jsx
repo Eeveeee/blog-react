@@ -23,6 +23,7 @@ export function Header() {
   }
   function signInHandler() {
     history.push('/signin');
+    return;
   }
   const routes = [
     { name: 'Войти', path: '/signin' },
@@ -44,7 +45,7 @@ export function Header() {
         <Navigation routes={routes} />
       )}
       <div className={s.profileWrapper}>
-        {user.value === 'success' && <Profile user={user.data} />}
+        {auth.state === 'auth' && <Profile user={user.data} />}
         {auth.state === 'auth' ? (
           <button onClick={signOut} className={s.signOut}>
             <GlobalSvgSelector id={'signOut'} />

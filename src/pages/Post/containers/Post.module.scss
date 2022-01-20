@@ -2,19 +2,31 @@
 @import "../../../styles/variables.scss";
 .post {
   width: 100%;
-  textarea {
-    max-width: 100%;
-    resize: vertical;
-    width: 100%;
-  }
   overflow: hidden;
 }
-.postContent {
+.main {
+  @include flex($direction: column, $align: flex-start);
+  width: 100%;
+  margin-bottom: 15px;
+  height: 500px;
+  position: relative;
+  color: white;
+  &.default {
+    color: black;
+    height: auto;
+    padding: 10px;
+    .creator {
+      border-color: black;
+    }
+  }
+}
+.wrapper {
   width: 100%;
 }
 .creator {
   padding-bottom: 2px;
   border-bottom: 2px solid white;
+  font-size: 20px;
 }
 .removeImage {
   position: absolute;
@@ -51,27 +63,19 @@
     }
   }
 }
-.main {
-  @include flex($direction: column, $align: flex-start);
-  width: 100%;
-  margin-bottom: 15px;
-  height: 500px;
-  position: relative;
-  color: white;
-}
+
 .info {
   @include flex($justify: space-between);
   width: 100%;
   margin-bottom: 30px;
 }
 .imagesContainer {
+  margin-top: 40px;
   @include flex(column, flex-start, center, nowrap);
   overflow: hidden;
-  overflow-x: auto;
 }
 .imageWrapper {
-  border: 3px solid black;
-  border-radius: 10px;
+  border-radius: 3px;
   overflow: hidden;
   @include flex();
   position: relative;
@@ -91,20 +95,21 @@
   margin-bottom: 30px;
   resize: none;
   text-align: center;
+  white-space: normal;
+  overflow-wrap: break-word;
 }
 .content {
   font-size: 18px;
-  line-height: 120%;
-  width: fit-content;
+  line-height: 130%;
   white-space: pre-wrap;
   overflow-wrap: break-word;
+  width: 100%;
 }
 .subtitle {
   font-size: 25px;
+  text-align: center;
 }
-.creator {
-  font-size: 20px;
-}
+
 .createdAt {
   font-size: 15px;
 }

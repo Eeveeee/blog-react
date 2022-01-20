@@ -13,10 +13,10 @@ import { NotificationsContext } from '../../../context/context';
 import { passwordValidation } from '../../../utils/passwordValidation';
 import { writeUserPublic } from '../../../services/UserService';
 import { extensionsByType } from '../../../utils/extensionsByType';
+import { errors } from '../../../global/errors';
 
 export function SignUp({ setCurrentUser }) {
   const [loading, setLoading] = useState(false);
-  const [imagePreview, setImagePreview] = useState(false);
   const { addNotification } = useContext(NotificationsContext);
   async function submit(form, password, email, username, image) {
     const storage = getStorage();
@@ -33,33 +33,11 @@ export function SignUp({ setCurrentUser }) {
         ? await uploadToStorage(image, 'users', user.uid)
         : false;
       await writeUserPublic(user.uid, { username, photoURL });
-    } catch (error) {
+    } catch (err) {
       addNotification({
         type: 'error',
-        message: 'Произошла ошибка при регистрации',
+        message: errors(err.code, 'Произошла ошибка при регистрации'),
       });
-    }
-  }
-  async function fileInput(input, file) {
-    const maxFileSize = 10;
-    const types = ['image'];
-    const extensions = extensionsByType('image');
-    const fileValidation = validateFile(file, {
-      types,
-      extensions,
-      maxFileSize,
-    });
-    if (fileValidation) {
-      readFile(file).then((res) => {
-        setImagePreview(res);
-      });
-    } else {
-      addNotification({
-        type: 'danger',
-        message: 'Выбранное изображение не подходит, попробуйте другое',
-      });
-      input.value = '';
-      return;
     }
   }
   return (
@@ -68,12 +46,7 @@ export function SignUp({ setCurrentUser }) {
         <Loader />
       ) : (
         <div className={s.container}>
-          <SignUpForm
-            imagePreview={imagePreview}
-            setImagePreview={setImagePreview}
-            fileInput={fileInput}
-            submit={submit}
-          />
+          <SignUpForm submit={submit} />
         </div>
       )}
     </div>

@@ -32,12 +32,7 @@
     }
   }
 }
-.imagePreview {
-  &Wrapper {
-    @include flex();
-    margin-bottom: 15px;
-  }
-}
+
 .input,
 .textarea {
   border-radius: 3px;
@@ -77,8 +72,9 @@
 }
 .input {
   &Info {
-    margin: 10px 0 5px 0;
-    font-size: 14px;
+    margin: 0 0 10px 0;
+    font-size: 15px;
+    font-weight: 500;
   }
   &File {
     border-radius: 3px;
@@ -91,5 +87,58 @@
   &Title {
     margin-bottom: 5px;
     font-size: 25px;
+  }
+}
+.counterWrapper {
+  margin-bottom: 10px;
+}
+.imagePreview {
+  &Block {
+    width: fit-content;
+    position: relative;
+    margin-bottom: 10px;
+  }
+  &Wrapper {
+    z-index: 1;
+    @include flex();
+    margin-bottom: 15px;
+    border-radius: 50%;
+    overflow: hidden;
+    @include flex();
+    @include allwh(100px, 100px);
+    overflow: hidden;
+    border: 2px solid $clr-gray-main;
+    position: relative;
+  }
+}
+.removeBtn {
+  z-index: 2;
+  border-radius: 50%;
+  position: absolute;
+  right: 0;
+  top: 0;
+  @include wh(30px, 30px);
+  border: 1px solid black;
+  cursor: pointer;
+  span {
+    pointer-events: none;
+    position: absolute;
+    width: 100%;
+    height: 2px;
+    background: red;
+    top: calc(50% - 1px);
+    left: 0;
+    transform: rotate(135deg);
+  }
+  span:after {
+    pointer-events: none;
+    top: 0;
+    left: 0;
+    background: red;
+    transform: rotate(90deg);
+    width: 100%;
+    height: 2px;
+    position: absolute;
+    content: "";
   }
 }

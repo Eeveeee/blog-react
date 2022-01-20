@@ -27,7 +27,11 @@ export function Comment({ comment, onDeleteComment, onCommentUpdate }) {
   useEffect(() => {
     getUserPublic(authorId)
       .then((info) => {
-        setAuthor({ state: 'success', value: { ...info } });
+        if (Object.keys(info).length) {
+          setAuthor({ state: 'success', value: { ...info } });
+          return;
+        }
+        setAuthor({ state: 'success', value: null });
       })
       .catch((err) => {
         console.error(err);
@@ -78,12 +82,22 @@ export function Comment({ comment, onDeleteComment, onCommentUpdate }) {
       {author.state === 'success' ? (
         <div className={s.header}>
           <div className={s.author}>
-            <Link to={`/profile/${authorId}`} className={s.avatarWrapper}>
-              <RoundedImage src={photoURL} />
-            </Link>
-            <Link to={`/profile/${authorId}`} className={s.authorName}>
-              {username}
-            </Link>
+            {author.value ? (
+              <Link to={`/profile/${authorId}`} className={s.avatarWrapper}>
+                <RoundedImage src={photoURL} />
+              </Link>
+            ) : (
+              <span className={s.avatarWrapper}>
+                <RoundedImage src={photoURL} />
+              </span>
+            )}
+            {author.value ? (
+              <Link to={`/profile/${authorId}`} className={s.authorName}>
+                {username}
+              </Link>
+            ) : (
+              <span className={s.authorName}>Пользователь удалён</span>
+            )}
             <div className={s.createdAt}>{defineCreatedAt(createdAt)}</div>
           </div>
           {currentUid === authorId && (

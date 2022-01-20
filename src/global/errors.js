@@ -1,28 +1,28 @@
-function errors(error) {
+export function errors(error, string = 'Произошла неизвестная ошибка') {
   switch (error) {
     case 'PERMISSION_DENIED':
-      return 'У вас недостаточно прав';
+      return 'У вас недостаточно прав для данной операции';
+
     case 'auth/wrong-password':
       return 'Неверный пароль';
     case 'auth/user-not-found':
-      return 'Пользователь с таким логином не найден';
+      return 'Пользователь не найден';
     case 'auth/too-many-requests':
       return 'Слишком много попыток, попробуйте позже';
+    case 'auth/invalid-email':
+      return 'Неправильный адрес электронной почты';
     case 'auth/email-already-exists':
-      return 'Пользователь с таким адресом уже существует';
-    case 'PERMISSION_DENIED':
-      return 'У вас недостаточно прав для данной операции';
+    case 'auth/email-already-in-use':
+      return 'Пользователь с таким адресом почты уже существует';
+
     case 'storage/unauthorized':
       return 'У вас недостаточно прав для данной операции';
-    case 'storage/retry-limit-exceeded':
-      return 'Превышен лимит ожидания, попробуйте снова';
     case 'storage/retry-limit-exceeded':
       return 'Превышен лимит ожидания, попробуйте снова';
     case 'storage/quota-exceeded':
       return 'В хранилище закончилось место, свяжитесь с поддержкой';
 
     default:
-      return 'Произошла неизвестная ошибка';
+      return string;
   }
 }
-export default errors;
