@@ -102,7 +102,6 @@ function GlobalSvgSelector({ id }) {
       return (
         <svg
           fill="none"
-          stroke="#000"
           strokeLinecap="round"
           strokeLinejoin="round"
           strokeWidth="2"

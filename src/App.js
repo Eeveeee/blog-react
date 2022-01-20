@@ -1,39 +1,32 @@
 import { initializeApp } from 'firebase/app';
-import {
-  doc,
-  getDoc,
-  getFirestore,
-  serverTimestamp,
-  setDoc,
-  getDocs,
-  collection,
-} from 'firebase/firestore';
-import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import React, { useEffect } from 'react';
 import 'react-perfect-scrollbar/dist/css/styles.css';
 import { Redirect, Route, Switch, useHistory } from 'react-router-dom';
-import { NotificationsContext } from './context/context';
+import { NotificationsContext, UserContext } from './context/context';
 import firebaseConfig from './global/firebaseConfig';
+import { useAuthState } from './hooks/useAuthState';
 import { Add } from './pages/Add/containers/Add';
+import { Edit } from './pages/Edit/containers/Edit';
 import { Home } from './pages/Home/containers/Home';
 import { Post } from './pages/Post/containers/Post';
 import { Profile } from './pages/Profile/containers/Profile';
+import { ProfileSettings } from './pages/ProfileSettings/containers/ProfileSettings';
 import { SignIn } from './pages/SignIn/containers/SignIn';
 import { SignUp } from './pages/SignUp/containers/SignUp';
+import { getUserPublic } from './services/UserService';
 import { Footer } from './shared/Footer/Footer';
 import { Header } from './shared/Header/containers/Header';
+import { Loader } from './shared/Loader/Loader';
 import { Notifications } from './shared/Notifications/containers/Notifications';
 import s from './styles/global.module.scss';
-import { useAuthState } from './hooks/useAuthState';
-import { Loader } from './shared/Loader/Loader';
-import { getPostsAmount } from './services/PostsService';
 
 const app = initializeApp(firebaseConfig);
 
 function App() {
   const history = useHistory();
+  const auth = useAuthState();
   const [notifications, setNotifications] = React.useState([]);
-  getPostsAmount(15);
+  const [user, setUser] = React.useState({ state: 'fetching', value: null });
   function addNotification({ type, message }, time = 5000) {
     const notificationObject = { type, message, createdAt: Date.now() };
     setNotifications((notifications) => {
@@ -47,34 +40,70 @@ function App() {
       );
     }, time);
   }
-
-  const auth = useAuthState();
+  // useEffect(() => {
+  //   async function fetchUser() {
+  //     if (user.value === 'fetching') {
+  //       getUserPublic(auth.user.uid)
+  //         .then((data) => {
+  //           if (data) {
+  //             setUser({ state: 'publicUser', value: data });
+  //             return;
+  //           }
+  //           setUser({ state: 'privateUser', value: auth.currentUser });
+  //         })
+  //         .catch((err) => {
+  //           console.errors(err);
+  //           addNotification(
+  //             {
+  //               type: 'error',
+  //               message: 'Ошибка загрузки пользователя',
+  //             },
+  //             3000
+  //           );
+  //         });
+  //     }
+  //   }
+  // }, []);
   if (auth.state === 'auth') {
     return (
       <div className="App">
         <div className={s.globalContainer}>
-          <NotificationsContext.Provider value={{ addNotification }}>
-            <Notifications notifications={notifications} />
-            <Header />
-            <Switch>
-              <Route exact history={history} path="/add" component={Add} />
-              <Route
-                exact
-                history={history}
-                path="/profile/:id"
-                component={Profile}
-              />
-              <Route
-                exact
-                history={history}
-                path="/posts/:id"
-                component={Post}
-              />
-              <Route exact history={history} path="/home" component={Home} />
-              <Redirect from="/" to="/home" />
-            </Switch>
-            <Footer />
-          </NotificationsContext.Provider>
+          <UserContext.Provider value={{ addNotification }}>
+            <NotificationsContext.Provider value={{ addNotification }}>
+              <Notifications notifications={notifications} />
+              <Header />
+              <Switch>
+                <Route exact history={history} path="/add" component={Add} />
+                <Route
+                  exact
+                  history={history}
+                  path="/profile/settings/"
+                  component={ProfileSettings}
+                />
+                <Route
+                  exact
+                  history={history}
+                  path="/profile/:id"
+                  component={Profile}
+                />
+                <Route
+                  exact
+                  history={history}
+                  path="/post/:id"
+                  component={Post}
+                />
+                <Route
+                  exact
+                  history={history}
+                  path="/post/edit/:id"
+                  component={Edit}
+                />
+                <Route exact history={history} path="/home" component={Home} />
+                <Redirect from="/" to="/home" />
+              </Switch>
+              <Footer />
+            </NotificationsContext.Provider>
+          </UserContext.Provider>
         </div>
       </div>
     );
@@ -106,7 +135,7 @@ function App() {
               <Route
                 exact
                 history={history}
-                path="/posts/:id"
+                path="/post/:id"
                 component={Post}
               />
               <Redirect from="/" to="/home" />

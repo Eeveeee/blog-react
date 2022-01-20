@@ -3,15 +3,19 @@
 .info {
   @include flex(column, flex-start, flex-start);
   width: 300px;
+  max-width: 300px;
+  min-width: 300px;
   border-radius: 10px;
   border: 2px solid $clr-gray-main;
   padding: 10px;
   margin-right: 20px;
+  position: relative;
 }
 .imageWrapper {
   align-self: center;
   @include wh(200px, 200px);
   margin-bottom: 20px;
+  pointer-events: none;
 }
 .outer {
   @include flex($justify: space-between);
@@ -20,6 +24,18 @@
   font-weight: 600;
   font-size: 20px;
   margin-bottom: 10px;
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+  max-width: 100%;
+  text-align: center;
+  width: 100%;
+  &Block {
+    width: 100%;
+  }
+  &Edit {
+    padding: 15px 0;
+    font-size: 15px;
+  }
 }
 .infoField {
   &:nth-last-of-type(n + 2) {
@@ -29,5 +45,32 @@
     font-weight: 600;
   }
 }
-.createdAt {
+.edit {
+  cursor: pointer;
+  @include wh(30px, 30px);
+  padding: 2.5px;
+  border-radius: 3px;
+  position: absolute;
+  right: 5px;
+  top: 5px;
+  stroke: black;
+  &Username {
+    max-width: 100%;
+    min-height: fit-content;
+    height: fit-content;
+    resize: none;
+    overflow: hidden;
+  }
+  &.active {
+    stroke: white;
+    background: green;
+  }
+  @media (min-width: $size-laptop) {
+    &:hover {
+      background: $clr-gray-main;
+      svg {
+        stroke: white;
+      }
+    }
+  }
 }

@@ -32,9 +32,10 @@ export function useUserData() {
               setState({ value: 'success', data: res });
               return;
             }
-            setState({ value: 'failure', data: false });
+            setState({ value: 'failure', data: auth.user });
           })
           .catch((err) => {
+            console.error(err);
             setState({ value: 'failure', data: false });
           });
       }

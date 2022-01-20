@@ -1,17 +1,22 @@
 import classNames from 'classnames';
 import React from 'react';
+import GlobalSvgSelector from '../../../../assets/icons/global/GlobalSvgSelector';
 import { RoundedImage } from '../../../../shared/RoundedImage/RoundedImage';
 import { getMediaLink } from '../../../../utils/mediaHelper';
 import { timestampToDate, timestampToTime } from '../../../../utils/time';
 import s from './Info.module.scss';
 
 export function Info({ user, postsAmount }) {
-  const { username, role, createdAt, photoURL, posts, email } = user;
+  const { username, role, createdAt, photoURL, email } = user;
   return (
     <div className={s.info}>
+      <div className={s.edit}>
+        <GlobalSvgSelector id={'edit'} />
+      </div>
       <div className={s.imageWrapper}>
         <RoundedImage src={getMediaLink(photoURL)} />
       </div>
+
       <div className={s.username}>{username}</div>
       {email && (
         <div className={classNames(s.email, s.infoField)}>

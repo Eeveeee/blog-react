@@ -1,0 +1,10 @@
+@import "../../styles/mixins.scss";
+@import "../../styles/variables.scss";
+.counter {
+  user-select: none;
+  .current {
+    &.over {
+      color: red;
+    }
+  }
+}

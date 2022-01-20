@@ -13,6 +13,7 @@ import {
   startAt,
   serverTimestamp,
   setDoc,
+  deleteDoc,
 } from 'firebase/firestore';
 
 export async function getPost(id) {
@@ -51,4 +52,8 @@ export async function writePost(id, post) {
     updatedAt: serverTimestamp(),
     ...post,
   });
+}
+export async function deletePost(id) {
+  const db = getFirestore();
+  await deleteDoc(doc(db, 'posts', id));
 }

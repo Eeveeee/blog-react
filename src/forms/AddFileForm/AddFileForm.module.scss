@@ -1,0 +1,39 @@
+@import "../../styles/mixins.scss";
+@import "../../styles/variables.scss";
+
+.input {
+  &Block {
+    margin: 10px 0;
+    position: relative;
+    @media (min-width: $size-laptop) {
+      &:hover {
+        .inputFake {
+          background: $clr-gray-main;
+          color: white;
+        }
+      }
+    }
+  }
+  &File {
+    cursor: pointer;
+    position: absolute;
+    @include allwh(100%, 100%);
+    opacity: 0;
+    width: 0;
+    height: 0;
+    &::-webkit-file-upload-button {
+      visibility: hidden;
+    }
+  }
+
+  &Fake {
+    transition: 0.1s;
+    font-size: 18px;
+    cursor: pointer;
+    @include wh(100%, 30px);
+    padding: 0;
+    background: white;
+    border: 2px solid $clr-gray-main;
+    border-radius: 5px;
+  }
+}

@@ -1,0 +1,27 @@
+@import "../../../styles/mixins.scss";
+@import "../../../styles/variables.scss";
+.modal {
+  background: white;
+  border-radius: 5px;
+  border: 1px solid $clr-gray-main;
+  @include wh(40vw, fit-content);
+  padding: 30px;
+  -webkit-box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
+  -moz-box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
+
+  &Block {
+    width: 0;
+    height: 0;
+    overflow: hidden;
+    user-select: auto;
+    pointer-events: auto;
+    @include flex();
+    z-index: 9998;
+    top: 0;
+    right: 0;
+    position: fixed;
+    @include wh(100vw, 100vh);
+    background: rgba(black, 0.4);
+  }
+}

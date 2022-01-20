@@ -7,6 +7,7 @@ import { getAuth } from '@firebase/auth';
 import { Info } from '../components/Info/Info';
 import { Posts } from '../components/Posts/Posts';
 import { NotificationsContext } from '../../../context/context';
+import { errors } from '../../../global/errors';
 
 export function Profile() {
   const history = useHistory();
@@ -16,28 +17,28 @@ export function Profile() {
 
   const auth = getAuth();
   const { id } = useParams();
-  const isSelf = id === 'my';
   useEffect(() => {
-    async function getSelfProfile() {
-      const { email } = auth.currentUser;
-      const userPublic = await getUserPublic(auth.currentUser.uid);
-      return { ...userPublic, email };
-    }
+    let isAlive = true;
     async function fetchData() {
       try {
-        if (isSelf && !auth.currentUser) {
+        setUserInfo({ state: 'fetching', value: null });
+        const info = await getUserPublic(id);
+        if (!isAlive) {
+          return;
+        }
+        if (!info) {
+          addNotification({
+            type: 'error',
+            message: 'Профиль удалён или ещё не создан',
+          });
           history.push('/home');
           return;
         }
-        setUserInfo({ state: 'fetching', value: null });
-        if (isSelf) {
-          const info = await getSelfProfile();
-          setUserInfo({ state: 'success', value: info });
-        } else {
-          const info = await getUserPublic(id);
-          setUserInfo({ state: 'success', value: info });
-        }
+        setUserInfo({ state: 'success', value: info });
       } catch (err) {
+        if (!isAlive) {
+          return;
+        }
         console.error(err);
         setUserInfo({ state: 'failure', value: null });
         addNotification({
@@ -47,28 +48,32 @@ export function Profile() {
       }
     }
     fetchData();
-  }, [addNotification, history, auth.currentUser, id, isSelf]);
-
+    return () => {
+      isAlive = false;
+    };
+  }, [addNotification, history, auth, id]);
   useEffect(() => {
     async function fetchData() {
-      if (!userInfo?.uid) {
-        return;
-      }
+      setPosts({ state: 'fetching', value: null });
       try {
-        setPosts({ state: 'fetching', value: null });
-        const userPosts = await getUserPosts(userInfo.uid);
+        const userPosts = await getUserPosts(userInfo.value.id);
         setPosts({ state: 'success', value: userPosts });
       } catch (err) {
         setPosts({ state: 'failure', value: null });
+        console.error(err);
         addNotification({
           type: 'error',
-          message: 'Произошла ошибка при загрузке постов, попробуйте позже',
+          message: errors(
+            err.code,
+            'Произошла ошибка при загрузке постов, попробуйте позже'
+          ),
         });
       }
     }
-    fetchData();
-  }, [userInfo]);
-
+    if (posts.state === 'init' && userInfo.state === 'success') {
+      fetchData();
+    }
+  }, [userInfo, addNotification, posts]);
   return (
     <div className={s.profile}>
       <div className={s.container}>

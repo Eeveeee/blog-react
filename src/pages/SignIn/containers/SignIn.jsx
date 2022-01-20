@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { NotificationsContext } from '../../../context/context';
-import errors from '../../../global/errors';
+import { errors } from '../../../global/errors';
 import { signIn } from '../../../services/AuthService';
 import { SignInForm } from '../components/LoginForm/SignInForm';
 import s from './SignIn.module.scss';
@@ -25,7 +25,7 @@ export function SignIn() {
         setLoading(false);
         addNotification({
           type: 'error',
-          message: errors(err.code),
+          message: errors(err.code, errors(err.code, 'Ошибка входа')),
         });
       });
   }

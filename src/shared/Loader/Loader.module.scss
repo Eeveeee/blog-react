@@ -1,7 +1,9 @@
 @import "../../styles/mixins.scss";
 @import "../../styles/variables.scss";
 .loader {
+  pointer-events: none;
   @include flex();
+  @include wh(50px, 50px);
 }
 .ldsSpinner {
   display: inline-block;
