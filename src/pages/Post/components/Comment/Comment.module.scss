@@ -94,6 +94,11 @@
     }
   }
 }
+.return {
+  svg {
+    stroke: $clr-gray-main;
+  }
+}
 .edit {
   stroke: black;
   @media (min-width: $size-laptop) {

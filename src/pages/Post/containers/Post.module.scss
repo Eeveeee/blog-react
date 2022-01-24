@@ -53,7 +53,7 @@
   @include flex();
   border-radius: 3px;
   background: white;
-  color: $clr-gray-main;
+  color: black;
   @media (min-width: $size-laptop) {
     transition: 0.2s;
     &:hover {

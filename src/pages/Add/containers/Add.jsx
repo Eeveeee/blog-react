@@ -15,11 +15,10 @@ export function Add() {
   const { addNotification } = useContext(NotificationsContext);
 
   async function uploadPost(props) {
-    const postModel = { ...props };
-    const auth = getAuth();
+    const transliteration = transliterationToEng(props.title);
+    const postModel = { ...props, transliteration };
+    const postId = uuidv4();
     const imageLinks = [];
-    const postPrefix = transliterationToEng(postModel.title);
-    const postId = postPrefix + '_' + uuidv4();
     if (postModel.previewImage) {
       postModel.previewImage = await uploadToStorage(
         postModel.previewImage,

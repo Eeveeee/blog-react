@@ -7,8 +7,7 @@ import { NotificationsContext } from '../../../context/context';
 import { getPostsAmount } from '../../../services/PostsService';
 
 export function Home() {
-  const [posts, setPosts] = React.useState([]);
-  const [loading, setLoading] = React.useState(true);
+  const [posts, setPosts] = React.useState({ state: 'fetching', value: null });
   const [postsAmount, setPostsAmount] = React.useState(15);
   const { addNotification } = useContext(NotificationsContext);
   useEffect(() => {
@@ -19,9 +18,10 @@ export function Home() {
           return;
         }
         if (res.length) {
-          setPosts(res);
+          setPosts({ state: 'success', value: res });
+          return;
         }
-        setLoading(false);
+        setPosts({ state: 'success', value: [] });
       })
       .catch((error) => {
         if (!isAlive) {
@@ -32,20 +32,19 @@ export function Home() {
           type: 'error',
           message: 'Возникла ошибка загрузки постов, повторите попытку позже',
         });
-        setLoading(false);
+        setPosts({ state: 'failure', value: null });
       });
     return () => {
       isAlive = false;
     };
   }, [addNotification, postsAmount]);
-
   return (
     <div className={s.home}>
       <div className={s.container}>
-        {loading ? (
+        {posts.state === 'fetching' ? (
           <Loader />
-        ) : posts.length ? (
-          <Feed posts={posts} />
+        ) : posts.state === 'success' && posts.value.length ? (
+          <Feed posts={posts.value} />
         ) : (
           'Посты ещё не созданы'
         )}

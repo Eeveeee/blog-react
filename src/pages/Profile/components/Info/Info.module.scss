@@ -20,6 +20,9 @@
 .outer {
   @include flex($justify: space-between);
 }
+.creation {
+  width: 100%;
+}
 .username {
   font-weight: 600;
   font-size: 20px;
@@ -44,6 +47,10 @@
   &Title {
     font-weight: 600;
   }
+}
+.fieldValue {
+  overflow-wrap: anywhere;
+  word-break: break-all;
 }
 .edit {
   cursor: pointer;
