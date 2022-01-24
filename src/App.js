@@ -40,35 +40,41 @@ function App() {
       );
     }, time);
   }
-  // useEffect(() => {
-  //   async function fetchUser() {
-  //     if (user.value === 'fetching') {
-  //       getUserPublic(auth.user.uid)
-  //         .then((data) => {
-  //           if (data) {
-  //             setUser({ state: 'publicUser', value: data });
-  //             return;
-  //           }
-  //           setUser({ state: 'privateUser', value: auth.currentUser });
-  //         })
-  //         .catch((err) => {
-  //           console.errors(err);
-  //           addNotification(
-  //             {
-  //               type: 'error',
-  //               message: 'Ошибка загрузки пользователя',
-  //             },
-  //             3000
-  //           );
-  //         });
-  //     }
-  //   }
-  // }, []);
+  useEffect(() => {
+    async function fetchUser() {
+      if (!auth.user) {
+        setUser({ state: 'unauth', value: null });
+        return;
+      }
+      getUserPublic(auth.user.uid)
+        .then((data) => {
+          if (data) {
+            setUser({
+              state: 'fullUser',
+              value: { ...auth.user, ...data },
+            });
+            return;
+          }
+          setUser({ state: 'privateUser', value: auth.user });
+        })
+        .catch((err) => {
+          console.error(err);
+          if (auth.currentUser) {
+            setUser({ state: 'privateUser', value: auth.user });
+            return;
+          }
+          setUser({ state: 'unauth', value: null });
+        });
+    }
+    if (auth.state !== 'init' && user.state === 'fetching') {
+      fetchUser();
+    }
+  }, [auth, user]);
   if (auth.state === 'auth') {
     return (
       <div className="App">
         <div className={s.globalContainer}>
-          <UserContext.Provider value={{ addNotification }}>
+          <UserContext.Provider value={{ user, setUser }}>
             <NotificationsContext.Provider value={{ addNotification }}>
               <Notifications notifications={notifications} />
               <Header />
@@ -89,15 +95,10 @@ function App() {
                 <Route
                   exact
                   history={history}
-                  path="/post/:id"
-                  component={Post}
-                />
-                <Route
-                  exact
-                  history={history}
                   path="/post/edit/:id"
                   component={Edit}
                 />
+                <Route history={history} path="/post/:id/" component={Post} />
                 <Route exact history={history} path="/home" component={Home} />
                 <Redirect from="/" to="/home" />
               </Switch>
@@ -112,36 +113,33 @@ function App() {
     return (
       <div className="App">
         <div className={s.globalContainer}>
-          <NotificationsContext.Provider value={{ addNotification }}>
-            <Notifications notifications={notifications} />
-            <Header />
-            <Switch>
-              <Route exact history={history} path="/home" component={Home} />
-              <Route
-                exact
-                history={history}
-                path="/signIn"
-                component={SignIn}
-              />
-              <Route exact history={history} path="/signup">
-                <SignUp />
-              </Route>
-              <Route
-                exact
-                history={history}
-                path="/profile/:id"
-                component={Profile}
-              />
-              <Route
-                exact
-                history={history}
-                path="/post/:id"
-                component={Post}
-              />
-              <Redirect from="/" to="/home" />
-            </Switch>
-            <Footer />
-          </NotificationsContext.Provider>
+          <UserContext.Provider value={{ user, setUser }}>
+            <NotificationsContext.Provider value={{ addNotification }}>
+              <Notifications notifications={notifications} />
+              <Header />
+              <Switch>
+                <Route exact history={history} path="/home" component={Home} />
+                <Route
+                  exact
+                  history={history}
+                  path="/signIn"
+                  component={SignIn}
+                />
+                <Route exact history={history} path="/signup">
+                  <SignUp />
+                </Route>
+                <Route
+                  exact
+                  history={history}
+                  path="/profile/:id"
+                  component={Profile}
+                />
+                <Route history={history} path="/post/:id/" component={Post} />
+                <Redirect from="/" to="/home" />
+              </Switch>
+              <Footer />
+            </NotificationsContext.Provider>
+          </UserContext.Provider>
         </div>
       </div>
     );

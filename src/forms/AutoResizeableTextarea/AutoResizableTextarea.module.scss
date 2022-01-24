@@ -1,0 +1,24 @@
+@import "../../styles/mixins.scss";
+@import "../../styles/variables.scss";
+.textarea {
+  border-radius: 3px;
+  border: 1px solid black;
+  min-height: 70px;
+  font-size: 18px;
+  overflow: hidden;
+  font-weight: 500;
+  padding: 5px 5px 20px;
+  width: 100%;
+  resize: none;
+  overflow-wrap: anywhere;
+}
+.wrapper {
+  position: relative;
+  width: 100%;
+}
+.counterWrapper {
+  position: absolute;
+  left: 5px;
+  bottom: 5px;
+  pointer-events: none;
+}

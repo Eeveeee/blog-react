@@ -6,8 +6,9 @@ export const limits = {
   username: 50,
   fileSize: 10,
   comment: 2500,
+  commentPreview: 300,
   title: 100,
-  subtitle: 200,
+  subtitle: 400,
   subtitlePreview: 150,
   content: 35000,
 };

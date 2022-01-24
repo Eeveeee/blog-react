@@ -24,10 +24,14 @@ export function Comments({ postData }) {
   });
   const { addNotification } = useContext(NotificationsContext);
   useEffect(() => {
+    let isAlive = true;
     if (comments.state === 'fetching') {
       async function fetchData() {
         getCommentsAmount(postData.id, commentsAmount)
           .then((res) => {
+            if (!isAlive) {
+              return;
+            }
             if (res.length !== commentsAmount) {
               setIsShowMore(false);
             }
@@ -39,6 +43,9 @@ export function Comments({ postData }) {
             });
           })
           .catch((err) => {
+            if (!isAlive) {
+              return;
+            }
             console.error(err);
             addNotification({
               type: 'error',
@@ -49,6 +56,9 @@ export function Comments({ postData }) {
       }
       fetchData();
     }
+    return () => {
+      isAlive = false;
+    };
   }, [postData, commentsAmount, comments, addNotification, isShowMore]);
   async function addComment(form, content) {
     addPostComment(postData.id, content)
@@ -101,24 +111,23 @@ export function Comments({ postData }) {
       });
   }
   async function onCommentUpdate(id, newContent) {
-    editComment(id, newContent)
-      .then(() => {
-        addNotification({
-          type: 'success',
-          message: 'Комментарий изменён',
-        });
-        setComments((comments) => ({
-          state: 'fetching',
-          value: comments.value,
-        }));
-      })
-      .catch((err) => {
-        console.error(err);
-        addNotification({
-          type: 'error',
-          message: 'Ошибка изменения комментария',
-        });
+    try {
+      await editComment(id, newContent);
+      addNotification({
+        type: 'success',
+        message: 'Комментарий изменён',
       });
+      setComments((comments) => ({
+        state: 'fetching',
+        value: comments.value,
+      }));
+    } catch (err) {
+      console.error(err);
+      addNotification({
+        type: 'error',
+        message: 'Ошибка изменения комментария',
+      });
+    }
   }
 
   return (

@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import { getAuth, updateEmail, updatePassword } from 'firebase/auth';
 import React, { useContext, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
-import { NotificationsContext } from '../../../context/context';
+import { NotificationsContext, UserContext } from '../../../context/context';
 import { AddFileForm } from '../../../forms/AddFileForm/AddFileForm';
 import { EditableTextInput } from '../../../forms/EditableTextInput/EditableTextInput';
 import { ImagePreview } from '../../../forms/ImagePreview/ImagePreview';
@@ -25,41 +25,17 @@ export function ProfileSettings() {
     username: 'Имя пользователя',
     email: 'Почта',
   };
+  console.log('Settings');
   const auth = getAuth();
   const history = useHistory();
   const { addNotification } = useContext(NotificationsContext);
-  const [userData, setUserData] = useState({ state: 'fetching', value: null });
+  const { user, setUser } = useContext(UserContext);
   const [authModal, setAuthModal] = useState({ state: false, onConfirm: null });
   const [changePasswordModal, setChangePasswordModal] = useState(false);
   useEffect(() => {
-    async function fetchData() {
-      try {
-        const publicData = await getUserPublic(auth.currentUser.uid);
-        const privateData = auth.currentUser;
-        const combined = privateFields.reduce(
-          (acc, field) => {
-            if (privateData.hasOwnProperty(field)) {
-              acc[field] = privateData[field];
-            }
-            return acc;
-          },
-          { ...publicData }
-        );
-        setUserData(() => ({
-          state: 'success',
-          value: combined,
-        }));
-      } catch (err) {
-        addNotification({
-          type: 'error',
-          message: errors(err.code, 'Произошла ошибка загрузки пользователя'),
-        });
-      }
-    }
-    if (userData.state === 'fetching') {
-      fetchData();
-    }
-  }, [auth, userData, addNotification, privateFields]);
+    setUser((user) => ({ ...user, state: 'fetching' }));
+  }, [setUser]);
+  console.log(user);
   function removeProfilePicture() {
     updateUserPublic(auth.currentUser.uid, { photoURL: null })
       .then(() => {
@@ -116,7 +92,7 @@ export function ProfileSettings() {
     changeProfilePicture(profilePicture);
   }
   function changeUsernameHandler(username) {
-    if (username === userData.value?.username) {
+    if (username === user.value?.username) {
       addNotification({
         type: 'danger',
         message: 'Имя не может совпадать со старым',
@@ -132,10 +108,7 @@ export function ProfileSettings() {
     });
   }
   function reloadUserData() {
-    setUserData({
-      state: 'fetching',
-      value: null,
-    });
+    setUser((user) => ({ ...user, state: 'fetching' }));
   }
   function changeUsername(username) {
     updateUserPublic(auth.currentUser.uid, { username: username })
@@ -249,7 +222,7 @@ export function ProfileSettings() {
       )}
       <div className={s.container}>
         <div className={s.outer}>
-          {userData.state === 'fetching' ? (
+          {user.state === 'fetching' ? (
             <Loader />
           ) : (
             <div className={s.wrapper}>
@@ -259,7 +232,7 @@ export function ProfileSettings() {
                   <div className={s.inputTitle}> Фотография профиля</div>
                   <div className={s.imagePreviewBlock}>
                     <div className={s.previewWrapper}>
-                      <ImagePreview file={userData.value.photoURL} />
+                      <ImagePreview file={user.value.photoURL} />
                     </div>
                     <div className={s.photoManage}>
                       <AddFileForm
@@ -267,7 +240,7 @@ export function ProfileSettings() {
                         text={'Сменить'}
                         multiple={false}
                       />
-                      {userData.value.photoURL && (
+                      {user.value.photoURL && (
                         <button
                           onClick={removeProfilePicture}
                           className={s.photoButton}
@@ -282,7 +255,7 @@ export function ProfileSettings() {
                   <div className={s.inputTitle}>Имя пользователя</div>
                   <EditableTextInput
                     limit={limits.username}
-                    defaultValue={userData.value.username}
+                    defaultValue={user.value.username}
                     setFoo={changeUsernameHandler}
                     name={'username'}
                     autoComplete="name"
@@ -295,7 +268,7 @@ export function ProfileSettings() {
                   <div className={s.inputTitle}>Электронная почта</div>
                   <EditableTextInput
                     limit={limits.email}
-                    defaultValue={userData.value.email}
+                    defaultValue={user.value.email}
                     setFoo={changeEmailHandler}
                     type={'email'}
                     name={'email'}

@@ -2,7 +2,7 @@ import { getAuth } from '@firebase/auth';
 import React, { useContext, useEffect } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import GlobalSvgSelector from '../../../assets/icons/global/GlobalSvgSelector';
-import { NotificationsContext } from '../../../context/context';
+import { NotificationsContext, UserContext } from '../../../context/context';
 import { useAuthState } from '../../../hooks/useAuthState';
 import { useUserData } from '../../../hooks/useUserData';
 import { signOutCurrentUser } from '../../../services/AuthService';
@@ -12,8 +12,8 @@ import s from './Header.module.scss';
 
 export function Header() {
   const { addNotification } = useContext(NotificationsContext);
+  const { user } = useContext(UserContext);
   const auth = useAuthState();
-  const user = useUserData();
   const history = useHistory();
   function signOut() {
     const auth = getAuth();
@@ -45,7 +45,7 @@ export function Header() {
         <Navigation routes={routes} />
       )}
       <div className={s.profileWrapper}>
-        {auth.state === 'auth' && <Profile user={user.data} />}
+        {auth.state === 'auth' && <Profile user={user.value} />}
         {auth.state === 'auth' ? (
           <button onClick={signOut} className={s.signOut}>
             <GlobalSvgSelector id={'signOut'} />

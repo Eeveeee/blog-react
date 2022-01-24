@@ -7,7 +7,7 @@ import s from './Profile.module.scss';
 export function Profile({ user }) {
   return (
     <div className={s.profile}>
-      <Link to={`/profile/${user?.uid}`} className={s.imageWrapper}>
+      <Link to={`/profile/my`} className={s.imageWrapper}>
         <RoundedImage src={getMediaLink(user?.photoURL || null)} />
       </Link>
     </div>

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import s from './Profile.module.scss';
 import { Loader } from '../../../shared/Loader/Loader';
 import { getUserPosts, getUserPublic } from '../../../services/UserService';
@@ -6,7 +6,7 @@ import { useHistory, useParams, useRouteMatch } from 'react-router';
 import { getAuth } from '@firebase/auth';
 import { Info } from '../components/Info/Info';
 import { Posts } from '../components/Posts/Posts';
-import { NotificationsContext } from '../../../context/context';
+import { NotificationsContext, UserContext } from '../../../context/context';
 import { errors } from '../../../global/errors';
 
 export function Profile() {
@@ -14,18 +14,23 @@ export function Profile() {
   const [userInfo, setUserInfo] = useState({ state: 'init', value: null });
   const [posts, setPosts] = useState({ state: 'init', value: null });
   const { addNotification } = useContext(NotificationsContext);
-
+  const { user, setUser } = useContext(UserContext);
   const auth = getAuth();
   const { id } = useParams();
   useEffect(() => {
-    let isAlive = true;
     async function fetchData() {
       try {
+        const isSelf = id === 'my';
         setUserInfo({ state: 'fetching', value: null });
-        const info = await getUserPublic(id);
-        if (!isAlive) {
+        if (isSelf && !auth.currentUser) {
+          addNotification({
+            type: 'error',
+            message: 'У вас нет своего профиля',
+          });
+          history.push('/home');
           return;
         }
+        const info = await getUserPublic(isSelf ? auth?.currentUser?.uid : id);
         if (!info) {
           addNotification({
             type: 'error',
@@ -36,9 +41,6 @@ export function Profile() {
         }
         setUserInfo({ state: 'success', value: info });
       } catch (err) {
-        if (!isAlive) {
-          return;
-        }
         console.error(err);
         setUserInfo({ state: 'failure', value: null });
         addNotification({
@@ -47,11 +49,10 @@ export function Profile() {
         });
       }
     }
-    fetchData();
-    return () => {
-      isAlive = false;
-    };
-  }, [addNotification, history, auth, id]);
+    if (userInfo.state === 'init' && user.state !== 'fetching') {
+      fetchData();
+    }
+  }, [addNotification, auth, history, id, user, userInfo]);
   useEffect(() => {
     async function fetchData() {
       setPosts({ state: 'fetching', value: null });

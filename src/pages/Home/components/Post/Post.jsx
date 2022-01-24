@@ -14,13 +14,14 @@ export function Post({ data }) {
     subtitle,
     subtitlePreview,
     previewImage,
+    transliteration,
   } = data;
   const postCreated = `${timestampToDate(createdAt)} ${timestampToTime(
     createdAt
   )}`;
   return (
     <div className={s.post}>
-      <Link to={`/post/${id}`}>
+      <Link to={`/post/${id}/${transliteration || ''}`}>
         <div className={s.info}>
           <div className={s.id}>ID поста: {id}</div>
           <div className={s.userId}>ID пользователя: {authorId}</div>

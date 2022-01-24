@@ -39,6 +39,7 @@ export function Post() {
         return;
       }
       if (post) {
+        history.push(`/post/${post.id}/${post.transliteration}`);
         setAuthor(await getUserPublic(post.authorId));
         setPostData({
           state: 'success',
