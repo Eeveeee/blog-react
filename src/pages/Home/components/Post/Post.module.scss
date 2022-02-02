@@ -2,55 +2,81 @@
 @import "../../../../styles/variables.scss";
 
 .post {
-  @include wh(calc(calc(100% / 3) - 10px), auto);
-  margin-right: 15px;
-  background: black;
+  @include wh(calc((25% - 1.5%)), auto);
+  margin-right: 2%;
+  background: white;
+  border-radius: 5px;
+  display: flex;
+  padding-bottom: 5px;
+  flex-direction: column;
   color: white;
   margin-bottom: 20px;
-  position: relative;
   overflow-wrap: break-word;
   white-space: normal;
-  &:nth-of-type(3n) {
-    margin-right: 0;
-  }
+  border: 2px solid $clr-gray-main;
   @media (min-width: $size-laptop) {
+    &:nth-of-type(4n) {
+      margin-right: 0;
+    }
     cursor: pointer;
     transition: 0.2s;
     &:hover {
+      border-color: $clr-orange;
+      -webkit-box-shadow: 1px 1px 6px 0px $clr-orange;
+      -moz-box-shadow: 1px 1px 6px 0px $clr-orange;
+      box-shadow: 1px 1px 6px 0px $clr-orange;
       .title {
-        color: red;
+        color: $clr-orange;
       }
-      -webkit-box-shadow: 4px 4px 18px 0px black;
-      -moz-box-shadow: 4px 4px 18px 0px black;
-      box-shadow: 4px 4px 18px 0px black;
     }
   }
+  &.short {
+    border: 1px solid $clr-gray-main;
+  }
+  @media (max-width: $size-ipad) {
+    @include wh(calc((33% - 1%)), auto);
+    margin-right: 2%;
+    margin-bottom: 10px;
+    &:nth-of-type(3n) {
+      margin-right: 0;
+    }
+  }
+  @media (max-width: $size-phone-l) {
+    @include wh(100%, auto);
+    margin-right: 0;
+  }
+}
+
+.date {
+  font-size: 13px;
+  color: black;
+  margin-top: 15px;
+  padding-left: 5px;
+  justify-self: flex-end;
 }
 .subtitle {
-  font-size: 15px;
+  font-size: 12px;
   font-weight: 500;
 }
 .title {
   transition: 0.2s;
   font-weight: 600;
-  font-size: 30px;
-  margin-bottom: 10px;
+  font-size: 20px;
+  margin-bottom: 5px;
+  @media (max-width: $size-phone-l) {
+    font-size: 15px;
+  }
+}
+.wrapper {
+  width: 100%;
+  height: 100%;
+  display: block;
 }
 .textWrapper {
-  margin: 10px;
+  margin-top: 10px;
   padding: 5px;
   background: white;
   color: black;
-}
-.info {
-  color: red;
-  font-size: 13px;
-  background: rgba(black, 0.6);
-  padding: 5px;
-  z-index: 3;
-  position: absolute;
-  right: 0;
-  top: 0;
 }
 .image {
   max-width: 100%;

@@ -1,35 +1,20 @@
-import { getAuth } from 'firebase/auth';
 import {
-  collection,
   doc,
   getDoc,
-  getDocs,
   getFirestore,
-  query,
+  onSnapshot,
   serverTimestamp,
   setDoc,
   updateDoc,
-  where,
 } from 'firebase/firestore';
-
-export async function getUserPosts(uid) {
-  const db = getFirestore();
-  const ref = collection(db, 'posts');
-  const queryRef = query(ref, where('authorId', '==', uid));
-  const querySnapshot = await getDocs(queryRef);
-  const posts = querySnapshot.docs.map((snapshot) => ({
-    ...snapshot.data(),
-    id: snapshot.id,
-  }));
-  return posts;
-}
 
 export async function writeUserPublic(uid, userData) {
   const db = getFirestore();
   await setDoc(doc(db, 'users', uid), {
+    ...userData,
+    id: uid,
     createdAt: serverTimestamp(),
     updatedAt: serverTimestamp(),
-    ...userData,
   });
 }
 
@@ -37,7 +22,7 @@ export async function getUserPublic(uid) {
   const docRef = doc(getFirestore(), 'users', uid);
   const snapshot = await getDoc(docRef);
   if (snapshot.exists()) {
-    return { ...snapshot.data(), id: snapshot.id };
+    return { ...snapshot.data() };
   }
   return false;
 }
@@ -45,7 +30,21 @@ export async function updateUserPublic(uid, changes) {
   const db = getFirestore();
   const userRef = doc(db, 'users', uid);
   await updateDoc(userRef, {
-    updatedAt: serverTimestamp(),
     ...changes,
+    updatedAt: serverTimestamp(),
   });
+}
+export function subscribeToPublic(uid, onSuccess, onError) {
+  const db = getFirestore();
+  return onSnapshot(
+    doc(db, 'users', uid),
+    (doc) => {
+      if (doc.data()) {
+        onSuccess(doc.data());
+      }
+    },
+    (error) => {
+      onError(error);
+    }
+  );
 }

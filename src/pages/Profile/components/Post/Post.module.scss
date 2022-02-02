@@ -2,25 +2,43 @@
 @import "../../../../styles/variables.scss";
 
 .post {
-  @include wh(200px, auto);
-  margin-right: 15px;
-  background: black;
+  @include wh(calc(25% - 1.5%), auto);
+  margin-right: 2%;
+  background: white;
   color: white;
+  border: 2px solid $clr-gray-main;
+  border-radius: 5px;
   margin-bottom: 20px;
+  overflow: hidden;
   position: relative;
-  &:nth-of-type(4n) {
-    margin-right: 0;
-  }
   @media (min-width: $size-laptop) {
+    &:nth-of-type(4n) {
+      margin-right: 0;
+    }
     cursor: pointer;
     transition: 0.2s;
     &:hover {
       .title {
-        color: red;
+        color: $clr-orange;
       }
-      -webkit-box-shadow: 4px 4px 18px 0px black;
-      -moz-box-shadow: 4px 4px 18px 0px black;
-      box-shadow: 4px 4px 18px 0px black;
+      border-color: $clr-orange;
+    }
+  }
+  @media (max-width: $size-ipad) {
+    @include wh(calc((33% - 1%)), auto);
+    margin-right: 2%;
+    &:nth-of-type(3n) {
+      margin-right: 0;
+    }
+  }
+  @media (max-width: $size-phone-l) {
+    @include wh(calc((50% - 1%)), auto);
+    margin-right: 2%;
+    &:nth-of-type(3n) {
+      margin-right: 2%;
+    }
+    &:nth-of-type(2n) {
+      margin-right: 0;
     }
   }
 }
@@ -42,6 +60,16 @@
   background: white;
   color: black;
 }
+.date {
+  &:first-of-type {
+    margin-bottom: 5px;
+  }
+  &Title {
+    margin-bottom: 5px;
+    color: white;
+  }
+}
+
 .info {
   color: red;
   font-size: 13px;
@@ -51,6 +79,7 @@
   position: absolute;
   right: 0;
   top: 0;
+  width: 100%;
 }
 .image {
   max-width: 100%;

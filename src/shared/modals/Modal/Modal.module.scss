@@ -9,7 +9,12 @@
   -webkit-box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
   -moz-box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
   box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
-
+  @media (max-width: $size-ipad) {
+    width: 50vw;
+  }
+  @media (max-width: $size-phone-l) {
+    width: 98vw;
+  }
   &Block {
     width: 0;
     height: 0;

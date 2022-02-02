@@ -12,20 +12,14 @@ import { ImagePreview } from '../../../../forms/ImagePreview/ImagePreview';
 import { AddFileForm } from '../../../../forms/AddFileForm/AddFileForm';
 import { autoResize } from '../../../../utils/autoResize';
 import { limits as globalLimits } from '../../../../global/limits';
+import { postModel } from '../../../../models/postModel';
 export function AddPostForm({ onFormSubmit, isLoading }) {
   const types = ['image'];
   const maxFileSize = 10;
   const { addNotification } = useContext(NotificationsContext);
   const required = ['title', 'subtitle', 'content'];
   const limits = { ...globalLimits };
-  const [post, setPost] = useState({
-    title: null,
-    subtitle: null,
-    subtitlePreview: null,
-    content: null,
-    images: [],
-    previewImage: null,
-  });
+  const [post, setPost] = useState({ ...postModel });
   function checkLimits(post) {
     return !Object.keys(post).find((key) => {
       if (post[key]?.length > limits[key]) {

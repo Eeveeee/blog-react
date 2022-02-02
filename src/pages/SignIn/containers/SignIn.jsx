@@ -32,7 +32,7 @@ export function SignIn() {
 
   return (
     <div className={s.signIn}>
-      <div className={s.container}>
+      <div className="container">
         <SignInForm onLogin={loginUser} />
       </div>
     </div>

@@ -18,20 +18,19 @@ import {
  * @param {string} postId
  * @param {string} comment
  */
-export async function addPostComment(postId, comment) {
+export async function addPostComment(postId, authorId, comment) {
   const db = getFirestore();
   const ref = collection(db, 'comments');
   const auth = getAuth();
   if (!auth.currentUser) {
     throw new Error('not authorized');
   }
-  const authorId = auth.currentUser.uid;
   await addDoc(ref, {
+    postId,
+    authorId,
+    content: comment,
     createdAt: serverTimestamp(),
     updatedAt: serverTimestamp(),
-    postId,
-    content: comment,
-    authorId,
   });
 }
 /**

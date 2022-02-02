@@ -2,7 +2,6 @@
 @import "../../../../styles/variables.scss";
 .addPostForm {
   @include flex();
-  padding: 50px 0;
 }
 .inputImagePreviews {
   @include flex();

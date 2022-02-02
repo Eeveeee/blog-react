@@ -39,9 +39,3 @@ export async function reauthenticateUser(password) {
   const cred = EmailAuthProvider.credential(user.email, password);
   return reauthenticateWithCredential(user, cred);
 }
-// export async function reauthenticateUser(password) {
-//   const auth = getAuth();
-//   const user = auth.currentUser;
-//   await signIn(user.email, password);
-//   // await reauthenticateWithCredential(user, credentials);
-// }

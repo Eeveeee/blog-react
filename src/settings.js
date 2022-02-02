@@ -1,4 +1,4 @@
 export const settings = {
-  commentsToLoad: 10,
-  postsToLoad: 10,
+  commentsToLoad: 2,
+  postsToLoad: 6,
 };

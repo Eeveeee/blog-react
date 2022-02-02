@@ -1,25 +1,18 @@
-import React, { useEffect, useState, useContext } from 'react';
-import s from './SignUp.module.scss';
-import { getStorage, uploadBytes, ref, getDownloadURL } from 'firebase/storage';
-import { onAuthStateChanged } from 'firebase/auth';
-import { Loader } from '../../../shared/Loader/Loader';
+import React, { useContext, useState } from 'react';
+import { NotificationsContext } from '../../../context/context';
+import { errors } from '../../../global/errors';
+import { userModel } from '../../../models/userModel';
 import { signUp } from '../../../services/AuthService';
 import { uploadToStorage } from '../../../services/StorageService';
-import { SignUpForm } from '../components/SignUpForm/SignUpForm';
-import { getAuth, updateProfile } from '@firebase/auth';
-import { validateFile } from '../../../utils/fileValidation';
-import { readFile } from '../../../utils/fileReader';
-import { NotificationsContext } from '../../../context/context';
-import { passwordValidation } from '../../../utils/passwordValidation';
 import { writeUserPublic } from '../../../services/UserService';
-import { extensionsByType } from '../../../utils/extensionsByType';
-import { errors } from '../../../global/errors';
+import { Loader } from '../../../shared/Loader/Loader';
+import { SignUpForm } from '../components/SignUpForm/SignUpForm';
+import s from './SignUp.module.scss';
 
 export function SignUp({ setCurrentUser }) {
   const [loading, setLoading] = useState(false);
   const { addNotification } = useContext(NotificationsContext);
-  async function submit(form, password, email, username, image) {
-    const storage = getStorage();
+  async function submit(password, email, username, image) {
     try {
       const user = await signUp(email, password);
       addNotification(
@@ -32,7 +25,11 @@ export function SignUp({ setCurrentUser }) {
       const photoURL = image
         ? await uploadToStorage(image, 'users', user.uid)
         : false;
-      await writeUserPublic(user.uid, { username, photoURL });
+      await writeUserPublic(user.uid, {
+        ...userModel,
+        username,
+        photoURL,
+      });
     } catch (err) {
       addNotification({
         type: 'error',
@@ -45,7 +42,7 @@ export function SignUp({ setCurrentUser }) {
       {loading ? (
         <Loader />
       ) : (
-        <div className={s.container}>
+        <div className="container">
           <SignUpForm submit={submit} />
         </div>
       )}

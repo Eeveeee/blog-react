@@ -3,10 +3,7 @@
 .profileSettings {
   width: 100%;
 }
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-}
+
 .outer {
   @include flex();
   position: relative;

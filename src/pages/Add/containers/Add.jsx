@@ -1,4 +1,3 @@
-import { getAuth } from '@firebase/auth';
 import React, { useContext, useState } from 'react';
 import { useHistory } from 'react-router';
 import { v4 as uuidv4 } from 'uuid';
@@ -16,8 +15,8 @@ export function Add() {
 
   async function uploadPost(props) {
     const transliteration = transliterationToEng(props.title);
-    const postModel = { ...props, transliteration };
-    const postId = uuidv4();
+    const id = uuidv4();
+    const postModel = { ...props, transliteration, id };
     const imageLinks = [];
     if (postModel.previewImage) {
       postModel.previewImage = await uploadToStorage(
@@ -33,7 +32,7 @@ export function Add() {
       }
     }
     postModel.images = imageLinks.length ? imageLinks : [];
-    await writePost(postId, postModel);
+    await writePost(id, postModel);
   }
 
   function formSubmit(formData) {
@@ -55,7 +54,7 @@ export function Add() {
   }
   return (
     <div className={s.add}>
-      <div className={s.container}>
+      <div className="container">
         <AddPostForm onFormSubmit={formSubmit} isLoading={loading} />
       </div>
     </div>

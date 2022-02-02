@@ -11,6 +11,7 @@ import s from './EditForm.module.scss';
 import { ImagePreview } from '../../../../forms/ImagePreview/ImagePreview';
 import { AddFileForm } from '../../../../forms/AddFileForm/AddFileForm';
 import { limits as globalLimits } from '../../../../global/limits';
+import { AutoResizableTextarea } from '../../../../forms/AutoResizeableTextarea/AutoResizableTextarea';
 
 export function EditForm({ postData, onFormSubmit, isLoading }) {
   const types = ['image'];
@@ -57,7 +58,6 @@ export function EditForm({ postData, onFormSubmit, isLoading }) {
   }
   function formSubmitHandler(e) {
     e.preventDefault();
-    const form = e.target;
     const auth = getAuth();
     const formattedPost = getFormattedPost(post);
     const required = checkRequired(formattedPost);
@@ -82,9 +82,6 @@ export function EditForm({ postData, onFormSubmit, isLoading }) {
       ...formattedPost,
     };
     onFormSubmit(formData);
-  }
-  function inputClickHandler(e) {
-    e.target.style.border = `1px solid black`;
   }
   function handleNewFiles(files, input) {
     const filesArr = Array.from(files) || [];
@@ -132,15 +129,14 @@ export function EditForm({ postData, onFormSubmit, isLoading }) {
     e.preventDefault();
     setPost((post) => ({ ...post, previewImage: null }));
   }
-  function onInputChange(e) {
+  function onInputChange(value, e) {
     const input = e.currentTarget;
-    const type = input.name;
-    const inputVal = input.value;
-    if (type === 'content') {
+    const name = input.name;
+    if (name === 'content') {
       input.style.height = 'inherit';
       input.style.height = input.scrollHeight + 'px';
     }
-    setPost((post) => ({ ...post, [type]: inputVal }));
+    setPost((post) => ({ ...post, [name]: value }));
   }
   return (
     <div className={s.addPostForm}>
@@ -149,7 +145,13 @@ export function EditForm({ postData, onFormSubmit, isLoading }) {
           <span className={s.requiredMarker}>*</span>Заголовок:
         </div>
         <div className={s.inputWrapper}>
-          <div className={s.counterWrapper}>
+          <AutoResizableTextarea
+            limit={limits.title}
+            onInputCb={onInputChange}
+            value={post.title || ''}
+            name="title"
+          />
+          {/* <div className={s.counterWrapper}>
             <Counter current={post.title?.length} limit={limits.title} />
           </div>
           <input
@@ -161,12 +163,18 @@ export function EditForm({ postData, onFormSubmit, isLoading }) {
             onInput={onInputChange}
             type="text"
             defaultValue={post.title || ''}
-          />
+          /> */}
         </div>
         <div className={s.inputTitle}>
           <span className={s.requiredMarker}>*</span>Подзаголовок:
         </div>
-        <div className={s.inputWrapper}>
+        <AutoResizableTextarea
+          limit={limits.subtitle}
+          onInputCb={onInputChange}
+          value={post.subtitle || ''}
+          name="subtitle"
+        />
+        {/* <div className={s.inputWrapper}>
           <div className={s.counterWrapper}>
             <Counter current={post.subtitle?.length} limit={limits.subtitle} />
           </div>
@@ -180,10 +188,16 @@ export function EditForm({ postData, onFormSubmit, isLoading }) {
             type="text"
             defaultValue={post.subtitle || ''}
           />
-        </div>
+        </div> */}
         <div className={s.inputTitle}>Превью подзаголовка:</div>
         <div className={s.inputWrapper}>
-          <div className={s.counterWrapper}>
+          <AutoResizableTextarea
+            limit={limits.subtitlePreview}
+            onInputCb={onInputChange}
+            value={post.subtitlePreview || ''}
+            name="subtitlePreview"
+          />
+          {/* <div className={s.counterWrapper}>
             <Counter
               current={post.subtitlePreview?.length}
               limit={limits.subtitlePreview}
@@ -197,13 +211,19 @@ export function EditForm({ postData, onFormSubmit, isLoading }) {
             onInput={onInputChange}
             type="text"
             defaultValue={post.subtitlePreview || ''}
-          />
+          /> */}
         </div>
         <div className={s.inputTitle}>
           <span className={s.requiredMarker}>*</span>Содержание:
         </div>
         <div className={s.inputWrapper}>
-          <div className={s.counterWrapper}>
+          <AutoResizableTextarea
+            limit={limits.content}
+            onInputCb={onInputChange}
+            value={post.content || ''}
+            name="content"
+          />
+          {/* <div className={s.counterWrapper}>
             <Counter current={post.content?.length} limit={limits.content} />
           </div>
           <textarea
@@ -211,10 +231,9 @@ export function EditForm({ postData, onFormSubmit, isLoading }) {
             required
             name="content"
             defaultValue={post.content || ''}
-            onClick={inputClickHandler}
             onInput={onInputChange}
             className={classNames(s.input, s.inputText, s.textarea)}
-          />
+          /> */}
         </div>
         <div className={s.inputTitle}>Превью поста / шапка:</div>
         <div className={s.inputFileWarning}>

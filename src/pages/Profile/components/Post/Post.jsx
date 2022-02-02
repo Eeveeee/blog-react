@@ -17,8 +17,14 @@ export function Post({ post }) {
     <div className={s.post}>
       <Link to={`/post/${id}`}>
         <div className={s.info}>
-          <div className={s.created}>Пост создан: {postCreated}</div>
-          <div className={s.created}>Пост обновлён: {postUpdated}</div>
+          <div className={s.date}>
+            <div className={s.dateTitle}>Пост создан: </div>
+            {postCreated}
+          </div>
+          <div className={s.date}>
+            <div className={s.dateTitle}>Пост обновлён: </div>
+            {postUpdated}
+          </div>
         </div>
         <div className={s.content}>
           <div className={s.imageWrapper}>

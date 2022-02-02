@@ -28,17 +28,6 @@
   border-bottom: 2px solid white;
   font-size: 20px;
 }
-.removeImage {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  @include wh(80px, 80px);
-  border-radius: 50%;
-  background: white;
-  border: 3px solid black;
-  padding: 0;
-  cursor: pointer;
-}
 .edit {
   cursor: pointer;
   margin-bottom: 5px;
@@ -61,6 +50,10 @@
       color: white;
       border-color: white;
     }
+  }
+  @media (max-width: $size-laptop) {
+    position: static;
+    align-self: flex-end;
   }
 }
 
@@ -117,6 +110,10 @@
   max-width: 1200px;
   margin: 0 auto;
   z-index: 1;
+  @media (max-width: 1366px) {
+    max-width: 100%;
+    padding: 10px;
+  }
 }
 .mainContainer {
   width: 100%;

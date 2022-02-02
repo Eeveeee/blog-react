@@ -6,7 +6,6 @@ import s from './ImagePreview.module.scss';
 export function ImagePreview({ file }) {
   const [preview, setPreview] = useState(null);
   useEffect(() => {
-    console.log(file);
     if (typeof file === 'string') {
       setPreview(file);
       return;
