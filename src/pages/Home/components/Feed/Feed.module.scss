@@ -1,9 +1,8 @@
 @import "../../../../styles/mixins.scss";
 @import "../../../../styles/variables.scss";
 .feed {
-  padding: 20px;
-  @include flex($justify: flex-start, $wrap: wrap, $align: stretch);
   height: 100%;
   width: 100%;
   overflow-y: auto;
+  @include flex($justify: flex-start, $wrap: wrap, $align: stretch);
 }

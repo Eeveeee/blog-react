@@ -1,6 +1,6 @@
 import React from 'react';
 import s from './Button.module.scss';
-function Button({ text = 'Отправить', id, styles }) {
+function Button({ text = 'Отправить', styles = '', id }) {
   switch (id) {
     case 'submitForm_1':
       return (

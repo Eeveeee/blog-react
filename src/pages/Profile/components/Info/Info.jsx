@@ -8,7 +8,6 @@ import { timestampToDate, timestampToTime } from '../../../../utils/time';
 import s from './Info.module.scss';
 
 export function Info({ user, postsAmount }) {
-  console.log(user);
   const { username, role, createdAt, photoURL, email } = user;
   return (
     <div className={s.info}>

@@ -10,10 +10,17 @@ export function Footer() {
   ];
   return (
     <div className={s.footer}>
-      <Navigation routes={routes} />
-      <Link to="https://github.com/Eeveeee" className={s.developer}>
+      <div className={s.navigationWrapper}>
+        <Navigation routes={routes} />
+      </div>
+      <a
+        target="_blank"
+        href="https://github.com/Eeveeee"
+        className={s.developer}
+        rel="noreferrer"
+      >
         Разработано: <span>Eeveeee</span>
-      </Link>
+      </a>
     </div>
   );
 }

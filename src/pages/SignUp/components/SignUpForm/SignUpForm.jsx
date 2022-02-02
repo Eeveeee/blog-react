@@ -3,6 +3,7 @@ import GlobalSvgSelector from '../../../../assets/icons/global/GlobalSvgSelector
 import { NotificationsContext } from '../../../../context/context';
 import { AddFileForm } from '../../../../forms/AddFileForm/AddFileForm';
 import { ImagePreview } from '../../../../forms/ImagePreview/ImagePreview';
+import { limits as globalLimits } from '../../../../global/limits';
 import { Counter } from '../../../../shared/Counter/Counter';
 import { RoundedImage } from '../../../../shared/RoundedImage/RoundedImage';
 import { extensionsByType } from '../../../../utils/extensionsByType';
@@ -14,8 +15,9 @@ export function SignUpForm({ submit, fileInput, imagePreview }) {
   const { addNotification } = useContext(NotificationsContext);
   const [data, setData] = useState({ preview: null, username: null });
   const types = ['image'];
-  const maxNameLength = 50;
-  const maxFileSize = 10;
+  const limits = { ...globalLimits };
+  const maxNameLength = limits.username;
+  const maxFileSize = limits.fileSize;
   function submitHandler(e) {
     e.preventDefault();
     const form = e.target;
@@ -23,7 +25,7 @@ export function SignUpForm({ submit, fileInput, imagePreview }) {
     if (username.length > maxNameLength) {
       addNotification({
         type: 'danger',
-        message: 'Имя пользователя должно быть до 100 символов',
+        message: `Имя пользователя должно быть до ${maxNameLength}`,
       });
       return;
     }
@@ -32,7 +34,7 @@ export function SignUpForm({ submit, fileInput, imagePreview }) {
     const image = data?.preview || null;
     const isPasswordValid = passwordValidation(password);
     if (isPasswordValid.status) {
-      submit(form, password, email, username, image);
+      submit(password, email, username, image);
     } else {
       addNotification({
         type: 'danger',
@@ -72,9 +74,15 @@ export function SignUpForm({ submit, fileInput, imagePreview }) {
   }
   return (
     <div className={s.signUpForm}>
-      <form className={s.form} onSubmit={submitHandler}>
+      <form autoComplete="on" className={s.form} onSubmit={submitHandler}>
         <div className={s.inputTitle}>Почта:</div>
-        <input required name="email" className={s.input} type="email" />
+        <input
+          autoComplete="email"
+          required
+          name="email"
+          className={s.input}
+          type="email"
+        />
         <div className={s.inputTitle}>Пароль:</div>
         <input
           autoComplete="new-password"
@@ -89,12 +97,13 @@ export function SignUpForm({ submit, fileInput, imagePreview }) {
         <div className={s.inputInfo}>*Не более 100 символов </div>
         <input
           onChange={onUsernameChange}
+          autoComplete="nickname"
           name="username"
           className={s.input}
           required
           type="text"
         />
-        <div alt="Потом сделаю красиво" className={s.counterWrapper}>
+        <div className={s.counterWrapper}>
           <Counter current={data.username?.length || 0} limit={maxNameLength} />
         </div>
 
@@ -114,12 +123,6 @@ export function SignUpForm({ submit, fileInput, imagePreview }) {
         <button type="submit" className={s.submit}>
           Зарегистрироваться
         </button>
-        <div className={s.signUpGoogle}>
-          Или зарегистрируйтесь через <span>Google</span>
-          <div className={s.signUpGoogleIcon}>
-            <GlobalSvgSelector id={'google'} />
-          </div>
-        </div>
       </form>
     </div>
   );

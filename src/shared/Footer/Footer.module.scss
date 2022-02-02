@@ -5,7 +5,12 @@
   @include flex($justify: space-between);
   padding: 10px;
   border-top: 1px solid $clr-gray-main;
+  margin-top: auto;
+  @media (max-width: 768px) {
+    justify-content: center;
+  }
 }
+
 .developer {
   cursor: pointer;
   font-size: 20px;
@@ -17,4 +22,9 @@
 .title {
   font-size: 30px;
   color: black;
+}
+.navigationWrapper {
+  @media (max-width: 768px) {
+    display: none;
+  }
 }

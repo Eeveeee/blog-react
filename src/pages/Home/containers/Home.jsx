@@ -5,10 +5,12 @@ import { getUserPosts } from '../../../services/UserService';
 import { Feed } from '../components/Feed/Feed';
 import { NotificationsContext } from '../../../context/context';
 import { getPostsAmount } from '../../../services/PostsService';
+import { settings } from '../../../settings';
 
 export function Home() {
   const [posts, setPosts] = React.useState({ state: 'fetching', value: null });
-  const [postsAmount, setPostsAmount] = React.useState(15);
+  const [postsAmount, setPostsAmount] = React.useState(settings.postsToLoad);
+  const [isShowMore, setIsShowMore] = React.useState(true);
   const { addNotification } = useContext(NotificationsContext);
   useEffect(() => {
     let isAlive = true;
@@ -17,11 +19,16 @@ export function Home() {
         if (!isAlive) {
           return;
         }
+        if (res.length !== postsAmount) {
+          setIsShowMore(false);
+        } else {
+          setIsShowMore(true);
+        }
         if (res.length) {
           setPosts({ state: 'success', value: res });
           return;
         }
-        setPosts({ state: 'success', value: [] });
+        setPosts({ state: 'success', value: null });
       })
       .catch((error) => {
         if (!isAlive) {
@@ -38,16 +45,29 @@ export function Home() {
       isAlive = false;
     };
   }, [addNotification, postsAmount]);
+  function toggleShowMore() {
+    setPosts((posts) => ({
+      state: 'fetching',
+      value: posts.value,
+    }));
+    setPostsAmount((postsAmount) => postsAmount + settings.postsToLoad);
+  }
   return (
     <div className={s.home}>
-      <div className={s.container}>
-        {posts.state === 'fetching' ? (
-          <Loader />
-        ) : posts.state === 'success' && posts.value.length ? (
-          <Feed posts={posts.value} />
+      <div className="container">
+        {posts.value ? (
+          <div className={s.contentWrapper}>
+            <Feed posts={posts.value} />
+            {isShowMore && (
+              <button onClick={toggleShowMore} className={s.showMore}>
+                Показать ещё
+              </button>
+            )}
+          </div>
         ) : (
-          'Посты ещё не созданы'
+          posts.state !== 'fetching' && 'Посты ещё не созданы!'
         )}
+        {posts.state === 'fetching' && <Loader />}
       </div>
     </div>
   );

@@ -4,10 +4,14 @@
   max-width: 50px;
   max-height: 50px;
   margin-right: auto;
+  @media (max-width: $size-phone-l) {
+    @include wh(45px, 45px);
+  }
 }
 .imageWrapper {
   border: 2px solid black;
   @include wh(50px, 50px);
+
   @include flex();
   border-radius: 50%;
   cursor: pointer;
@@ -17,6 +21,9 @@
     &:hover {
       border-color: $clr-orange;
     }
+  }
+  @media (max-width: $size-phone-l) {
+    @include wh(45px, 45px);
   }
   img {
     pointer-events: none;

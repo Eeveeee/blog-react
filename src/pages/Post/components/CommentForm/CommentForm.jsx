@@ -13,7 +13,7 @@ export function CommentForm({ onFormSubmit }) {
   function submitHandler(e) {
     e.preventDefault();
     const form = e.target;
-    const content = form.elements['content'].value.trim().normalize();
+    const content = comment.trim().normalize();
     if (!content) {
       addNotification({
         type: 'danger',
@@ -41,7 +41,7 @@ export function CommentForm({ onFormSubmit }) {
     <form onReset={onFormReset} onSubmit={submitHandler} className={s.form}>
       <div className={s.title}>Оставить комментарий</div>
       <AutoResizableTextarea
-        onChangeCb={onInputChange}
+        onInputCb={onInputChange}
         value={comment}
         limit={limit}
       />

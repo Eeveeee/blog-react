@@ -1,7 +1,7 @@
-import { getDatabase, update } from '@firebase/database';
-import { ref } from '@firebase/storage';
+import { getAuth } from 'firebase/auth';
 import {
   collection,
+  deleteDoc,
   doc,
   getDoc,
   getDocs,
@@ -9,13 +9,22 @@ import {
   limit,
   orderBy,
   query,
-  startAfter,
-  startAt,
   serverTimestamp,
   setDoc,
-  deleteDoc,
+  updateDoc,
+  where,
 } from 'firebase/firestore';
-
+export async function getUserPosts(uid) {
+  const db = getFirestore();
+  const ref = collection(db, 'posts');
+  const queryRef = query(ref, where('authorId', '==', uid));
+  const querySnapshot = await getDocs(queryRef);
+  const posts = querySnapshot.docs.map((snapshot) => ({
+    ...snapshot.data(),
+    id: snapshot.id,
+  }));
+  return posts;
+}
 export async function getPost(id) {
   const docRef = doc(getFirestore(), 'posts', id);
   const snapshot = await getDoc(docRef);
@@ -26,31 +35,34 @@ export async function getPost(id) {
 }
 export async function getPostsAmount(amount) {
   const db = getFirestore();
-  const q = query(collection(db, 'posts'), orderBy('createdAt'), limit(amount));
+  const q = query(
+    collection(db, 'posts'),
+    orderBy('createdAt', 'desc'),
+    limit(amount)
+  );
   const querySnapshot = await getDocs(q);
-  const arr = querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+  const arr = querySnapshot.docs.map((doc) => ({ ...doc.data() }));
   return arr;
 }
 
 export async function updatePost(id, changes) {
-  const oldInfo = await getPost(id);
-  const userPublic = {
-    ...oldInfo,
+  const db = getFirestore();
+  const postRef = doc(db, 'posts', id);
+  const post = {
     ...changes,
     updatedAt: serverTimestamp(),
   };
-  const updates = {};
-  const db = getDatabase();
-  updates['/posts/' + id] = userPublic;
-  await update(ref(db), updates);
+  await updateDoc(postRef, post);
 }
 
 export async function writePost(id, post) {
   const db = getFirestore();
+  const auth = getAuth();
   await setDoc(doc(db, 'posts', id), {
+    ...post,
+    authorId: auth.currentUser.uid,
     createdAt: serverTimestamp(),
     updatedAt: serverTimestamp(),
-    ...post,
   });
 }
 export async function deletePost(id) {

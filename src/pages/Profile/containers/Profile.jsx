@@ -1,7 +1,8 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import s from './Profile.module.scss';
 import { Loader } from '../../../shared/Loader/Loader';
-import { getUserPosts, getUserPublic } from '../../../services/UserService';
+import { getUserPublic } from '../../../services/UserService';
+import { getUserPosts } from '../../../services/PostsService';
 import { useHistory, useParams, useRouteMatch } from 'react-router';
 import { getAuth } from '@firebase/auth';
 import { Info } from '../components/Info/Info';
@@ -77,7 +78,7 @@ export function Profile() {
   }, [userInfo, addNotification, posts]);
   return (
     <div className={s.profile}>
-      <div className={s.container}>
+      <div className="container">
         {userInfo.state === 'success' && (
           <div className={s.outer}>
             <Info postsAmount={posts.value} user={userInfo.value} />

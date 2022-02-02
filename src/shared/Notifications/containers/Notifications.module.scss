@@ -10,8 +10,17 @@
   @include wh(400px, 600px);
   z-index: 9999;
   pointer-events: none;
+  @media (max-width: $size-phone-l) {
+    right: 0;
+    top: auto;
+    bottom: 0;
+    @include wh(80vw, 100vh);
+  }
 }
 .notificationsWrapper {
   @include flex(column, flex-start, flex-end);
   padding-right: 20px;
+  @media (max-width: $size-phone-l) {
+    justify-content: flex-end;
+  }
 }

@@ -4,17 +4,21 @@ import { Counter } from '../../shared/Counter/Counter';
 import { autoResize } from '../../utils/autoResize';
 import s from './AutoResizableTextarea.module.scss';
 
-export function AutoResizableTextarea({ onChangeCb, value, limit }) {
+export function AutoResizableTextarea({
+  onInputCb,
+  value,
+  limit,
+  name = 'text',
+}) {
   const textarea = useRef(null);
-  function onChangeHandler(e) {
+  function onInputHandler(e) {
     const textarea = e.currentTarget;
     const textareaValue = textarea.value;
-    autoResize(textarea);
-    onChangeCb(textareaValue);
+    onInputCb(textareaValue, e);
   }
   useEffect(() => {
     autoResize(textarea.current);
-  }, []);
+  }, [value]);
   return (
     <div className={s.wrapper}>
       <div className={s.counterWrapper}>
@@ -24,9 +28,9 @@ export function AutoResizableTextarea({ onChangeCb, value, limit }) {
         ref={textarea}
         autoComplete="off"
         required
-        name="content"
+        name={name}
         value={value}
-        onInput={onChangeHandler}
+        onInput={onInputHandler}
         className={s.textarea}
       />
     </div>

@@ -1,5 +1,9 @@
 @import "../../../../styles/mixins.scss";
 @import "../../../../styles/variables.scss";
 .posts {
-  @include flex($justify: flex-start, $align: stretch, $wrap: wrap);
+  @include flex($justify: flex-start, $align: flex-end, $wrap: wrap);
+  @media (min-width: $size-laptop) {
+    max-width: 70%;
+  }
+  max-width: 100%;
 }

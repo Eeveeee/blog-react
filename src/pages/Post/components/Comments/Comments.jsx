@@ -34,6 +34,8 @@ export function Comments({ postData }) {
             }
             if (res.length !== commentsAmount) {
               setIsShowMore(false);
+            } else {
+              setIsShowMore(true);
             }
             setComments(() => {
               return {
@@ -61,7 +63,7 @@ export function Comments({ postData }) {
     };
   }, [postData, commentsAmount, comments, addNotification, isShowMore]);
   async function addComment(form, content) {
-    addPostComment(postData.id, content)
+    addPostComment(postData.id, auth.user.uid, content)
       .then(() => {
         addNotification({
           type: 'success',

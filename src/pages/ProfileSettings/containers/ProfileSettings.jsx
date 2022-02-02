@@ -17,6 +17,7 @@ import { GetPasswordModal } from '../../../shared/modals/GetPasswordModal/GetPas
 import { extensionsByType } from '../../../utils/extensionsByType';
 import { validateFile } from '../../../utils/fileValidation';
 import { passwordValidation } from '../../../utils/passwordValidation';
+import { toggleScroll } from '../../../utils/toggleScroll';
 import s from './ProfileSettings.module.scss';
 export function ProfileSettings() {
   const privateFields = ['email', 'emailVerified'];
@@ -25,7 +26,6 @@ export function ProfileSettings() {
     username: 'Имя пользователя',
     email: 'Почта',
   };
-  console.log('Settings');
   const auth = getAuth();
   const history = useHistory();
   const { addNotification } = useContext(NotificationsContext);
@@ -33,9 +33,8 @@ export function ProfileSettings() {
   const [authModal, setAuthModal] = useState({ state: false, onConfirm: null });
   const [changePasswordModal, setChangePasswordModal] = useState(false);
   useEffect(() => {
-    setUser((user) => ({ ...user, state: 'fetching' }));
-  }, [setUser]);
-  console.log(user);
+    toggleScroll(!changePasswordModal || !authModal);
+  }, [authModal, changePasswordModal]);
   function removeProfilePicture() {
     updateUserPublic(auth.currentUser.uid, { photoURL: null })
       .then(() => {
@@ -162,7 +161,6 @@ export function ProfileSettings() {
       });
   }
   async function changePassword(password, newPassword) {
-    console.log('password change');
     const isValid = passwordValidation(newPassword);
     if (!isValid.status) {
       addNotification(
@@ -220,7 +218,7 @@ export function ProfileSettings() {
           changePasswordFn={changePassword}
         />
       )}
-      <div className={s.container}>
+      <div className="container">
         <div className={s.outer}>
           {user.state === 'fetching' ? (
             <Loader />
@@ -232,7 +230,7 @@ export function ProfileSettings() {
                   <div className={s.inputTitle}> Фотография профиля</div>
                   <div className={s.imagePreviewBlock}>
                     <div className={s.previewWrapper}>
-                      <ImagePreview file={user.value.photoURL} />
+                      <ImagePreview file={user.value?.photoURL} />
                     </div>
                     <div className={s.photoManage}>
                       <AddFileForm
@@ -240,7 +238,7 @@ export function ProfileSettings() {
                         text={'Сменить'}
                         multiple={false}
                       />
-                      {user.value.photoURL && (
+                      {user.value?.photoURL && (
                         <button
                           onClick={removeProfilePicture}
                           className={s.photoButton}

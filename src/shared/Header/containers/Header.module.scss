@@ -2,9 +2,83 @@
 @import "../../../styles/variables.scss";
 .header {
   @include wh(100%, auto);
-  @include flex($justify: space-between);
-  padding: 5px;
+  padding: 10px;
   border-bottom: 1px solid $clr-gray-main;
+  @media (max-width: $size-ipad) {
+    padding: 10px;
+    position: fixed;
+    z-index: 9997;
+    background: white;
+    top: 0;
+    left: 0;
+  }
+}
+.desktop {
+  @media (max-width: $size-ipad) {
+    height: 65px;
+  }
+  @include flex($justify: space-between);
+  @media (max-width: $size-phone-l) {
+    display: none;
+  }
+}
+.mobile {
+  height: 45px;
+  display: none;
+  @media (max-width: $size-phone-l) {
+    @include flex($justify: space-between);
+  }
+}
+.burgerBtn {
+  @include wh(30px, 30px);
+  padding: 0;
+  @include flex();
+  z-index: 4;
+  background: transparent;
+  border: none;
+  span,
+  span::after,
+  span::before {
+    transition: 0.5s;
+    width: 100%;
+    height: 3px;
+    display: block;
+    background: black;
+  }
+  span {
+    position: relative;
+    &:after,
+    &:before {
+      left: 0;
+      position: absolute;
+      width: 100%;
+      content: "";
+    }
+    &:after {
+      top: -300%;
+    }
+    &:before {
+      top: 300%;
+    }
+  }
+  &.active {
+    span,
+    span::after,
+    span::before {
+      background: white;
+    }
+
+    span {
+      transform: rotate(135deg);
+      &:after {
+        transform: rotate(90deg);
+        top: 0;
+      }
+      &:before {
+        opacity: 0;
+      }
+    }
+  }
 }
 .title {
   font-family: $font-cave;
@@ -12,14 +86,20 @@
   font-size: 40px;
   color: black;
   text-decoration: none;
-  padding-bottom: 5px;
-  border-bottom: 2px solid transparent;
   @media (min-width: $size-laptop) {
+    padding-bottom: 5px;
+    border-bottom: 2px solid transparent;
     transition: 0.2s;
     &:hover {
       color: lighten($clr-gray-main, 20%);
       border-color: lighten($clr-gray-main, 20%);
     }
+  }
+  @media (max-width: $size-ipad) {
+    font-size: 30px;
+  }
+  @media (max-width: $size-phone-l) {
+    font-size: 25px;
   }
 }
 .signIn,

@@ -19,6 +19,9 @@
     white-space: pre-wrap;
     overflow-wrap: break-word;
   }
+  @media (max-width: $size-phone-l) {
+    font-size: 16px;
+  }
   &Type {
     width: 20px;
     height: 100%;

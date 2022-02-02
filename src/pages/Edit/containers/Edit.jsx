@@ -1,11 +1,10 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
 import { useParams } from 'react-router-dom';
-import { v4 as uuidv4 } from 'uuid';
 import { NotificationsContext } from '../../../context/context';
 import { errors } from '../../../global/errors';
 import { useAuthState } from '../../../hooks/useAuthState';
-import { deletePost, getPost, writePost } from '../../../services/PostsService';
+import { getPost, updatePost } from '../../../services/PostsService';
 import { uploadToStorage } from '../../../services/StorageService';
 import { transliterationToEng } from '../../../utils/transliteration';
 import { EditForm } from '../components/EditForm/EditForm';
@@ -65,10 +64,10 @@ export function Edit() {
     };
   }, [id, history, auth, addNotification, post]);
   async function uploadPost(props) {
-    const postModel = { ...props };
+    const postModel = { ...post.value, ...props };
     const imageLinks = [];
-    const postPrefix = transliterationToEng(postModel.title);
-    const postId = postPrefix + '_' + uuidv4();
+    const postId = postModel.id;
+    postModel.transliteration = transliterationToEng(postModel.title) || '';
     if (postModel.previewImage && typeof postModel.previewImage !== 'string') {
       postModel.previewImage = await uploadToStorage(
         postModel.previewImage,
@@ -83,14 +82,12 @@ export function Edit() {
       }
       postModel.images = imageLinks;
     }
-    await writePost(postId, postModel);
-    await deletePost(post.value.id);
+    await updatePost(postId, postModel);
     addNotification({
       type: 'success',
       message: 'Пост успешно изменён',
     });
     history.push(`/post/${postId}/`);
-    return;
   }
 
   async function formSubmit(formData) {
@@ -108,7 +105,7 @@ export function Edit() {
   }
   return (
     <div className={s.add}>
-      <div className={s.container}>
+      <div className="container">
         {post.value && (
           <EditForm
             postData={post.value}

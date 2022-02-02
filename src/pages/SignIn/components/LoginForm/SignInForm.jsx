@@ -16,7 +16,13 @@ export function SignInForm({ onLogin }) {
     <div className={s.signInForm}>
       <form className={s.form} onSubmit={submitHandler}>
         <div className={s.inputTitle}>Почта:</div>
-        <input required name="login" className={s.input} type="email" />
+        <input
+          autoComplete="email"
+          required
+          name="login"
+          className={s.input}
+          type="email"
+        />
         <div className={s.inputTitle}>Пароль:</div>
         <input
           autoComplete="current-password"
@@ -28,12 +34,6 @@ export function SignInForm({ onLogin }) {
         <button type="submit" className={s.submit}>
           Войти
         </button>
-        <div className={s.loginGoogle}>
-          Или войдите через <span>Google</span>
-          <div className={s.loginGoogleIcon}>
-            <GlobalSvgSelector id={'google'} />
-          </div>
-        </div>
       </form>
     </div>
   );

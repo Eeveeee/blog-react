@@ -2,7 +2,6 @@
 @import "../../../../styles/variables.scss";
 .addPostForm {
   @include flex();
-  padding: 50px 0;
 }
 .inputImagePreviews {
   @include flex();
@@ -41,6 +40,12 @@
   border-radius: 10px;
   width: 700px;
   @include flex(column, flex-start, stretch);
+  @media (max-width: $size-phone-l) {
+    padding: 0;
+    border: none;
+    width: 100%;
+    font-size: 16px;
+  }
 }
 
 .counterWrapper {

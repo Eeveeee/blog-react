@@ -19,7 +19,7 @@ export function Comment({ comment, onDeleteComment, onCommentUpdate }) {
   const [author, setAuthor] = useState({ state: 'fetching', value: null });
   const [edit, setEdit] = useState({ state: false, value: content || '' });
   const { addNotification } = useContext(NotificationsContext);
-  const isMore = edit.value
+  const isMore = edit.state
     ? edit.value > limits.commentPreview
     : content.length > limits.commentPreview;
   const [hidden, setHidden] = useState(content.length > limits.commentPreview);
@@ -85,6 +85,7 @@ export function Comment({ comment, onDeleteComment, onCommentUpdate }) {
   function turnEditOn() {
     setEdit((edit) => ({ ...edit, state: true }));
   }
+  console.log(hidden);
   return (
     <div className={s.comment}>
       {author.state === 'success' ? (
@@ -142,7 +143,7 @@ export function Comment({ comment, onDeleteComment, onCommentUpdate }) {
       )}
       {edit.state ? (
         <AutoResizableTextarea
-          onChangeCb={onCommentChange}
+          onInputCb={onCommentChange}
           value={edit.value}
           limit={limits.comment}
         />

@@ -2,6 +2,11 @@
 @import "../../styles/variables.scss";
 .navigation {
   @include flex();
+  @media (max-width: $size-phone-l) {
+    height: 300px;
+    flex-direction: column;
+    justify-content: space-evenly;
+  }
 }
 .link {
   color: $clr-gray-main;
@@ -9,8 +14,11 @@
   font-size: 20px;
   font-weight: 600;
   position: relative;
-  &:nth-last-of-type(n + 2) {
-    margin-right: 20px;
+
+  @media (min-width: $size-ipad) {
+    &:nth-last-of-type(n + 2) {
+      margin-right: 20px;
+    }
   }
   &:after {
     background: $clr-gray-main;
@@ -23,6 +31,7 @@
     height: 2px;
     transition: 0.2s;
   }
+
   @media (min-width: $size-laptop) {
     &:hover {
       &:after {
@@ -30,5 +39,8 @@
         width: 100%;
       }
     }
+  }
+  @media (max-width: $size-phone-l) {
+    font-size: 30px;
   }
 }
