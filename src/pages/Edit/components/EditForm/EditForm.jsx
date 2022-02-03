@@ -10,7 +10,7 @@ import { Counter } from '../../../../shared/Counter/Counter';
 import s from './EditForm.module.scss';
 import { ImagePreview } from '../../../../forms/ImagePreview/ImagePreview';
 import { AddFileForm } from '../../../../forms/AddFileForm/AddFileForm';
-import { limits as globalLimits } from '../../../../global/limits';
+import { limits } from '../../../../global/limits';
 import { AutoResizableTextarea } from '../../../../forms/AutoResizeableTextarea/AutoResizableTextarea';
 
 export function EditForm({ postData, onFormSubmit, isLoading }) {
@@ -18,9 +18,6 @@ export function EditForm({ postData, onFormSubmit, isLoading }) {
   const maxFileSize = 10;
   const { addNotification } = useContext(NotificationsContext);
   const required = ['title', 'subtitle', 'content'];
-  const limits = {
-    ...globalLimits,
-  };
   const [post, setPost] = useState({
     title: null,
     subtitle: null,

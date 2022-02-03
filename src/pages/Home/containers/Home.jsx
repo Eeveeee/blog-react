@@ -58,7 +58,7 @@ export function Home() {
         {posts.value ? (
           <div className={s.contentWrapper}>
             <Feed posts={posts.value} />
-            {isShowMore && (
+            {isShowMore && posts.state !== 'fetching' && (
               <button onClick={toggleShowMore} className={s.showMore}>
                 Показать ещё
               </button>
@@ -67,7 +67,11 @@ export function Home() {
         ) : (
           posts.state !== 'fetching' && 'Посты ещё не созданы!'
         )}
-        {posts.state === 'fetching' && <Loader />}
+        {posts.state === 'fetching' && (
+          <div className={s.loaderContainer}>
+            <Loader />
+          </div>
+        )}
       </div>
     </div>
   );

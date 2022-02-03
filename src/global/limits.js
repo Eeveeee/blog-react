@@ -1,4 +1,4 @@
-export const limits = {
+const limitsObj = {
   email: 254,
   password: 16,
   passwordMin: 8,
@@ -12,3 +12,4 @@ export const limits = {
   subtitlePreview: 150,
   content: 35000,
 };
+export const limits = { ...limitsObj };

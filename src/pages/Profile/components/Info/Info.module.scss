@@ -71,15 +71,10 @@
     resize: none;
     overflow: hidden;
   }
-  &.active {
-    stroke: white;
-    background: green;
-  }
   @media (min-width: $size-laptop) {
     &:hover {
-      background: $clr-gray-main;
       svg {
-        stroke: white;
+        stroke: $clr-orange;
       }
     }
   }

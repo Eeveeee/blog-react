@@ -1,7 +1,7 @@
 @import "../../../../styles/mixins.scss";
 @import "../../../../styles/variables.scss";
 .posts {
-  @include flex($justify: flex-start, $align: flex-end, $wrap: wrap);
+  @include flex($direction: column, $justify: flex-start, $align: flex-start, $wrap: wrap);
   @media (min-width: $size-laptop) {
     max-width: 70%;
   }

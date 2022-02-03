@@ -3,7 +3,7 @@ import GlobalSvgSelector from '../../../../assets/icons/global/GlobalSvgSelector
 import { NotificationsContext } from '../../../../context/context';
 import { AddFileForm } from '../../../../forms/AddFileForm/AddFileForm';
 import { ImagePreview } from '../../../../forms/ImagePreview/ImagePreview';
-import { limits as globalLimits } from '../../../../global/limits';
+import { limits } from '../../../../global/limits';
 import { Counter } from '../../../../shared/Counter/Counter';
 import { RoundedImage } from '../../../../shared/RoundedImage/RoundedImage';
 import { extensionsByType } from '../../../../utils/extensionsByType';
@@ -15,7 +15,6 @@ export function SignUpForm({ submit, fileInput, imagePreview }) {
   const { addNotification } = useContext(NotificationsContext);
   const [data, setData] = useState({ preview: null, username: null });
   const types = ['image'];
-  const limits = { ...globalLimits };
   const maxNameLength = limits.username;
   const maxFileSize = limits.fileSize;
   function submitHandler(e) {

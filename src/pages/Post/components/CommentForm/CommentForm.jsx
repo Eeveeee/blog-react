@@ -1,14 +1,14 @@
 import React, { useContext, useState } from 'react';
 import { NotificationsContext } from '../../../../context/context';
 import { AutoResizableTextarea } from '../../../../forms/AutoResizeableTextarea/AutoResizableTextarea';
-import { limits as globalLimits } from '../../../../global/limits';
+import { limits } from '../../../../global/limits';
 import Button from '../../../../shared/Button/Button';
 import { Counter } from '../../../../shared/Counter/Counter';
 import s from './CommentForm.module.scss';
 
 export function CommentForm({ onFormSubmit }) {
   const { addNotification } = useContext(NotificationsContext);
-  const limit = { ...globalLimits }.comment;
+  const limit = limits.comment;
   const [comment, setComment] = useState('');
   function submitHandler(e) {
     e.preventDefault();

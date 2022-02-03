@@ -1,11 +1,10 @@
-import { limits as GlobalLimits } from '../global/limits';
+import { limits } from '../global/limits';
 
 export function passwordValidation(password) {
   const popularWords = ['1q2w3e4r', 'letmein1', 'qwerty', 'qwerty123'];
   const bigLettersRegexp = /([A-Z])|([A-Z][a-z])/;
   const lettersRegexp = /([a-z])/;
   const numbersRegexp = /\d/;
-  const limits = { ...GlobalLimits };
   const errors = {
     popular: `Пароль слишком популярен, усложните`,
     symbols: `Пароль должен содержать не менее 8 символов`,

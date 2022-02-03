@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import GlobalSvgSelector from '../../../../assets/icons/global/GlobalSvgSelector';
 import { NotificationsContext } from '../../../../context/context';
 import { AutoResizableTextarea } from '../../../../forms/AutoResizeableTextarea/AutoResizableTextarea';
-import { limits as globalLimits } from '../../../../global/limits';
+import { limits } from '../../../../global/limits';
 import { getUserPublic } from '../../../../services/UserService';
 import { Loader } from '../../../../shared/Loader/Loader';
 import { RoundedImage } from '../../../../shared/RoundedImage/RoundedImage';
@@ -15,7 +15,6 @@ import s from './Comment.module.scss';
 
 export function Comment({ comment, onDeleteComment, onCommentUpdate }) {
   const { authorId, createdAt, content, id } = comment;
-  const limits = { ...globalLimits };
   const [author, setAuthor] = useState({ state: 'fetching', value: null });
   const [edit, setEdit] = useState({ state: false, value: content || '' });
   const { addNotification } = useContext(NotificationsContext);

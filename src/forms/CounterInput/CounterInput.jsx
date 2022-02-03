@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { limits as globalLimits } from '../../global/limits';
+import { limits } from '../../global/limits';
 import { Counter } from '../../shared/Counter/Counter';
 import s from './CounterInput.module.scss';
 
@@ -11,7 +11,6 @@ export function CounterInput({
   autoComplete = 'off',
   required = false,
 }) {
-  const limits = { ...globalLimits };
   const content = currentValue[name] || '';
   function handleChange(e) {
     e.preventDefault();
