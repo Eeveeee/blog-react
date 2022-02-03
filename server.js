@@ -10,5 +10,4 @@ app.use(express.urlencoded({ limit: '50mb', extended: true }));
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
-console.log(__dirname);
-console.log(path.join(__dirname, 'build', 'index.html'));
+app.listen(process.env.PORT);
