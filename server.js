@@ -1,5 +1,5 @@
 import express from 'express';
-import path from 'fs';
+import * as path from 'path';
 const app = express();
 app.use(express.static(path.join(__dirname, 'build')));
 app.use(express.json({ limit: '50mb' }));
