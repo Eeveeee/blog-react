@@ -5,8 +5,7 @@ import { timestampToDate, timestampToTime } from '../../../../utils/time';
 import s from './Post.module.scss';
 
 export function Post({ post }) {
-  const { id, createdAt, title, subtitlePreview, previewImage, updatedAt } =
-    post;
+  const { id, createdAt, title, previewImage, updatedAt } = post;
   const postCreated = `${timestampToDate(createdAt)} ${timestampToTime(
     createdAt
   )}`;
@@ -15,24 +14,9 @@ export function Post({ post }) {
   )}`;
   return (
     <div className={s.post}>
-      <Link to={`/post/${id}`}>
-        <div className={s.info}>
-          <div className={s.date}>
-            <div className={s.dateTitle}>Пост создан: </div>
-            {postCreated}
-          </div>
-          <div className={s.date}>
-            <div className={s.dateTitle}>Пост обновлён: </div>
-            {postUpdated}
-          </div>
-        </div>
+      <Link className={s.outer} to={`/post/${id}`}>
         <div className={s.content}>
           <div className={s.imageWrapper}>
-            <img
-              alt="Размытый фон"
-              className={s.imageWrapperBg}
-              src={getMediaLink(previewImage)}
-            />
             <img
               alt="Превью поста"
               className={s.image}
@@ -41,7 +25,10 @@ export function Post({ post }) {
           </div>
           <div className={s.textWrapper}>
             <p className={s.title}>{title}</p>
-            <p className={s.subtitle}>{subtitlePreview}</p>
+            <div className={s.info}>
+              <div className={s.date}>Создан: {postCreated}</div>
+              <div className={s.date}>Обновлён: {postUpdated}</div>
+            </div>
           </div>
         </div>
       </Link>

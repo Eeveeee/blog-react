@@ -4,5 +4,5 @@
   height: 100%;
   width: 100%;
   overflow-y: auto;
-  @include flex($justify: flex-start, $wrap: wrap, $align: stretch);
+  @include flex(column, flex-start, flex-start);
 }

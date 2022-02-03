@@ -3,7 +3,7 @@ import React, { useContext, useState } from 'react';
 import GlobalSvgSelector from '../../assets/icons/global/GlobalSvgSelector';
 import { NotificationsContext } from '../../context/context';
 import { errors } from '../../global/errors';
-import { limits as globalLimits } from '../../global/limits';
+import { limits } from '../../global/limits';
 import { Counter } from '../../shared/Counter/Counter';
 import s from './EditableTextInput.module.scss';
 
@@ -22,7 +22,6 @@ export function EditableTextInput({
     state: 'init',
     value: defaultValue,
   });
-  const limits = { ...globalLimits };
   function handleChange(e) {
     e.preventDefault();
     const input = e.target;

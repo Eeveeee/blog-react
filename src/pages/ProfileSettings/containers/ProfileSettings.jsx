@@ -7,7 +7,7 @@ import { AddFileForm } from '../../../forms/AddFileForm/AddFileForm';
 import { EditableTextInput } from '../../../forms/EditableTextInput/EditableTextInput';
 import { ImagePreview } from '../../../forms/ImagePreview/ImagePreview';
 import { errors } from '../../../global/errors';
-import { limits as globalLimits } from '../../../global/limits';
+import { limits } from '../../../global/limits';
 import { reauthenticateUser } from '../../../services/AuthService';
 import { uploadToStorage } from '../../../services/StorageService';
 import { getUserPublic, updateUserPublic } from '../../../services/UserService';
@@ -21,7 +21,6 @@ import { toggleScroll } from '../../../utils/toggleScroll';
 import s from './ProfileSettings.module.scss';
 export function ProfileSettings() {
   const privateFields = ['email', 'emailVerified'];
-  const limits = { ...globalLimits };
   const editableFields = {
     username: 'Имя пользователя',
     email: 'Почта',
