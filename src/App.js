@@ -161,9 +161,12 @@ function App() {
                     path="/signIn"
                     component={SignIn}
                   />
-                  <Route exact history={history} path="/signup">
-                    <SignUp />
-                  </Route>
+                  <Route
+                    exact
+                    history={history}
+                    path="/signup"
+                    component={SignUp}
+                  ></Route>
                   <Route
                     exact
                     history={history}

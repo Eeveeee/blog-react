@@ -113,15 +113,17 @@ export function Post() {
             <div className={s.imagesContainer}>
               {images &&
                 images.map((image, idx) => (
-                  <a
-                    key={idx}
-                    rel="noreferrer nofollow"
-                    target="_blank"
-                    href={image}
-                    className={s.imageWrapper}
-                  >
-                    <img alt="" className={s.image} src={image} />
-                  </a>
+                  <div key={idx} className={s.imageWrapper}>
+                    <a
+                      key={idx}
+                      rel="noreferrer nofollow"
+                      target="_blank"
+                      href={image}
+                      className={s.link}
+                    >
+                      <img alt="" className={s.image} src={image} />
+                    </a>
+                  </div>
                 ))}
             </div>
             <Comments postData={postData.value} />

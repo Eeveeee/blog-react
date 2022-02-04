@@ -13,6 +13,7 @@ import { AddFileForm } from '../../../../forms/AddFileForm/AddFileForm';
 import { autoResize } from '../../../../utils/autoResize';
 import { limits } from '../../../../global/limits';
 import { postModel } from '../../../../models/postModel';
+import { limit } from '@firebase/firestore';
 export function AddPostForm({ onFormSubmit, isLoading }) {
   const types = ['image'];
   const maxFileSize = 10;
@@ -78,12 +79,26 @@ export function AddPostForm({ onFormSubmit, isLoading }) {
   }
   function handleNewFiles(files, input) {
     const filesArr = Array.from(files) || [];
+    if (filesArr.length > limits.filesLimit) {
+      addNotification({
+        type: 'danger',
+        message: `Изображений должно быть не более ${limits.filesLimit}`,
+      });
+      return;
+    }
     const extensions = extensionsByType('image');
     const validation = validateFiles(filesArr, {
       types,
       extensions,
       maxFileSize,
     });
+    if (!validation) {
+      addNotification({
+        type: 'danger',
+        message: 'Выбранное изображение не подходит, попробуйте другое',
+      });
+      return;
+    }
     if (!validation) {
       addNotification({
         type: 'danger',

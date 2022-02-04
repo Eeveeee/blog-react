@@ -1,4 +1,5 @@
 import classNames from 'classnames';
+import { getAuth } from 'firebase/auth';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import GlobalSvgSelector from '../../../../assets/icons/global/GlobalSvgSelector';
@@ -8,23 +9,19 @@ import { timestampToDate, timestampToTime } from '../../../../utils/time';
 import s from './Info.module.scss';
 
 export function Info({ user, postsAmount }) {
-  const { username, role, createdAt, photoURL, email } = user;
+  const { username, createdAt, photoURL, id } = user;
+  const currentUser = getAuth().currentUser;
   return (
     <div className={s.info}>
-      <Link to={'/profile/settings'} className={s.edit}>
-        <GlobalSvgSelector id={'edit'} />
-      </Link>
+      {currentUser?.uid === id && (
+        <Link to={'/profile/settings'} className={s.edit}>
+          <GlobalSvgSelector id={'edit'} />
+        </Link>
+      )}
       <div className={s.imageWrapper}>
         <RoundedImage src={getMediaLink(photoURL)} />
       </div>
-
       <div className={s.username}>{username}</div>
-      {email && (
-        <div className={classNames(s.email, s.infoField)}>
-          <span className={s.infoFieldTitle}>Почта: </span>
-          <span className={s.fieldValue}>{email}</span>
-        </div>
-      )}
       <div className={classNames(s.createdAt, s.infoField)}>
         <span className={s.infoFieldTitle}>Профиль создан: </span>
         <span className={s.fieldValue}>
