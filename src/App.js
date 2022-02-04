@@ -62,7 +62,6 @@ function App() {
       };
     }
   }, [auth]);
-
   useEffect(() => {
     async function fetchUser() {
       if (!auth.user) {
