@@ -3,12 +3,13 @@
 .notification {
   color: black;
   border-radius: 5px;
-  min-height: 60px;
+  height: fit-content;
+  pointer-events: auto;
   padding: 10px 5px 10px 30px;
   border: 1px solid $clr-gray-main;
   position: relative;
-  overflow: hidden;
   font-size: 18px;
+  height: fit-content;
   width: fit-content;
   line-height: 120%;
   background: white;

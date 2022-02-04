@@ -67,7 +67,6 @@ export function Post() {
       isAlive = false;
     };
   }, [addNotification, history, queryId, postData]);
-  console.log(author);
   function handlePostDelete() {
     const res = window.confirm('Уверены ли вы, что хотите удалить пост?');
     if (!res) return;
