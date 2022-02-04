@@ -4,7 +4,7 @@ import React, { useContext, useEffect } from 'react';
 import { useHistory, useParams } from 'react-router';
 import { Link } from 'react-router-dom';
 import { NotificationsContext } from '../../../context/context';
-import { getPost } from '../../../services/PostsService';
+import { deletePost, getPost } from '../../../services/PostsService';
 import { getUserPublic } from '../../../services/UserService';
 import { Loader } from '../../../shared/Loader/Loader';
 import { timestampToDate, timestampToTime } from '../../../utils/time';
@@ -46,7 +46,7 @@ export function Post() {
           value: { ...post },
         });
       } else {
-        history.push('/posts');
+        history.push('/home');
         return;
       }
     }
@@ -67,6 +67,26 @@ export function Post() {
       isAlive = false;
     };
   }, [addNotification, history, queryId, postData]);
+  console.log(author);
+  function handlePostDelete() {
+    const res = window.confirm('Уверены ли вы, что хотите удалить пост?');
+    if (!res) return;
+    deletePost(postData.value.id)
+      .then(() => {
+        addNotification({
+          type: 'success',
+          message: 'Пост успешно удалён',
+        });
+      })
+      .catch((err) => {
+        console.error(err);
+        addNotification({
+          type: 'error',
+          message: 'Произошла ошибка удаления поста',
+        });
+        history.push('/home');
+      });
+  }
   return (
     <div className={s.post}>
       {postData.state === 'fetching' && <Loader />}
@@ -74,9 +94,14 @@ export function Post() {
         <div className={s.wrapper}>
           <div className={classNames(s.main, { [s.default]: !previewImage })}>
             {authorId === auth.currentUser?.uid && (
-              <Link to={`/post/edit/${id}`} className={s.edit}>
-                Изменить
-              </Link>
+              <div className={s.managePost}>
+                <button onClick={handlePostDelete} className={s.remove}>
+                  Удалить
+                </button>
+                <Link to={`/post/edit/${id}`} className={s.edit}>
+                  Изменить
+                </Link>
+              </div>
             )}
             {previewImage && (
               <div
