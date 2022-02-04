@@ -38,12 +38,10 @@ export function Header() {
     { name: 'Домой', path: '/home' },
     { name: 'Войти', path: '/signin' },
     { name: 'Зарегистрироваться', path: '/signup' },
-    { name: 'Информация', path: '/info' },
   ];
   const authRoutes = [
     { name: 'Домой', path: '/home' },
     { name: 'Создать статью', path: '/add' },
-    { name: 'Информация', path: '/info' },
   ];
   function toggleBurger() {
     setBurgerMenu((burgerMenu) => !burgerMenu);

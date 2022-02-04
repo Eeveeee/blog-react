@@ -2,7 +2,7 @@
 @import "../../styles/variables.scss";
 .footer {
   @include wh(100%, auto);
-  @include flex($justify: space-between);
+  @include flex($justify: flex-end);
   padding: 10px;
   border-top: 1px solid $clr-gray-main;
   margin-top: auto;
@@ -22,9 +22,4 @@
 .title {
   font-size: 30px;
   color: black;
-}
-.navigationWrapper {
-  @media (max-width: 768px) {
-    display: none;
-  }
 }

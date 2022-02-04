@@ -11,6 +11,7 @@ import { Comment } from '../Comment/Comment';
 import { CommentForm } from '../CommentForm/CommentForm';
 import s from './Comments.module.scss';
 import { settings } from '../../../../settings';
+import { Loader } from '../../../../shared/Loader/Loader';
 
 export function Comments({ postData }) {
   const auth = useAuthState();
@@ -147,10 +148,15 @@ export function Comments({ postData }) {
           ))}
         </div>
       )}
-      {isShowMore && (
+      {isShowMore && comments.state !== 'fetching' && (
         <button onClick={toggleShowMore} className={s.showMore}>
           Показать ещё
         </button>
+      )}
+      {comments.state === 'fetching' && (
+        <div className={s.loaderContainer}>
+          <Loader />
+        </div>
       )}
     </div>
   );

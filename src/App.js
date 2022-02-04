@@ -129,7 +129,6 @@ function App() {
                     path="/home"
                     component={Home}
                   />
-                  <Route history={history} path="*" component={Error} />
                   <Redirect from="/" to="/home" />
                 </Switch>
               </div>

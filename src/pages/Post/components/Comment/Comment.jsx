@@ -84,7 +84,6 @@ export function Comment({ comment, onDeleteComment, onCommentUpdate }) {
   function turnEditOn() {
     setEdit((edit) => ({ ...edit, state: true }));
   }
-  console.log(hidden);
   return (
     <div className={s.comment}>
       {author.state === 'success' ? (
