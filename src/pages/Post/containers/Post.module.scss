@@ -33,35 +33,54 @@
   border-bottom: 2px solid white;
   font-size: 20px;
 }
-.edit {
-  cursor: pointer;
-  margin-bottom: 5px;
-  font-size: 18px;
+.managePost {
   position: absolute;
   right: 15px;
   top: 15px;
-  z-index: 1;
-  padding: 4px 15px;
-  border: 1px solid $clr-gray-main;
   background: transparent;
+  z-index: 1;
+}
+.edit,
+.remove {
+  cursor: pointer;
+  margin-bottom: 5px;
+  font-size: 18px;
+  z-index: 1;
   @include flex();
   border-radius: 3px;
-  background: white;
-  color: black;
-  @media (min-width: $size-laptop) {
-    transition: 0.2s;
-    &:hover {
-      background: $clr-gray-main;
-      color: white;
-      border-color: white;
-    }
-  }
+  width: 120px;
+  height: 30px;
+
   @media (max-width: $size-laptop) {
     position: static;
     align-self: flex-end;
   }
 }
+.edit {
+  background: white;
+  color: black;
+  border: 2px solid $clr-gray-main;
 
+  @media (min-width: $size-laptop) {
+    transition: 0.2s;
+    &:hover {
+      background: $clr-gray-main;
+      color: white;
+    }
+  }
+}
+.remove {
+  background: white;
+  color: black;
+  border: 2px solid rgb(209, 0, 0);
+  @media (min-width: $size-laptop) {
+    transition: 0.2s;
+    &:hover {
+      background: rgb(209, 0, 0);
+      color: white;
+    }
+  }
+}
 .info {
   @include flex($justify: space-between);
   width: 100%;
