@@ -20,7 +20,14 @@ export function SignUpForm({ submit, fileInput, imagePreview }) {
   function submitHandler(e) {
     e.preventDefault();
     const form = e.target;
-    const username = form.elements.username.value.normalize().trim();
+    const username = form.elements.username.value.normalize().trim() || '';
+    if (!username.length) {
+      addNotification({
+        type: 'danger',
+        message: `Имя пользователя не может быть пустым`,
+      });
+      return;
+    }
     if (username.length > maxNameLength) {
       addNotification({
         type: 'danger',

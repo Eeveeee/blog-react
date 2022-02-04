@@ -3,6 +3,8 @@
 .post {
   width: 100%;
   overflow: hidden;
+  white-space: normal;
+  overflow-wrap: break-word;
 }
 .main {
   @include flex($direction: column, $align: flex-start);
@@ -18,6 +20,9 @@
     .creator {
       border-color: black;
     }
+  }
+  @media (max-width: $size-ipad) {
+    height: 700px;
   }
 }
 .wrapper {
@@ -64,21 +69,27 @@
 }
 .imagesContainer {
   margin-top: 40px;
-  @include flex(column, flex-start, center, nowrap);
+  @include flex(row, space-between, center, wrap);
   overflow: hidden;
 }
 .imageWrapper {
+  flex-basis: 50%;
   border-radius: 3px;
+  padding: 5px;
   overflow: hidden;
-  @include flex();
   position: relative;
   width: auto;
-  &:nth-of-type(n + 2) {
-    margin-top: 10px;
-  }
+  @include flex();
   .image {
+    max-height: 300px;
     max-width: 100%;
-    height: auto;
+  }
+  .link {
+    width: fit-content;
+    height: 100%;
+  }
+  @media (max-width: $size-ipad) {
+    flex-basis: 100%;
   }
 }
 .title {
@@ -88,14 +99,10 @@
   margin-bottom: 30px;
   resize: none;
   text-align: center;
-  white-space: normal;
-  overflow-wrap: break-word;
 }
 .content {
   font-size: 18px;
   line-height: 130%;
-  white-space: pre-wrap;
-  overflow-wrap: break-word;
   width: 100%;
 }
 .subtitle {

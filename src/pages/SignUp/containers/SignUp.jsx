@@ -31,9 +31,10 @@ export function SignUp({ setCurrentUser }) {
         photoURL,
       });
     } catch (err) {
+      console.error(err);
       addNotification({
         type: 'error',
-        message: errors(err.code, 'Произошла ошибка при регистрации'),
+        message: errors(err.code, 'Произошла ошибка при регистрации', 10000),
       });
     }
   }

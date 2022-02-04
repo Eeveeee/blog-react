@@ -5,6 +5,7 @@ const limitsObj = {
   passwordEnsure: 16,
   username: 50,
   fileSize: 10,
+  filesLimit: 4,
   comment: 2500,
   commentPreview: 300,
   title: 100,
