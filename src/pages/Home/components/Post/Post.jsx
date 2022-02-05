@@ -1,6 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { limits } from '../../../../global/limits';
 import { getMediaLink } from '../../../../utils/mediaHelper';
 import { timestampToDate, timestampToTime } from '../../../../utils/time';
 import { transliterationToEng } from '../../../../utils/transliteration';
@@ -19,6 +20,7 @@ export function Post({ data }) {
   const postCreated = `${timestampToDate(createdAt)} ${timestampToTime(
     createdAt
   )}`;
+
   return (
     <div className={classNames(s.post, { [s.small]: !previewImage })}>
       <Link className={s.outer} to={`/post/${id}/${transliteration || ''}`}>
@@ -34,7 +36,10 @@ export function Post({ data }) {
         <div className={s.part}>
           <div className={s.textWrapper}>
             <div className={s.title}>{title}</div>
-            <div className={s.subtitle}>{subtitlePreview || subtitle}</div>
+            <div className={s.subtitle}>
+              {subtitlePreview ||
+                `${subtitle.substring(0, limits.commentPreview)}...`}
+            </div>
           </div>
           <div className={s.date}>{postCreated}</div>
         </div>
