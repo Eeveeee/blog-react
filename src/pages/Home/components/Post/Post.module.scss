@@ -28,6 +28,12 @@
       }
     }
   }
+  @media (max-width: $size-ipad) {
+    height: 200px;
+    &.small {
+      height: 150px;
+    }
+  }
   @media (max-width: $size-phone-l) {
     height: auto;
     &.small {
@@ -60,8 +66,11 @@
   white-space: normal;
 }
 .subtitle {
-  font-size: 12px;
+  font-size: 16px;
   font-weight: 500;
+  @media (max-width: $size-phone-l) {
+    font-size: 13px;
+  }
 }
 .title {
   transition: 0.2s;

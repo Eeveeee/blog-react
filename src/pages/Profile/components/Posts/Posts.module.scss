@@ -2,8 +2,8 @@
 @import "../../../../styles/variables.scss";
 .posts {
   @include flex($direction: column, $justify: flex-start, $align: flex-start, $wrap: wrap);
+  max-width: 100%;
   @media (min-width: $size-laptop) {
     max-width: 70%;
   }
-  max-width: 100%;
 }
