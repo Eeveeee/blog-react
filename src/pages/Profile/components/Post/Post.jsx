@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { getMediaLink } from '../../../../utils/mediaHelper';
@@ -13,16 +14,18 @@ export function Post({ post }) {
     updatedAt
   )}`;
   return (
-    <div className={s.post}>
+    <div className={classNames(s.post, { [s.small]: !previewImage })}>
       <Link className={s.outer} to={`/post/${id}`}>
         <div className={s.content}>
-          <div className={s.imageWrapper}>
-            <img
-              alt="Превью поста"
-              className={s.image}
-              src={getMediaLink(previewImage)}
-            />
-          </div>
+          {previewImage && (
+            <div className={s.imageWrapper}>
+              <img
+                alt="Превью поста"
+                className={s.image}
+                src={getMediaLink(previewImage)}
+              />
+            </div>
+          )}
           <div className={s.textWrapper}>
             <p className={s.title}>{title}</p>
             <div className={s.info}>
