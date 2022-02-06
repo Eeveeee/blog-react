@@ -23,7 +23,12 @@
     }
   }
   @media (max-width: $size-phone-l) {
-    height: 120px;
+    height: auto;
+  }
+  &.small {
+    .textWrapper {
+      width: 100%;
+    }
   }
 }
 .outer {
@@ -33,6 +38,7 @@
 .content {
   @include allwh(100%, 100%);
   display: flex;
+  align-items: center;
 }
 .title {
   transition: 0.2s;
@@ -47,7 +53,7 @@
   display: flex;
   flex-direction: column;
   width: 80%;
-  @media (max-width: $size-phone-s) {
+  @media (max-width: $size-phone-l) {
     width: 70%;
   }
 }
@@ -55,9 +61,7 @@
   &:first-of-type {
     margin-right: 5px;
   }
-  @media (max-width: $size-phone-l) {
-    margin-top: 5px;
-  }
+
   &Title {
     color: white;
   }
@@ -72,6 +76,9 @@
   top: 0;
   display: flex;
   justify-content: flex-end;
+  @media (max-width: $size-phone-l) {
+    margin-top: 5px;
+  }
 }
 .image {
   overflow: hidden;
@@ -85,7 +92,7 @@
     @include flex();
     width: 20%;
     height: 100%;
-    @media (max-width: $size-phone-s) {
+    @media (max-width: $size-phone-l) {
       width: 30%;
     }
   }
