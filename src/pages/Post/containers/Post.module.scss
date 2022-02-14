@@ -5,6 +5,10 @@
   overflow: hidden;
   white-space: normal;
   overflow-wrap: break-word;
+  padding-bottom: 15px;
+  @media (max-width: $size-phone-l) {
+    padding-top: 66px;
+  }
 }
 .main {
   @include flex($direction: column, $align: flex-start);
@@ -26,6 +30,7 @@
   }
   @media (max-width: $size-phone-l) {
     height: auto;
+    padding: 10px 0;
   }
 }
 .wrapper {
@@ -40,16 +45,10 @@
   }
 }
 .managePost {
-  position: absolute;
-  right: 15px;
-  top: 15px;
   background: transparent;
   z-index: 3;
-  @media (max-width: $size-phone-l) {
-    padding-top: 15px;
-    position: static;
-    align-self: flex-end;
-  }
+  align-self: flex-end;
+  padding: 10px;
 }
 .edit,
 .remove {
@@ -74,6 +73,7 @@
     &:hover {
       background: $clr-gray-main;
       color: white;
+      border-color: white;
     }
   }
 }
@@ -87,6 +87,7 @@
     &:hover {
       background: rgb(209, 0, 0);
       color: white;
+      border-color: white;
     }
   }
 }

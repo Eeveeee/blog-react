@@ -9,11 +9,11 @@ import { timestampToDate, timestampToTime } from '../../../../utils/time';
 import s from './Info.module.scss';
 
 export function Info({ user, postsAmount }) {
-  const { username, createdAt, photoURL, id } = user;
+  const { username, createdAt, photoURL, uid } = user;
   const currentUser = getAuth().currentUser;
   return (
     <div className={s.info}>
-      {currentUser?.uid === id && (
+      {currentUser?.uid === uid && (
         <Link to={'/profile/settings'} className={s.edit}>
           <GlobalSvgSelector id={'edit'} />
         </Link>

@@ -9,6 +9,7 @@ import { Info } from '../components/Info/Info';
 import { Posts } from '../components/Posts/Posts';
 import { NotificationsContext, UserContext } from '../../../context/context';
 import { errors } from '../../../global/errors';
+import classNames from 'classnames';
 
 export function Profile() {
   const history = useHistory();
@@ -58,7 +59,7 @@ export function Profile() {
     async function fetchData() {
       setPosts({ state: 'fetching', value: null });
       try {
-        const userPosts = await getUserPosts(userInfo.value.id);
+        const userPosts = await getUserPosts(userInfo.value.uid);
         setPosts({ state: 'success', value: userPosts });
       } catch (err) {
         setPosts({ state: 'failure', value: null });
@@ -77,7 +78,7 @@ export function Profile() {
     }
   }, [userInfo, addNotification, posts]);
   return (
-    <div className={s.profile}>
+    <div className={classNames(s.profile, 'pageContent')}>
       <div className="container">
         {userInfo.state === 'success' && (
           <div className={s.outer}>

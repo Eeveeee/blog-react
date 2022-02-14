@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import React, { useContext, useState } from 'react';
 import { NotificationsContext } from '../../../context/context';
 import { errors } from '../../../global/errors';
@@ -39,7 +40,7 @@ export function SignUp({ setCurrentUser }) {
     }
   }
   return (
-    <div className={s.signUp}>
+    <div className={classNames(s.signUp, 'pageContent')}>
       {loading ? (
         <Loader />
       ) : (
