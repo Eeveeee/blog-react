@@ -1,6 +1,6 @@
 Актуальная ссылка: https://prosto-blog-react.herokuapp.com/home
 
-Стек: React + Firebase(firestore, storage, auth) + styled components
+Стек: React + Firebase(firestore, storage, auth) + CSS-modules
 
 Функционал:
 1. Создание поста, редактирование поста, комментирование поста, удаление поста.
