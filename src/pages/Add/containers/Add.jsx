@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import React, { useContext, useState } from 'react';
 import { useHistory } from 'react-router';
 import { v4 as uuidv4 } from 'uuid';
@@ -53,7 +54,7 @@ export function Add() {
       });
   }
   return (
-    <div className={s.add}>
+    <div className={classNames(s.add, 'pageContent')}>
       <div className="container">
         <AddPostForm onFormSubmit={formSubmit} isLoading={loading} />
       </div>

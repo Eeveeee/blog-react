@@ -6,6 +6,7 @@ import { Feed } from '../components/Feed/Feed';
 import { NotificationsContext } from '../../../context/context';
 import { getPostsAmount } from '../../../services/PostsService';
 import { settings } from '../../../settings';
+import classNames from 'classnames';
 
 export function Home() {
   const [posts, setPosts] = React.useState({ state: 'fetching', value: null });
@@ -53,7 +54,7 @@ export function Home() {
     setPostsAmount((postsAmount) => postsAmount + settings.postsToLoad);
   }
   return (
-    <div className={s.home}>
+    <div className={classNames(s.home, 'pageContent')}>
       <div className="container">
         {posts.value ? (
           <div className={s.contentWrapper}>

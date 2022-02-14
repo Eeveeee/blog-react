@@ -105,7 +105,6 @@ export function Comment({ comment, onDeleteComment, onCommentUpdate }) {
             ) : (
               <span className={s.authorName}>Пользователь удалён</span>
             )}
-            <div className={s.createdAt}>{defineCreatedAt(createdAt)}</div>
           </div>
           {currentUid === authorId && (
             <div className={s.manageComment}>
@@ -157,6 +156,7 @@ export function Comment({ comment, onDeleteComment, onCommentUpdate }) {
           )}
         </div>
       )}
+      <div className={s.createdAt}>{defineCreatedAt(createdAt)}</div>
     </div>
   );
 }

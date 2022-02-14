@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import React, { useContext, useState } from 'react';
 import { NotificationsContext } from '../../../context/context';
 import { errors } from '../../../global/errors';
@@ -31,7 +32,7 @@ export function SignIn() {
   }
 
   return (
-    <div className={s.signIn}>
+    <div className={classNames(s.signIn, 'pageContent')}>
       <div className="container">
         <SignInForm onLogin={loginUser} />
       </div>

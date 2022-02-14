@@ -8,8 +8,11 @@ a {
 .pageContent {
   padding: 30px 0;
   width: 100%;
+  @media (max-width: $size-ipad) {
+    padding-top: 86px;
+  }
   @media (max-width: $size-phone-l) {
-    padding: 0;
+    padding-top: 66px;
   }
 }
 button {
@@ -30,12 +33,6 @@ body {
   @include flex(column, flex-start, flex-start, nowrap);
   min-height: 100vh;
   overflow: hidden;
-  @media (max-width: $size-ipad) {
-    padding-top: 86px;
-  }
-  @media (max-width: $size-phone-l) {
-    padding-top: 61px;
-  }
 }
 .loaderContainer {
   @include flex();

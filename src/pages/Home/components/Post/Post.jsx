@@ -38,7 +38,7 @@ export function Post({ data }) {
             <div className={s.title}>{title}</div>
             <div className={s.subtitle}>
               {subtitlePreview ||
-                `${subtitle.substring(0, limits.commentPreview)}...`}
+                `${subtitle.substring(0, limits.subtitlePreview)}...`}
             </div>
           </div>
           <div className={s.date}>{postCreated}</div>

@@ -8,6 +8,7 @@ import { useAuthState } from '../../../hooks/useAuthState';
 import { useUserData } from '../../../hooks/useUserData';
 import { signOutCurrentUser } from '../../../services/AuthService';
 import { toggleScroll } from '../../../utils/toggleScroll';
+import { Loader } from '../../Loader/Loader';
 import { Navigation } from '../../Navigation/Navigation';
 import { BurgerMenu } from '../components/BurgerMenu/BurgerMenu';
 import { Profile } from '../components/Profile/Profile';
@@ -57,7 +58,10 @@ export function Header() {
         <Navigation routes={availableRoutes} />
 
         <div className={s.profileWrapper}>
-          {auth.state === 'auth' && <Profile user={user.value} />}
+          {auth.state === 'auth' && user.state === 'fetching' && <Loader />}
+          {auth.state === 'auth' && user.state === 'fullUser' && (
+            <Profile user={user.value} />
+          )}
           {auth.state === 'auth' ? (
             <button onClick={signOut} className={s.signOut}>
               <GlobalSvgSelector id={'signOut'} />

@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import React, { useContext, useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
 import { useParams } from 'react-router-dom';
@@ -104,7 +105,7 @@ export function Edit() {
     }
   }
   return (
-    <div className={s.add}>
+    <div className={classNames(s.edit, 'pageContent')}>
       <div className="container">
         {post.value && (
           <EditForm

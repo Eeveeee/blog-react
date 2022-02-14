@@ -203,7 +203,7 @@ export function ProfileSettings() {
       });
   }
   return (
-    <div className={s.profileSettings}>
+    <div className={classNames(s.profileSettings, 'pageContent')}>
       {authModal.state && (
         <GetPasswordModal
           setModalState={setAuthModal}

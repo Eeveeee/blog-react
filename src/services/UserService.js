@@ -12,7 +12,7 @@ export async function writeUserPublic(uid, userData) {
   const db = getFirestore();
   await setDoc(doc(db, 'users', uid), {
     ...userData,
-    id: uid,
+    uid: uid,
     createdAt: serverTimestamp(),
     updatedAt: serverTimestamp(),
   });

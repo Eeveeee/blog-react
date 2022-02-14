@@ -1,15 +1,12 @@
-import { getAuth, onAuthStateChanged } from '@firebase/auth';
 import { initializeApp } from 'firebase/app';
 import React, { useEffect } from 'react';
 import 'react-perfect-scrollbar/dist/css/styles.css';
 import { Redirect, Route, Switch, useHistory } from 'react-router-dom';
 import { NotificationsContext, UserContext } from './context/context';
-import { errors } from './global/errors';
 import firebaseConfig from './global/firebaseConfig';
 import { useAuthState } from './hooks/useAuthState';
 import { Add } from './pages/Add/containers/Add';
 import { Edit } from './pages/Edit/containers/Edit';
-import { Error } from './pages/Error/Error';
 import { Home } from './pages/Home/containers/Home';
 import { Post } from './pages/Post/containers/Post';
 import { Profile } from './pages/Profile/containers/Profile';
@@ -100,37 +97,32 @@ function App() {
             <NotificationsContext.Provider value={{ addNotification }}>
               <Notifications notifications={notifications} />
               <Header />
-              <div className="pageContent">
-                <Switch>
-                  <Route exact history={history} path="/add" component={Add} />
+              <Switch>
+                <Route exact history={history} path="/add" component={Add} />
+                {user.state === 'fullUser' && (
                   <Route
                     exact
                     history={history}
                     path="/profile/settings/"
                     component={ProfileSettings}
                   />
-                  <Route
-                    exact
-                    history={history}
-                    path="/profile/:id"
-                    component={Profile}
-                  />
-                  <Route
-                    exact
-                    history={history}
-                    path="/post/edit/:id"
-                    component={Edit}
-                  />
-                  <Route history={history} path="/post/:id/" component={Post} />
-                  <Route
-                    exact
-                    history={history}
-                    path="/home"
-                    component={Home}
-                  />
-                  <Redirect from="/" to="/home" />
-                </Switch>
-              </div>
+                )}
+                <Route
+                  exact
+                  history={history}
+                  path="/profile/:id"
+                  component={Profile}
+                />
+                <Route
+                  exact
+                  history={history}
+                  path="/post/edit/:id"
+                  component={Edit}
+                />
+                <Route history={history} path="/post/:id/" component={Post} />
+                <Route exact history={history} path="/home" component={Home} />
+                <Redirect from="/" to="/home" />
+              </Switch>
               <Footer />
             </NotificationsContext.Provider>
           </UserContext.Provider>
@@ -146,36 +138,29 @@ function App() {
             <NotificationsContext.Provider value={{ addNotification }}>
               <Notifications notifications={notifications} />
               <Header />
-              <div className="pageContent">
-                <Switch>
-                  <Route
-                    exact
-                    history={history}
-                    path="/home"
-                    component={Home}
-                  />
-                  <Route
-                    exact
-                    history={history}
-                    path="/signIn"
-                    component={SignIn}
-                  />
-                  <Route
-                    exact
-                    history={history}
-                    path="/signup"
-                    component={SignUp}
-                  ></Route>
-                  <Route
-                    exact
-                    history={history}
-                    path="/profile/:id"
-                    component={Profile}
-                  />
-                  <Route history={history} path="/post/:id/" component={Post} />
-                  <Redirect from="/" to="/home" />
-                </Switch>
-              </div>
+              <Switch>
+                <Route exact history={history} path="/home" component={Home} />
+                <Route
+                  exact
+                  history={history}
+                  path="/signIn"
+                  component={SignIn}
+                />
+                <Route
+                  exact
+                  history={history}
+                  path="/signup"
+                  component={SignUp}
+                ></Route>
+                <Route
+                  exact
+                  history={history}
+                  path="/profile/:id"
+                  component={Profile}
+                />
+                <Route history={history} path="/post/:id/" component={Post} />
+                <Redirect from="/" to="/home" />
+              </Switch>
               <Footer />
             </NotificationsContext.Provider>
           </UserContext.Provider>

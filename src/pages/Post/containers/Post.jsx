@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import React, { useContext, useEffect } from 'react';
 import { useHistory, useParams } from 'react-router';
 import { Link } from 'react-router-dom';
-import { NotificationsContext } from '../../../context/context';
+import { NotificationsContext, UserContext } from '../../../context/context';
 import { deletePost, getPost } from '../../../services/PostsService';
 import { getUserPublic } from '../../../services/UserService';
 import { Loader } from '../../../shared/Loader/Loader';
@@ -19,6 +19,7 @@ export function Post() {
     value: null,
   });
   const [author, setAuthor] = React.useState(null);
+  const { user, setUser } = useContext(UserContext);
   const { addNotification } = useContext(NotificationsContext);
   const {
     previewImage,
