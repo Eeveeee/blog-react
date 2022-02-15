@@ -1,6 +1,7 @@
 Актуальная ссылка: https://prosto-blog-react.herokuapp.com/home
 
 Запись нового контента убрана в данный момент.
+
 Стек: React + Firebase(firestore, storage, auth) + CSS-modules
 
 Функционал:
